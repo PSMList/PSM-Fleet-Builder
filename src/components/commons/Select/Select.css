@@ -1,0 +1,56 @@
+.select-container {
+    display: inline-block;
+    min-width: 250px;
+    position: relative;
+    z-index: 999;
+    width: 100%;
+}
+
+.select-container > .selected-text {
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0.02);
+    width: 100%;
+    font-size: 0.9em;
+    color:rgba(0, 0, 0, 0.45);
+}
+
+.select-container > .selected-text::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 14px;
+    border: 7px solid transparent;
+    border-color: #000 transparent transparent transparent;
+}
+
+.select-container > .selected-text.active::after {
+    top: 8px;
+    border-color: transparent transparent #000 transparent;
+}
+
+.select-container > .select-options {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    overflow-y: auto;
+    height: 20vh;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: none;
+}
+
+.select-container > .select-options > .select-option {
+    list-style-type: none;
+    padding: 6px 20px;
+    background: #fff;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+
+.select-container > .select-options > .select-option:hover,
+.select-container > .select-options > .select-option:focus,
+.select-container > .select-options > .select-option:focus-within {
+    background-color: lightgray;
+}
