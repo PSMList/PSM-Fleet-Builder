@@ -1,0 +1,30 @@
+h2,
+h2 > * {
+    font-family: Windlass, Roboto, sans-serif;
+    margin: 0;
+}
+
+button {
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    background: none;
+    border: none;
+    font-size: 1.5em;
+}
+
+button:hover>*,
+button:focus>*,
+button:focus-within>* {
+    font-size: 1.2em;
+    margin: -0.1em;
+    transform: translate(-0.05em, -0.05em);
+    cursor: pointer;
+}
+
+.actions {
+    text-align: right;
+}
+
+svg.fa-coins {
+    color: darkgoldenrod;
+}

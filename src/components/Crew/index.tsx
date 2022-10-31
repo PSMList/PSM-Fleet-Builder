@@ -1,13 +1,57 @@
+import { createContext, Ref } from 'preact';
+import { crewData } from '../../crewData';
+import extensions, { ExtensionType } from '../../extensionData';
+import factions, { FactionType } from '../../factionData';
+import { ItemsContextType, ItemType } from '../commons/Item';
+import { ShipItemType } from '../Ship';
 import './Crew.css';
+import CrewDisplay from './CrewDisplay';
+import CrewSearch from './CrewSearch';
 
-type CrewProps = {
 
+export type CrewItemType = ItemType & {
 }
 
-const Crew = ({  }: CrewProps) => {
+export const crewDict: { [id: string]: CrewItemType } = {};
+export const crewList = crewData.map<CrewItemType>(
+    data => {
+        const [ id, idfaction, idextension, name, numid, points, lookingforbetterpic ] = data;
+        const faction = factions[idfaction] as FactionType;
+        const extension = extensions[idextension] as ExtensionType;
 
+        const crew: CrewItemType = {
+            id,
+            img: (!lookingforbetterpic ? `/public/img/gameicons/x80/${extension.short}/${numid}.jpg` : '/public/img/logos/crew.png'),
+            altimg: '/public/img/logos/crew.png',
+            faction,
+            extension,
+            numid,
+            name,
+            fullname: `${ extension.short }${ numid } ${ name }`,
+            points
+        };
+        return crewDict[id] = crew;
+    });
+
+
+export const CrewItemsContext = createContext<ItemsContextType>({
+    selectItemCallbacks: []
+});
+
+type CrewProps = {
+    ship: ShipItemType
+    remainingFleetPoints: number
+}
+
+const Crew = ({ ship, remainingFleetPoints }: CrewProps) => {
+    
     return (
-        <></>
+        <>
+            <div class="search_and_display" id="crew_container">
+                <CrewSearch factionID={ ship.faction.id } />
+                <CrewDisplay ship={ ship } remainingFleetPoints={ remainingFleetPoints } />
+            </div>
+        </>
     );
 }
 

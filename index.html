@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <base href="https://www.psmlist.com/" />
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <!-- <base href="https://www.psmlist.com/" /> -->
+  <!-- <base href="http://10.243.134.41:8080/" /> -->
+  <link rel="icon" href="/public/img/favicon.ico" type="image/x-icon" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap" rel="stylesheet">
   <title>Fleet Builder</title>
@@ -19,25 +20,19 @@
       max-width: 98%;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
     @font-face {
       font-family: windlass;
-      src: url(../font/Windlass_accented.ttf);
+      src: url(/public/font/Windlass_accented.ttf);
+    }
+
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
     }
 
     h1 {
       margin-left: 1em;
-    }
-
-    h2 {
-      margin: 0;
-    }
-
-    h1,
-    h2 {
       font-family: Windlass, Roboto, sans-serif;
     }
 

@@ -1,0 +1,45 @@
+.item {
+    cursor: grab;
+    position: relative;
+    z-index: initial;
+}
+
+.item > .item_background {
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+    box-shadow: 0 8px 15px -10px rgba(0,0,0,0.2);
+    /* "disable" selection on elements inside of item container */
+    position: relative;
+    z-index: -1;
+}
+
+.item > .item_background > [class$=_info] {
+    display: grid;
+    grid-template-columns: minmax(auto, 3em) 1fr minmax(auto, 2em);
+    text-align: center;
+    align-items: center;
+    gap: 0.6em;
+}
+
+.item > .item_background > [class$=_info] * {
+    max-width: 100%;
+    vertical-align: text-top;
+}
+
+.item > .item_background > [class$=_info] > img {
+    user-select: none;
+}
+
+.item > .item_background > [class$=_info] > img:first-child {
+    height: auto;
+}
+
+.item > .item_background > [class$=_info] > [class$=_title] {
+    text-align: center;
+    /* word-break: break-word; */
+}
+
+.item > .item_background > [class$=_info] > img:last-child {
+    height: auto;
+}

@@ -1,0 +1,63 @@
+.display_container {
+    flex-grow: 1;
+    display: grid;
+    gap: 0.5em;
+    align-items: center;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(max-content, 5.5em) 1.5em 1fr;
+    grid-template-areas:
+      "header"
+      "actions"
+      "items";
+}
+
+@media only screen and (min-width : 992px) {
+    .display_container {
+        row-gap: 0;
+        grid-template-columns: 1fr auto;
+        grid-template-rows: max-content max-content 1fr;
+        grid-template-areas:
+          "header header"
+          ". actions"
+          "items items";
+    }
+}
+
+.display_container > .display_header {
+    grid-area: header;
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width : 992px) {
+    .display_container > .display_header {
+        flex-wrap: wrap;
+    }
+}
+
+.display_container > .display_header > .title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
+.display_container > .display_header > .info {
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.display_container > .actions {
+    grid-area: actions;
+}
+
+.display_container > .display_grid {
+    margin-top: 0;
+    grid-area: items;
+    align-content: flex-start;
+    align-self: stretch;
+    align-items: flex-end;
+}

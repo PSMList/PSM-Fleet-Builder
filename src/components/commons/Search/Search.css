@@ -1,0 +1,30 @@
+@media only screen and (min-width : 992px) {
+    .search_container {
+        flex: 0 0 33%;
+        position: sticky;
+        top: 1em;
+        left: 0;
+    }
+}
+
+.search_container {
+    /* height: 100%; */
+    display: flex;
+    flex-direction: column;
+}
+
+.search_container > .search_inputs {
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.5em;
+}
+
+.search_container > .search_info {
+    flex: 1 0 auto;
+    max-width: 13em;
+    margin: 3em auto 2em;
+    display: flex;
+    text-align: center;
+    align-items: center;
+}

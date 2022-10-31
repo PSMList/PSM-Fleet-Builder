@@ -1,10 +1,13 @@
 import './App.css'
+import { ModalRoot } from './components/commons/Modal';
+import Ship from './components/Ship';
 
 export function App() {
 
   return (
     <>
-      <h1></h1>
+      <Ship />
+      <ModalRoot />
     </>
   );
 }

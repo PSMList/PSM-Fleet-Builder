@@ -1,0 +1,42 @@
+h1 {
+    margin-bottom: 0;
+}
+
+#fleet_builder {
+    height: calc(100vh - 5.5em);
+}
+
+[class=search_and_display] {
+    position: relative;
+    padding: 0 1em;
+    padding-bottom: 0.7em !important;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: row;
+    height: 100%;
+}
+
+@media only screen and (max-width : 992px) {
+    #fleet_builder {
+        height: calc(200vh - 5.5em);
+    }
+
+    [class=search_and_display] {
+        flex-direction: column-reverse;
+        align-items: normal;
+        overflow-y: auto;
+    }
+}
+
+@media only screen and (max-width : 672px) {
+    [class=search_and_display] {
+        padding: 0;
+    }
+}
+
+[class*=_container][class*=whitebox] {
+    margin-top: 0;
+    margin-bottom: 0;
+    height: 100%;
+}

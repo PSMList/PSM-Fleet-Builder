@@ -6,3 +6,4 @@
 !src/
 !src/**/
 !src/**/*
+src/*Data.ts
