@@ -9,6 +9,7 @@ export type SearchItemType = {
 }
 
 type SearchProps = {
+    additionalInputs?: JSX.Element
     placeholder: string
     items: SearchItemType[]
 }
@@ -18,7 +19,7 @@ const defaultSearchQueryString = defaultSearchQuery.toString();
 
 let lastCall: number | undefined;
 
-const Search = ({ placeholder, items }: SearchProps) => {
+const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
     
     const [ searchQuery, setQuery ] = useState(defaultSearchQuery);
     
@@ -55,12 +56,15 @@ const Search = ({ placeholder, items }: SearchProps) => {
 
     return (
         <div class="search_container whitebox">
-            <input
-                type="text"
-                class="search_input"
-                placeholder={ placeholder }
-                onChange={ searchInItems }
-            />
+            <div class="search_inputs">
+                <input
+                    type="text"
+                    class="search_input"
+                    placeholder={ placeholder }
+                    onChange={ searchInItems }
+                />
+                { additionalInputs }
+            </div>
             { content }
         </div>
     )

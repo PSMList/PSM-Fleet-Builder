@@ -21,6 +21,14 @@ const ShipSearch = () => {
                 }
             />
     })), []);
+
+    const selectFactions = useMemo(() => {
+        const factionsList = Object.values(factions);
+        factionsList.unshift({ id: -1, img: '', name: 'All factions' });
+        return factionsList;
+    }, []);
+
+    const [ filteredShips, setFilteredShips ] = useState(ships);
     
     const shipItemsContext = useContext(ShipItemsContext);
     
@@ -30,12 +38,35 @@ const ShipSearch = () => {
         });
     }, []);
 
+    // TODO: cache searchByFaction output to reuse instead of recompute
+    const searchByFaction = useCallback((value: string) => {
+        const selectedFaction = parseInt(value);
+        if (selectedFaction === -1 ) {
+            return setFilteredShips(() => ships);
+        };
+        console.log(factions[selectedFaction]);
+        
+        setFilteredShips(() => ships.filter( (_, index) => shipList[index].faction.id === selectedFaction));
+    }, []);
+
     return (
         <>
             <Search
                 placeholder="Search by ship name or ID"
+                additionalInputs={
+                    <>
+                        <Select
+                            defaultSelectText="Select faction"
+                            className="search_faction"
+                            onOptionSelect={ searchByFaction }
+                            optionsList={
+                                selectFactions.map( faction => ({ value: faction.id.toString(), display: <><img src={ faction.img } />{ faction.name }</> }) )
+                            }
+                        />
+                    </>
+                }
                 items={
-                    ships
+                    filteredShips
                 }
             />
         </>

@@ -25,6 +25,14 @@ const CrewSearch = ({ factionID }: CrewSearchProps) => {
                 }
             />
     })), []);
+
+    const selectFactions = useMemo(() => {
+        const factionsList = Object.values(factions);
+        factionsList.unshift({ id: -1, img: '', name: 'All factions' });
+        return factionsList;
+    }, []);
+
+    const [ filteredCrews, setFilteredCrews ] = useState(crews);
     
     const crewItemsContext = useContext(CrewItemsContext);
     
@@ -34,12 +42,35 @@ const CrewSearch = ({ factionID }: CrewSearchProps) => {
         });
     }, []);
 
+    // TODO: cache searchByFaction output to reuse instead of recompute
+    const searchByFaction = useCallback((value: string) => {
+        const selectedFaction = parseInt(value);
+        if (selectedFaction === -1 ) {
+            return setFilteredCrews(() => crews);
+        };
+        
+        setFilteredCrews(() => crews.filter( (_, index) => crewList[index].faction.id === selectedFaction));
+    }, []);
+
     return (
         <>
             <Search
                 placeholder="Search by crew name or ID"
+                additionalInputs={
+                    <>
+                        <Select
+                            defaultSelectText="Select faction"
+                            className="search_faction"
+                            onOptionSelect={ searchByFaction }
+                            optionsList={
+                                selectFactions.map( faction => ({ value: faction.id.toString(), display: <><img src={ faction.img } />{ faction.name }</> }) )
+                            }
+                            defaultSelectOption={ factionID.toString() }
+                        />
+                    </>
+                }
                 items={
-                    crews
+                    filteredCrews
                 }
             />
         </>
