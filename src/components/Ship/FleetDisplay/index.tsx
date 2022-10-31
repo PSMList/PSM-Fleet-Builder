@@ -1,4 +1,4 @@
-import { faEraser, faFileImport, faFloppyDisk, faShareFromSquare, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faCoins, faEraser, faFileImport, faFloppyDisk, faShareFromSquare, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useContext, useEffect, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
@@ -81,6 +81,8 @@ type ShipDisplayProps = {
 const FleetDisplay = () => {
 
     const [fleetData, setData] = useState<FleetDataType>(getSavedFleetData() || defaultFleetData);
+
+    console.log(fleetData.name);
 
     fleetData.points.current = fleetData.ships.reduce(
         (shipTotal: number, ship: ShipItemType) =>
@@ -194,10 +196,20 @@ const FleetDisplay = () => {
     return (
         <Display
             title={
-                <FleetTitle fleetData={fleetData} />
+                <FleetTitle
+                    value={ fleetData.name }
+                    onChange={ (newValue: string) => (fleetData.name = newValue) && setData(() => ({ ...fleetData })) }
+                />
             }
             info={
-                <FleetPoints fleetData={fleetData} />
+                
+                <span class="points">
+                    <FontAwesomeIcon icon={faCoins} />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;
+                    <FleetPoints
+                        value={ fleetData.points.max }
+                        onChange={ (newValue: number) => (fleetData.points.max = newValue) && setData(() => ({ ...fleetData })) }
+                    />
+                </span>
             }
             actions={
                 <>

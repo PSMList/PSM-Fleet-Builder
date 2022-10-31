@@ -1,31 +1,34 @@
-import { useMemo, useState } from "preact/hooks";
-import { FleetDataType } from "..";
+import { useEffect, useMemo, useState } from "preact/hooks";
 import EditableText from "../../../commons/EditableText";
 
 type FleetTitleProps = {
-    fleetData: FleetDataType
+    value: string
+    onChange: (value: string) => void
 }
 
-const FleetTitle = ({ fleetData }: FleetTitleProps) => {
-    const [ , setFleetName ] = useState(fleetData.name);
+const FleetTitle = ({ value, onChange }: FleetTitleProps) => {
+    const [fleetName, setFleetName] = useState(value);
+
+    useEffect(() => {
+        setFleetName(() => value);
+    }, [ value ]);
     
     return useMemo(() => {
-        console.log(fleetData.name);
-        
+
         const changeFleetName = (newFleetName: string) => {
             if (!(newFleetName && newFleetName.length >= 3 )) {
                 alert('Please provide a name with at least 3 characters.');
                 return false;
             }
-            fleetData.name = newFleetName;
             setFleetName(() => newFleetName);
+            onChange(newFleetName);
             return true;
         }
     
         return (
-            <EditableText onEdit={ changeFleetName } value={ fleetData.name } />
+            <EditableText onEdit={ changeFleetName } value={ fleetName } />
         );
-    }, [ fleetData.name ]);
+    }, [ value, fleetName ]);
 }
 
 export default FleetTitle;
