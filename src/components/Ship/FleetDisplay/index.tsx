@@ -95,8 +95,8 @@ const FleetDisplay = () => {
     const modalContext = useContext(ModalContext);
 
     const addShip = useCallback((ship: ShipItemType) => {
-        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return alert('Ship with the same name already selected.');
         if (fleetData.points.current + ship.points > fleetData.points.max) return alert('/!\ Exceeding fleet max points. Double-click on the max points to edit it.');
+        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return alert('Ship with the same name already selected.');
         fleetData.ships.push(ship);
         setData(() => ({
             ...fleetData
@@ -175,10 +175,7 @@ const FleetDisplay = () => {
     }
     
     const clearFleet = () => {
-        fleetData.ships.length = 0;
-        setData(() => ({
-            ...fleetData
-        }));
+        setData(() => defaultFleetData);
     }
 
     const showCrew = (ship: ShipItemType) => {
