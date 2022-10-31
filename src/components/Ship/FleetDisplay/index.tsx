@@ -218,10 +218,10 @@ const FleetDisplay = () => {
                         }
                         actions={
                             <>
-                                <button onClick={() => showCrew(ship)}>
+                                <button onClick={() => showCrew(ship)} 
+                                        data-crew-room={ ship.crew.length ? ship.crew.length : null }>
                                     <FontAwesomeIcon
                                         icon={faUserGroup}
-                                        style={ship.crew.length > 0 ? { color: 'red' } : null}
                                     />
                                 </button>
                                 <button onClick={() => removeShip(ship)}>
