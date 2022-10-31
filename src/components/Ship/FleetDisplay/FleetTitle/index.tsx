@@ -7,23 +7,25 @@ type FleetTitleProps = {
 }
 
 const FleetTitle = ({ fleetData }: FleetTitleProps) => {
-    const [ fleetName, setFleetName ] = useState(fleetData.name);
+    const [ , setFleetName ] = useState(fleetData.name);
     
     return useMemo(() => {
+        console.log(fleetData.name);
+        
         const changeFleetName = (newFleetName: string) => {
-            if (!(newFleetName && newFleetName.length > 5 )) {
-                alert('Please provide a name with at least 5 characters.');
+            if (!(newFleetName && newFleetName.length >= 3 )) {
+                alert('Please provide a name with at least 3 characters.');
                 return false;
             }
-            setFleetName(() => newFleetName);
             fleetData.name = newFleetName;
+            setFleetName(() => newFleetName);
             return true;
         }
     
         return (
-            <EditableText onEdit={ changeFleetName } value={ fleetName } />
+            <EditableText onEdit={ changeFleetName } value={ fleetData.name } />
         );
-    }, [ fleetName ]);
+    }, [ fleetData.name ]);
 }
 
 export default FleetTitle;
