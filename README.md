@@ -66,8 +66,6 @@ Fleet settings edition:
 
 ![Display of inputs to edit fleet data like name and max points](https://cdn.discordapp.com/attachments/848669194508566629/1037138884036923412/unknown.png)
 
-Demo showing ship and crew search and select, both Desktop and Mobile:
+Demo of the main features:
 
-<video controls="" allowfullscreen="" width="" height="">
-  <source type="video/mp4" src="https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov">
-</video>
+[![Demo showing ship and crew search and select, both Desktop and Mobile](https://media.discordapp.net/attachments/848669194508566629/1037138055649308704/unknown.png)](https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov)
