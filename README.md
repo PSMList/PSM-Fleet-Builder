@@ -68,4 +68,4 @@ Fleet settings edition:
 
 Demo of the main features:
 
-[![Demo showing ship and crew search and select, both Desktop and Mobile](https://media.discordapp.net/attachments/848669194508566629/1037138055649308704/unknown.png)](https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov)
+<video src="https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov" controls="" allowfullscreen="" width="" height="" />
