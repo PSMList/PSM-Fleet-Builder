@@ -1,6 +1,6 @@
 import { faCog, faCoins, faEraser, faFileImport, faFloppyDisk, faShareFromSquare, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
@@ -31,7 +31,7 @@ export type FleetDataType = {
 } & FleetSavedDataType;
 
 const defaultFleetData: FleetDataType = {
-    name: 'Fleet name to change (dbl click here)',
+    name: 'My fleet',
     points: {
         current: 0,
         max: 40
@@ -92,14 +92,14 @@ const FleetDisplay = () => {
     const shipItemsContext = useContext(ShipItemsContext);
     const modalContext = useContext(ModalContext);
 
-    const addShip = useCallback((ship: ShipItemType) => {
+    const addShip = (ship: ShipItemType) => {
         if (fleetData.points.current + ship.points > fleetData.points.max) return alert('/!\ Exceeding fleet max points. Double-click on the max points to edit it.');
         if (fleetData.ships.some(_ship => _ship.name === ship.name)) return alert('Ship with the same name already selected.');
         fleetData.ships.push(ship);
         setData(() => ({
             ...fleetData
         }));
-    }, []);
+    }
 
     const removeShip = (ship: ShipItemType) => {
         if (removeItemFromArray(fleetData.ships, _ship => ship.id === _ship.id)) {
@@ -193,10 +193,14 @@ const FleetDisplay = () => {
     }
 
     const editFleetSettings = () => {
-        const data = 
         modalContext.showModal({
             id: 'edit_fleet_settings',
             title: 'Fleet settings',
+            onClose: () => {
+                setData(() => ({
+                    ...fleetData
+                }));
+            },
             inside:
                 <Settings
                     key={ Math.random() } // will surely reset the component (reset default data)
@@ -213,13 +217,11 @@ const FleetDisplay = () => {
                         }
                     }}
                     onChange={ (newData) => {
+                        setTimeout(() => saveFleet(), 3000);
+                        fleetData.name = newData.name;
+                        fleetData.points.max = newData.points.max;
                         setData(() => ({
-                            ...fleetData,
-                            name: newData.name,
-                            points: {
-                                current: fleetData.points.current,
-                                max: newData.points.max
-                            }
+                            ...fleetData
                         }));
                     }}
                 />
@@ -238,11 +240,11 @@ const FleetDisplay = () => {
             }
             actions={
                 <>
-                    <button class="settings" onClick={editFleetSettings} alt="Edit fleet settings"><FontAwesomeIcon icon={faCog} /></button>
-                    <button class="import" onClick={importFleet} alt="Import from file"><FontAwesomeIcon icon={faFileImport} /></button>
                     <button class="export" onClick={exportFleet} alt="Export to file"><FontAwesomeIcon icon={faShareFromSquare} /></button>
+                    <button class="import" onClick={importFleet} alt="Import from file"><FontAwesomeIcon icon={faFileImport} /></button>
                     <button class="save" onClick={saveFleet} alt="Save in browser"><FontAwesomeIcon icon={faFloppyDisk} /></button>
                     <button class="clear" onClick={clearFleet} alt="Clear fleet"><FontAwesomeIcon icon={faEraser} /></button>
+                    <button class="settings" onClick={editFleetSettings} alt="Edit fleet settings"><FontAwesomeIcon icon={faCog} /></button>
                 </>
             }
             items={

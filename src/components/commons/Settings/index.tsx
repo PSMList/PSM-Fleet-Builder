@@ -7,12 +7,10 @@ import { capitalize } from "../../../utils";
 import ValidationInput from "../Inputs/ValidationInput";
 import './Settings.css';
 
-type T = { [key: string]: any }
-
 type SettingsProps = {
-    data: T
-    defaultData?: T
-    onChange: (data: T) => void
+    data: { [key: string]: any }
+    defaultData?: { [key: string]: any }
+    onChange: (data: { [key: string]: any }) => void
 }
 
 type InputSettings = { onChange: (event: Event) => void, onValidate: (event: Event) => void, name: string, type: string, value: string, min?: number | undefined }
@@ -27,7 +25,6 @@ const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {
             const item = inputData[itemKey];
             
             const onChange = (event: Event) => {
-                
                 const input = (event.target as HTMLInputElement);
                 switch (input.type) {
                     case 'text':
@@ -40,7 +37,11 @@ const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {
             };
             const onValidate = (event: Event) => {
                 onChange(event);
-                onSave(settings);
+                const newSettings = {
+                    ...settings
+                }
+                onSave(newSettings);
+                setSettings(() => newSettings);
             };
 
             let element: JSX.Element;
@@ -88,7 +89,11 @@ const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {
                 <h3>
                     Save&nbsp;
                     <button onClick={ () => {
-                        onSave(settings);
+                        const newSettings = {
+                            ...settings
+                        }
+                        onSave(newSettings);
+                        setSettings(() => newSettings);
                     } }>
                         <FontAwesomeIcon icon={ faFloppyDisk } />
                     </button>
