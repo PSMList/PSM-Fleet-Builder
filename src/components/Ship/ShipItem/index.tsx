@@ -23,16 +23,9 @@ const ShipItem = ({ data: ship, actions }: SearchItemProps) => {
                     </span>
                     <img class="faction_img" loading="lazy" src={ ship.faction.img } />
                     <span class="ship_points"><FontAwesomeIcon icon={ faCoins } /><b> { ship.points }</b></span>
-                    <span class="ship_cargo"><img src="/public/img/svg/cargo_nobg.svg" /> { ship.crew && ship.crew.length > 0 && ship.crew.length + '/' }{ ship.cargo }</span>
+                    <span class="ship_cargo"><img src="/public/img/svg/cargo_nobg.svg" />{ ship.cargo }</span>
                     <span class="ship_"></span>
                 </div>
-                {/* <ul class="crew_list items">
-                    {
-                        ship.crew && ship.crew.map( (crew, index) => 
-                            <SearchCrewItem data={ crew } key={ index } />
-                        )
-                    }
-                </ul> */}
             </>
         </Item>
     );
