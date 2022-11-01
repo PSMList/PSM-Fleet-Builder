@@ -9,6 +9,7 @@ type TextInputProps = {
     focus?: boolean
     onValidate: (event: InputEvent) => void
     onChange?: (event: InputEvent) => void
+    onKeyPress?: (event: KeyboardEvent) => void
 } & JSX.HTMLAttributes<HTMLInputElement>
 
 const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: TextInputProps) => {
@@ -16,6 +17,12 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
 
     const inputRef = createRef<HTMLInputElement>();
     const inputEventRef = createRef<InputEvent>();
+
+    const validate = () => {
+        if (!inputEventRef.current) return;
+        onValidate(inputEventRef.current);
+        setDefaultValue(() => inputRef.current?.value || '');
+    }
 
     // return useMemo(() =>
     return (
@@ -27,6 +34,14 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
                         const _event = event as Event as InputEvent;
                         inputEventRef.current = _event;
                         if (onChange) onChange(_event);
+                    } }
+                    onKeyPress={ (event) => {
+                        if (event.key === 'Enter') {
+                            validate()
+                        }
+                        if (props.onKeyPress) {
+                            props.onKeyPress(event);
+                        }
                     } }
                     ref={ (ref) => {
                         if (!ref) return;
@@ -40,9 +55,7 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
                     <FontAwesomeIcon icon={ faRotateBackward } />
                 </button>
                 <button onClick={ () => {
-                    if (!inputEventRef.current) return;
-                    onValidate(inputEventRef.current);
-                    setDefaultValue(() => inputRef.current?.value || '');
+                    validate();
                  } } >
                     <FontAwesomeIcon icon={ faCheck } />
                 </button>
