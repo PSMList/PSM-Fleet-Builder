@@ -68,4 +68,4 @@ Fleet settings edition:
 
 Demo of the main features:
 
-<video src="https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov" controls="" allowfullscreen="" width="" height="" />
+<video src="https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov" controls="" allowfullscreen=""></video>
