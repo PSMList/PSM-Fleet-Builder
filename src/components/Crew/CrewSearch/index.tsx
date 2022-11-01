@@ -5,7 +5,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from "preact/ho
 import { CrewItemsContext, CrewItemType, crewList } from "..";
 import factions from "../../../factionData";
 import Search, { SearchItemType } from "../../commons/Search";
-import Select from "../../commons/Select";
+import Select from "../../commons/Inputs/Select";
 import CrewItem from "../CrewItem";
 import './CrewSearch.css';
 

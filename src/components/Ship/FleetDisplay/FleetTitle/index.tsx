@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "preact/hooks";
-import EditableText from "../../../commons/EditableText";
+import EditableText from "../../../commons/Inputs/EditableText";
 
 type FleetTitleProps = {
     value: string

@@ -2,7 +2,7 @@ import { faCoins } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useMemo, useState } from "preact/hooks"
 import { isStrPositiveInt } from "../../../../utils"
-import EditableText from "../../../commons/EditableText"
+import EditableText from "../../../commons/Inputs/EditableText"
 
 export type FleetPointsProps = {
     value: number

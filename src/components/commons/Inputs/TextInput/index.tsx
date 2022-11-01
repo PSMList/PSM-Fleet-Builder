@@ -1,5 +1,4 @@
-import { Ref } from "preact"
-import { useCallback, useMemo, useRef, useState } from "preact/hooks"
+import { useMemo } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 
 type TextInputProps = {
