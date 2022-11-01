@@ -1,0 +1,15 @@
+form.validation_input {
+    display: inline-block;
+}
+
+form.validation_input > div {
+    display: flex;
+}
+
+form.validation_input > div > input {
+    flex: 1 1 0;
+}
+
+form.validation_input > div > svg {
+    flex: 0 0 auto;
+}
