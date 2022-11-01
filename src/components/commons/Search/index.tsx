@@ -1,5 +1,6 @@
 import { useState } from "preact/hooks";
 import { JSX } from 'preact/jsx-runtime';
+import ValidationInput from "../Inputs/ValidationInput";
 import Items from '../Items';
 import './Search.css';
 
@@ -17,18 +18,12 @@ type SearchProps = {
 const defaultSearchQuery = new RegExp('', 'i');
 const defaultSearchQueryString = defaultSearchQuery.toString();
 
-let lastCall: number | undefined;
-
 const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
     
     const [ searchQuery, setQuery ] = useState(defaultSearchQuery);
     
     const searchInItems = (event: Event) => {
-        // throttle for 1.5s
-        clearTimeout(lastCall);
-        lastCall = setTimeout(() => {
-            setQuery(() => new RegExp((event.target as HTMLInputElement).value, 'i'));
-        }, 1500);
+        setQuery(() => new RegExp((event.target as HTMLInputElement).value, 'i'));
     }
 
     const content = (() => {
@@ -57,7 +52,7 @@ const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
     return (
         <div class="search_container whitebox">
             <div class="search_inputs">
-                <input
+                <ValidationInput
                     type="text"
                     class="search_input"
                     placeholder={ placeholder }
