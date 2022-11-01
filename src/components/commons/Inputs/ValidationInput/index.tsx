@@ -8,9 +8,10 @@ import './ValidationInput.css'
 type TextInputProps = {
     focus?: boolean
     onValidate: (event: InputEvent) => void
+    onChange?: (event: InputEvent) => void
 } & JSX.HTMLAttributes<HTMLInputElement>
 
-const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps) => {
+const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: TextInputProps) => {
     const [ defaultValue, setDefaultValue ] = useState((props.value || props.defaultValue || '') as string);
 
     const inputRef = createRef<HTMLInputElement>();
@@ -22,7 +23,11 @@ const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps
             <div>
                 <input
                     { ...props }
-                    onChange={ (event) => inputEventRef.current = event as Event as InputEvent }
+                    onChange={ (event) => {
+                        const _event = event as Event as InputEvent;
+                        inputEventRef.current = _event;
+                        if (onChange) onChange(_event);
+                    } }
                     ref={ (ref) => {
                         if (!ref) return;
                         inputRef.current = ref;
