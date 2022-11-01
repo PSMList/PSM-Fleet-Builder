@@ -1,5 +1,6 @@
 import './EditableText.css';
 import { useCallback, useState } from "preact/hooks";
+import Input from '../TextInput';
 
 type EditableTextProps = {
     onEdit: (newValue: string) => boolean
@@ -11,11 +12,14 @@ const EditableText = ({ onEdit, value }: EditableTextProps) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const handleTyping = useCallback((event: KeyboardEvent) => {
+        console.log(event.key);
+        
+        if (event.key === 'Escape') return setIsEditing(() => false);
         if (event.key !== 'Enter') return;
         const element = (event.target as HTMLInputElement);
         const confirm = onEdit(element.value);
         if (confirm) {
-            setIsEditing(false);
+            setIsEditing(() => false);
         }
     }, []);
     
@@ -23,15 +27,15 @@ const EditableText = ({ onEdit, value }: EditableTextProps) => {
         <>
             {
                 isEditing ?
-                    <input
+                    <Input
                         type='text'
                         onKeyPress={ (event) => handleTyping(event as KeyboardEvent) }
-                        onfocusout={ () => setIsEditing(false) }
+                        onfocusout={ () => setIsEditing(() => false) }
                         defaultValue={ value }
-                        ref={ (ref) => ref?.focus() }
+                        focus={ true }
                     />
                     :
-                    <span onDblClick={ ()=> setIsEditing(true) }>{ value }</span>
+                    <span onDblClick={ ()=> setIsEditing(() => true) }>{ value }</span>
             }
         </>
     )
