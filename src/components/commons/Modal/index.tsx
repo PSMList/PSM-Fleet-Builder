@@ -9,7 +9,7 @@ type ModalProperties = {
     id: string
     inside: JSX.Element,
     title: string,
-    onClose: () => void
+    onClose?: () => void
 };
 
 type ModalState = ModalProperties & { visible: boolean };
@@ -65,7 +65,7 @@ const ModalContainer = ({ modal }: ModalContainerProps) => {
                         <button
                             class="modal-close"
                             onClick={() => {
-                                modal.onClose();
+                                if (modal.onClose) modal.onClose();
                                 modalContext.hideModal();
                             }}
                         >
