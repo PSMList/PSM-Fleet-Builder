@@ -66,6 +66,4 @@ Fleet settings edition:
 
 ![Display of inputs to edit fleet data like name and max points](https://cdn.discordapp.com/attachments/848669194508566629/1037138884036923412/unknown.png)
 
-Demo of the main features:
-
-<video src="https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov" controls="" allowfullscreen=""></video>
+[Demo of the main features](https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov)
