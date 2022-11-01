@@ -44,8 +44,6 @@ const ShipSearch = () => {
         if (selectedFaction === -1 ) {
             return setFilteredShips(() => ships);
         };
-        console.log(factions[selectedFaction]);
-        
         setFilteredShips(() => ships.filter( (_, index) => shipList[index].faction.id === selectedFaction));
     }, []);
 

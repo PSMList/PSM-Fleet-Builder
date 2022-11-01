@@ -30,8 +30,6 @@ const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps
                     } }
                 />
                 <button onClick={ () => {
-                    console.log(inputRef.current, defaultValue);
-                    
                     if (inputRef.current) inputRef.current.value = defaultValue;
                 } }>
                     <FontAwesomeIcon icon={ faRotateBackward } />
@@ -39,8 +37,6 @@ const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps
                 <button onClick={ () => {
                     if (!inputEventRef.current) return;
                     onValidate(inputEventRef.current);
-                    console.log();
-                    
                     setDefaultValue(() => inputRef.current?.value || '');
                  } } >
                     <FontAwesomeIcon icon={ faCheck } />

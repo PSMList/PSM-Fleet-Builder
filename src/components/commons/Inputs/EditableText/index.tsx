@@ -12,8 +12,6 @@ const EditableText = ({ onEdit, value }: EditableTextProps) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const handleTyping = useCallback((event: KeyboardEvent) => {
-        console.log(event.key);
-        
         if (event.key === 'Escape') return setIsEditing(() => false);
         if (event.key !== 'Enter') return;
         const element = (event.target as HTMLInputElement);
