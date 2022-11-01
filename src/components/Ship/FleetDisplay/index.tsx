@@ -1,16 +1,15 @@
-import { faCoins, faEraser, faFileImport, faFloppyDisk, faShareFromSquare, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
+import { faCog, faCoins, faEraser, faFileImport, faFloppyDisk, faShareFromSquare, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useContext, useEffect, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
 import { ModalContext } from "../../commons/Modal";
-import Crew, { crewDict, CrewItemsContext, CrewItemType } from "../../Crew";
+import Settings from "../../commons/Settings";
+import Crew, { crewDict, CrewItemType } from "../../Crew";
 import { CrewSavedDataType } from "../../Crew/CrewDisplay";
 import ShipItem from "../ShipItem";
-import FleetPoints from "./FleetPoints";
 import './FleetDisplay.css';
-import FleetTitle from "./FleetTitle";
 
 
 type FleetSavedDataType = {
@@ -82,8 +81,6 @@ const FleetDisplay = () => {
 
     const [fleetData, setData] = useState<FleetDataType>(getSavedFleetData() || defaultFleetData);
 
-    console.log(fleetData.name);
-
     fleetData.points.current = fleetData.ships.reduce(
         (shipTotal: number, ship: ShipItemType) =>
             shipTotal
@@ -93,7 +90,6 @@ const FleetDisplay = () => {
     );
 
     const shipItemsContext = useContext(ShipItemsContext);
-    const crewItemsContext = useContext(CrewItemsContext);
     const modalContext = useContext(ModalContext);
 
     const addShip = useCallback((ship: ShipItemType) => {
@@ -177,7 +173,10 @@ const FleetDisplay = () => {
     }
     
     const clearFleet = () => {
-        setData(() => defaultFleetData);
+        fleetData.ships.length = 0;
+        setData(() => ({
+            ...fleetData
+        }));
     }
 
     const showCrew = (ship: ShipItemType) => {
@@ -193,26 +192,49 @@ const FleetDisplay = () => {
         });
     }
 
+    const editFleetSettings = () => {
+        modalContext.showModal({
+            id: 'edit_fleet_settings',
+            title: 'Fleet settings',
+            onClose: () => {
+                // setData(() => ({
+                //     ...fleetData
+                // }));
+            },
+            inside:
+                <Settings
+                    data={{
+                        name: fleetData.name,
+                        points: {
+                            max: fleetData.points.max
+                        }
+                    }}
+                    onChange={ (newData) => {
+                        const data = {
+                            ...fleetData,
+                            ...newData
+                        }
+                        console.log(data);
+                        
+                        setData(() => data)
+                    }}
+                />
+        });
+    }
+
     return (
         <Display
             title={
-                <FleetTitle
-                    value={ fleetData.name }
-                    onChange={ (newValue: string) => (fleetData.name = newValue) && setData(() => ({ ...fleetData })) }
-                />
+                fleetData.name
             }
             info={
-                
                 <span class="points">
-                    <FontAwesomeIcon icon={faCoins} />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;
-                    <FleetPoints
-                        value={ fleetData.points.max }
-                        onChange={ (newValue: number) => (fleetData.points.max = newValue) && setData(() => ({ ...fleetData })) }
-                    />
+                    <FontAwesomeIcon icon={faCoins} />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;{ fleetData.points.max }
                 </span>
             }
             actions={
                 <>
+                    <button class="settings" onClick={editFleetSettings} alt="Edit fleet settings"><FontAwesomeIcon icon={faCog} /></button>
                     <button class="import" onClick={importFleet} alt="Import from file"><FontAwesomeIcon icon={faFileImport} /></button>
                     <button class="export" onClick={exportFleet} alt="Export to file"><FontAwesomeIcon icon={faShareFromSquare} /></button>
                     <button class="save" onClick={saveFleet} alt="Save in browser"><FontAwesomeIcon icon={faFloppyDisk} /></button>
