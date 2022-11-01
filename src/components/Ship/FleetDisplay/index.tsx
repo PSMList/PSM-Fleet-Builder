@@ -193,16 +193,19 @@ const FleetDisplay = () => {
     }
 
     const editFleetSettings = () => {
+        const data = 
         modalContext.showModal({
             id: 'edit_fleet_settings',
             title: 'Fleet settings',
-            onClose: () => {
-                // setData(() => ({
-                //     ...fleetData
-                // }));
-            },
             inside:
                 <Settings
+                    key={ Math.random() } // will surely reset the component (reset default data)
+                    defaultData={{
+                        name: defaultFleetData.name,
+                        points: {
+                            max: defaultFleetData.points.max
+                        }
+                    }}
                     data={{
                         name: fleetData.name,
                         points: {
@@ -210,13 +213,14 @@ const FleetDisplay = () => {
                         }
                     }}
                     onChange={ (newData) => {
-                        const data = {
+                        setData(() => ({
                             ...fleetData,
-                            ...newData
-                        }
-                        console.log(data);
-                        
-                        setData(() => data)
+                            name: newData.name,
+                            points: {
+                                current: fleetData.points.current,
+                                max: newData.points.max
+                            }
+                        }));
                     }}
                 />
         });

@@ -56,7 +56,7 @@ const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
                     type="text"
                     class="search_input"
                     placeholder={ placeholder }
-                    onChange={ searchInItems }
+                    onValidate={ searchInItems }
                 />
                 { additionalInputs }
             </div>

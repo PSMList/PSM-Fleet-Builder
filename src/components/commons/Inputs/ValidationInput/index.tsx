@@ -1,53 +1,54 @@
 import { faCheck, faRotateBackward } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { createRef } from "preact"
-import { useMemo, useState } from "preact/hooks"
+import { useEffect, useMemo, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import './ValidationInput.css'
 
 type TextInputProps = {
     focus?: boolean
-    onChange: (event: InputEvent) => void
+    onValidate: (event: InputEvent) => void
 } & JSX.HTMLAttributes<HTMLInputElement>
 
-const ValidationInput = ({ focus = false, onChange, ...props }: TextInputProps) => {
-    const [ inputEvent, setInputEvent ] = useState<InputEvent | null>();
-    const [ defaultValue, setDefaultValue ] = useState(props.defaultValue as string || '');
+const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps) => {
+    const [ defaultValue, setDefaultValue ] = useState((props.value || props.defaultValue || '') as string);
 
-    const inputRef = createRef();
+    const inputRef = createRef<HTMLInputElement>();
+    const inputEventRef = createRef<InputEvent>();
 
-    return useMemo(() =>
+    // return useMemo(() =>
+    return (
         <form class="validation_input" onSubmit={ (event) => event.preventDefault() }>
             <div>
                 <input
-                    onChange={ (event) => {
-                        event.preventDefault();
-                        setInputEvent(event as unknown as InputEvent);
-                     } }
                     { ...props }
+                    onChange={ (event) => inputEventRef.current = event as Event as InputEvent }
                     ref={ (ref) => {
+                        if (!ref) return;
                         inputRef.current = ref;
-                        if (focus) setTimeout(() => ref?.focus(), 1);
+                        if (focus) setTimeout(() => ref.focus(), 1);
                     } }
                 />
-                <button onClick={ (event) => {
+                <button onClick={ () => {
                     console.log(inputRef.current, defaultValue);
                     
                     if (inputRef.current) inputRef.current.value = defaultValue;
                 } }>
                     <FontAwesomeIcon icon={ faRotateBackward } />
                 </button>
-                <button onClick={ (event) => {
-                    if (inputRef.current && inputEvent) {
-                        onChange(inputEvent);
-                        setDefaultValue(() => inputRef.current.value);
-                    }
+                <button onClick={ () => {
+                    if (!inputEventRef.current) return;
+                    onValidate(inputEventRef.current);
+                    console.log();
+                    
+                    setDefaultValue(() => inputRef.current?.value || '');
                  } } >
                     <FontAwesomeIcon icon={ faCheck } />
                 </button>
             </div>
         </form>
-    , [inputEvent, defaultValue]);
+    // , [inputEvent, defaultValue]);
+    );
 }
 
 export default ValidationInput;
