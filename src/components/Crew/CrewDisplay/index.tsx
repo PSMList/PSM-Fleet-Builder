@@ -103,7 +103,7 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
             }
             actions={
                 <>
-                    <button class="clear" onClick={clearCrew} alt="Clear crew"><FontAwesomeIcon icon={faEraser} /></button>
+                    <button class="clear" onClick={clearCrew} title="Clear crew"><FontAwesomeIcon icon={faEraser} /></button>
                 </>
             }
             items={

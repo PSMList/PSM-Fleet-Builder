@@ -240,11 +240,11 @@ const FleetDisplay = () => {
             }
             actions={
                 <>
-                    <button class="export" onClick={exportFleet} alt="Export to file"><FontAwesomeIcon icon={faShareFromSquare} /></button>
-                    <button class="import" onClick={importFleet} alt="Import from file"><FontAwesomeIcon icon={faFileImport} /></button>
-                    <button class="save" onClick={saveFleet} alt="Save in browser"><FontAwesomeIcon icon={faFloppyDisk} /></button>
-                    <button class="clear" onClick={clearFleet} alt="Clear fleet"><FontAwesomeIcon icon={faEraser} /></button>
-                    <button class="settings" onClick={editFleetSettings} alt="Edit fleet settings"><FontAwesomeIcon icon={faCog} /></button>
+                    <button class="export" onClick={exportFleet} title="Export to file"><FontAwesomeIcon icon={faShareFromSquare} /></button>
+                    <button class="import" onClick={importFleet} title="Import from file"><FontAwesomeIcon icon={faFileImport} /></button>
+                    <button class="save" onClick={saveFleet} title="Save in browser"><FontAwesomeIcon icon={faFloppyDisk} /></button>
+                    <button class="clear" onClick={clearFleet} title="Clear fleet"><FontAwesomeIcon icon={faEraser} /></button>
+                    <button class="settings" onClick={editFleetSettings} title="Edit fleet settings"><FontAwesomeIcon icon={faCog} /></button>
                 </>
             }
             items={
