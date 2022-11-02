@@ -67,3 +67,13 @@ Fleet settings edition:
 ![Display of inputs to edit fleet data like name and max points](https://cdn.discordapp.com/attachments/848669194508566629/1037138884036923412/unknown.png)
 
 [Demo of the main features](https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov)
+
+## Technical details
+
+The code base is developped with Preact (using TypeScript), a lightweight version of React.
+It is bundled with Vite.
+
+The assets (images, fonts, some css) are taken from the [PSMList website](https://www.psmlist.com/public/).
+To use these assets remotely, uncomment the first &lt;base&gt; element in the index.html.
+
+Ships, crew, factions and extensions data are pulled from files in data folder to get better performance.
