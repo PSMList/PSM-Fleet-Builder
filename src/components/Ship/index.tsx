@@ -1,7 +1,7 @@
 import { createContext } from 'preact';
-import extensions, { ExtensionType } from '../../extensionData';
-import factions, { FactionType } from '../../factionData';
-import { shipData } from '../../shipData';
+import extensions, { ExtensionType } from '../../data/extension';
+import factions, { FactionType } from '../../data/faction';
+import { shipData } from '../../data/ship';
 import { ItemsContextType, ItemType } from '../commons/Item';
 import { CrewItemType } from '../Crew';
 import FleetDisplay from './FleetDisplay';

@@ -1,7 +1,7 @@
-import { createContext, Ref } from 'preact';
-import { crewData } from '../../crewData';
-import extensions, { ExtensionType } from '../../extensionData';
-import factions, { FactionType } from '../../factionData';
+import { createContext } from 'preact';
+import { crewData } from '../../data/crew';
+import extensions, { ExtensionType } from '../../data/extension';
+import factions, { FactionType } from '../../data/faction';
 import { ItemsContextType, ItemType } from '../commons/Item';
 import { ShipItemType } from '../Ship';
 import './Crew.css';

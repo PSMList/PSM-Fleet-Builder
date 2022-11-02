@@ -1,13 +1,12 @@
 import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { ShipItemsContext, ShipItemType, shipList } from "..";
-import factions from "../../../factionData";
-import Search, { SearchItemType } from "../../commons/Search";
+import factions from "../../../data/faction";
 import Select from "../../commons/Inputs/Select";
+import Search, { SearchItemType } from "../../commons/Search";
 import ShipItem from "../ShipItem";
 import './ShipSearch.css';
-
 
 const ShipSearch = () => {
 

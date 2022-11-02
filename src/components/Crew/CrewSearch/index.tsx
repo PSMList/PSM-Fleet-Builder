@@ -1,11 +1,10 @@
 import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { createRef } from "preact";
-import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { CrewItemsContext, CrewItemType, crewList } from "..";
-import factions from "../../../factionData";
-import Search, { SearchItemType } from "../../commons/Search";
+import factions from "../../../data/faction";
 import Select from "../../commons/Inputs/Select";
+import Search, { SearchItemType } from "../../commons/Search";
 import CrewItem from "../CrewItem";
 import './CrewSearch.css';
 
