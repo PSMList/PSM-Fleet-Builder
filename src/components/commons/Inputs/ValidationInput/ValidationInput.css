@@ -2,14 +2,14 @@ form.validation_input {
     display: inline-block;
 }
 
-form.validation_input > div {
+form.validation_input > .validation_container {
     display: flex;
 }
 
-form.validation_input > div > input {
+form.validation_input > .validation_container > input {
     flex: 1 1 0;
 }
 
-form.validation_input > div > i {
+form.validation_input > .validation_container > button {
     flex: 0 0 auto;
 }

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
@@ -137,8 +137,6 @@ const FleetDisplay = () => {
     const importFleet = () => {
         const inputFile = document.createElement('input');
         inputFile.type = 'file';
-        inputFile
-        inputFile.click();
         inputFile.addEventListener('change', async () => {
             if (!inputFile.files || !inputFile.files.item(0)) {
                 return alert('No file provided.');
@@ -152,24 +150,25 @@ const FleetDisplay = () => {
                 if ( fileFleetData ) return setData(() => fileFleetData);
             }
             catch {}
-            alert('Failed to import data from provided file.');
-        })
+            alert('Failed to import data from provided file. Please provide a valid .json file.');
+        });
+        inputFile.click();
     }
 
-    const exportFleet = () => {
+    const exportFleet = useCallback(() => {
         const fleetStr = fleetDataToString();
         if (!fleetStr) return alert('Failed to export fleet data. Please try again later.');
         const a = document.createElement('a');
         a.download = 'fleet_data.json';
         a.href = "data:text/json;charset=utf-8," + encodeURIComponent(fleetStr);
         a.click();
-    }
+    }, []);
 
-    const saveFleet = () => {
+    const saveFleet = useCallback(() => {
         const fleetStr = fleetDataToString();
         if (!fleetStr) return alert('Failed to save fleet data. Please try again later.');
         localStorage.setItem('fleet_data', fleetStr);
-    }
+    }, []);
     
     const clearFleet = () => {
         fleetData.ships.length = 0;
@@ -228,43 +227,54 @@ const FleetDisplay = () => {
         });
     }
 
+    const headerInfo = (
+        <span class="points">
+            <i class="fas fa-coins" />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;{ fleetData.points.max }
+        </span>
+    );
+
+    const actions = useMemo(() => (
+        <>
+            <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
+            <IconButton iconID="file-import" class="import" onClick={importFleet} title="Import from file" />
+            <IconButton iconID="save" class="save" onClick={saveFleet} title="Save in browser" />
+            <IconButton iconID="eraser" class="clear" onClick={clearFleet} title="Clear fleet" />
+            <IconButton iconID="cog" class="settings" onClick={editFleetSettings} title="Edit fleet settings" />
+        </>
+    ), []);
+
+    const fleet = 
+        fleetData.ships.map( ship =>
+            <ShipItem
+                data={
+                    ship
+                }
+                actions={
+                    <>
+                        <IconButton
+                            onClick={() => showCrew(ship)} 
+                            data-crew-room={ ship.crew.length ? ship.crew.length : null }
+                            iconID="users-cog"
+                        />
+                        <IconButton iconID="minus-square" onClick={() => removeShip(ship)} />
+                    </>
+                }
+            />
+        );
+
     return (
         <Display
             title={
                 fleetData.name
             }
             info={
-                <span class="points">
-                    <i class="fas fa-coins" />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;{ fleetData.points.max }
-                </span>
+                headerInfo
             }
             actions={
-                <>
-                    <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
-                    <IconButton iconID="file-import" class="import" onClick={importFleet} title="Import from file" />
-                    <IconButton iconID="save" class="save" onClick={saveFleet} title="Save in browser" />
-                    <IconButton iconID="eraser" class="clear" onClick={clearFleet} title="Clear fleet" />
-                    <IconButton iconID="cog" class="settings" onClick={editFleetSettings} title="Edit fleet settings" />
-                </>
+                actions
             }
             items={
-                fleetData.ships.map( ship =>
-                    <ShipItem
-                        data={
-                            ship
-                        }
-                        actions={
-                            <>
-                                <IconButton
-                                    onClick={() => showCrew(ship)} 
-                                    data-crew-room={ ship.crew.length ? ship.crew.length : null }
-                                    iconID="users-cog"
-                                />
-                                <IconButton iconID="minus-square" onClick={() => removeShip(ship)} />
-                            </>
-                        }
-                    />
-                )
+                fleet
             }
         />
     );

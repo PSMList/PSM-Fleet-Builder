@@ -1,5 +1,5 @@
 import { createRef } from "preact"
-import { useState } from "preact/hooks"
+import { useCallback, useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import IconButton from "../../IconButton"
 import './ValidationInput.css'
@@ -17,15 +17,15 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
     const inputRef = createRef<HTMLInputElement>();
     const inputEventRef = createRef<InputEvent>();
 
-    const validate = () => {
+    const validate = useCallback(() => {
         if (!inputEventRef.current) return;
         onValidate(inputEventRef.current);
         setDefaultValue(() => inputRef.current?.value || '');
-    }
+    }, []);
 
     return (
         <form class="validation_input" onSubmit={ (event) => event.preventDefault() }>
-            <div>
+            <div class="validation_container">
                 <input
                     { ...props }
                     onChange={ (event) => {

@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useMemo, useState } from "preact/hooks";
 import { CrewItemsContext, CrewItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
@@ -90,31 +90,40 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
         }));
     }
 
+    const headerInfo = (
+        <>
+            <span class="room"><i class="fas fa-users-friends" />&nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}</span>
+            &nbsp;&nbsp;
+            <span class="points"><i class="fas fa-coins" />&nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}</span>
+        </>
+    );
+
+    const actions = useMemo(() => (
+        <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear crew" />
+    ), []);
+
+    const shipCrew = 
+        ship.crew.map(crew =>
+            <CrewItem
+                data={
+                    crew
+                }
+                actions={
+                    <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} />
+                }
+            />
+        );
+
     return (
         <Display
             info={
-                <>
-                    <span class="room"><i class="fas fa-users-friends" />&nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}</span>
-                    &nbsp;&nbsp;
-                    <span class="points"><i class="fas fa-coins" />&nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}</span>
-                </>
+                headerInfo
             }
             actions={
-                <>
-                    <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear crew" />
-                </>
+                actions
             }
             items={
-                ship.crew.map(crew =>
-                    <CrewItem
-                        data={
-                            crew
-                        }
-                        actions={
-                            <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} />
-                        }
-                    />
-                )
+                shipCrew
             }
         />
     );
