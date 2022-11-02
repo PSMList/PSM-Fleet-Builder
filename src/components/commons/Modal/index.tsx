@@ -1,7 +1,5 @@
-import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { createContext, JSX } from 'preact';
-import { useContext, useMemo, useState } from 'preact/hooks';
+import { useContext, useState } from 'preact/hooks';
 import './Modal.css';
 
 
@@ -69,7 +67,7 @@ const ModalContainer = ({ modal }: ModalContainerProps) => {
                                 modalContext.hideModal();
                             }}
                         >
-                            <FontAwesomeIcon icon={faClose} />
+                            <i class="fas fa-window-close" />
                         </button>
                     </div>
                 </h3>

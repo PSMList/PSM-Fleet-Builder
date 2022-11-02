@@ -10,6 +10,6 @@ form.validation_input > div > input {
     flex: 1 1 0;
 }
 
-form.validation_input > div > svg {
+form.validation_input > div > i {
     flex: 0 0 auto;
 }

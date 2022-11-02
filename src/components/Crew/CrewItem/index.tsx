@@ -1,5 +1,3 @@
-import { faCoins } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { JSX } from "preact/jsx-runtime"
 import { CrewItemType } from ".."
 import Item from "../../commons/Item"
@@ -22,7 +20,7 @@ const CrewItem = ({ data: crew, actions }: SearchItemProps) => {
                         <div class="crew_name">{ crew.name }</div>
                     </span>
                     <img class="faction_img" loading="lazy" src={ crew.faction.img } />
-                    <span class="crew_points"><FontAwesomeIcon icon={ faCoins } />&nbsp;&nbsp;{ crew.points }</span>
+                    <span class="crew_points"><i class="fas fa-coins" />&nbsp;&nbsp;{ crew.points }</span>
                 </div>
             </>
         </Item>

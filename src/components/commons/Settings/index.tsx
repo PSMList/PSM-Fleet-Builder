@@ -1,5 +1,3 @@
-import { faEraser, faFloppyDisk } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { createRef } from "preact";
 import { useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
@@ -95,7 +93,7 @@ const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {
                         onSave(newSettings);
                         setSettings(() => newSettings);
                     } }>
-                        <FontAwesomeIcon icon={ faFloppyDisk } />
+                        <i class="fas fa-save" />
                     </button>
                 </h3>
                 { defaultData &&
@@ -106,7 +104,7 @@ const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {
                                 ...defaultData
                             }));
                         } }>
-                            <FontAwesomeIcon icon={ faEraser } />
+                            <i class="fas fa-eraser" />
                         </button>
                     </h3>
                 }

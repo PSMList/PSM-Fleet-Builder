@@ -1,7 +1,5 @@
-import { faCheck, faRotateBackward } from "@fortawesome/free-solid-svg-icons"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { createRef } from "preact"
-import { useEffect, useMemo, useState } from "preact/hooks"
+import { useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
 import './ValidationInput.css'
 
@@ -24,7 +22,6 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
         setDefaultValue(() => inputRef.current?.value || '');
     }
 
-    // return useMemo(() =>
     return (
         <form class="validation_input" onSubmit={ (event) => event.preventDefault() }>
             <div>
@@ -52,16 +49,15 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
                 <button onClick={ () => {
                     if (inputRef.current) inputRef.current.value = defaultValue;
                 } }>
-                    <FontAwesomeIcon icon={ faRotateBackward } />
+                    <i class="fas fa-undo" />
                 </button>
                 <button onClick={ () => {
                     validate();
                  } } >
-                    <FontAwesomeIcon icon={ faCheck } />
+                    <i class="fas fa-check" />
                 </button>
             </div>
         </form>
-    // , [inputEvent, defaultValue]);
     );
 }
 

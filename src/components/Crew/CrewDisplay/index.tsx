@@ -1,6 +1,4 @@
-import { faCoins, faEraser, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useCallback, useContext, useEffect, useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
 import { CrewItemsContext, CrewItemType } from "../../Crew";
@@ -96,14 +94,14 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
         <Display
             info={
                 <>
-                    <span class="room"><FontAwesomeIcon icon={faUserGroup} />&nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}</span>
+                    <span class="room"><i class="fas fa-users-friends" />&nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}</span>
                     &nbsp;&nbsp;
-                    <span class="points"><FontAwesomeIcon icon={faCoins} />&nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}</span>
+                    <span class="points"><i class="fas fa-coins" />&nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}</span>
                 </>
             }
             actions={
                 <>
-                    <button class="clear" onClick={clearCrew} title="Clear crew"><FontAwesomeIcon icon={faEraser} /></button>
+                    <button class="clear" onClick={clearCrew} title="Clear crew"><i class="fas fa-eraser" /></button>
                 </>
             }
             items={
@@ -114,7 +112,7 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
                         }
                         actions={
                             <button onClick={() => removeCrew(crew)}>
-                                <FontAwesomeIcon icon={faSquareMinus} />
+                                <i class="fas fa-minuss-square" />
                             </button>
                         }
                     />

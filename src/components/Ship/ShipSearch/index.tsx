@@ -1,5 +1,3 @@
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { ShipItemsContext, ShipItemType, shipList } from "..";
 import factions from "../../../data/faction";
@@ -16,7 +14,7 @@ const ShipSearch = () => {
             <ShipItem
                 data={ ship }
                 actions={
-                    <button onClick={ () => selectItem( ship ) }><FontAwesomeIcon icon={ faSquarePlus } /></button>
+                    <button onClick={ () => selectItem( ship ) }><i class="fas fa-plus-square" /></button>
                 }
             />
     })), []);

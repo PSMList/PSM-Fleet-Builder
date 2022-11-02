@@ -1,5 +1,3 @@
-import { faCog, faCoins, faEraser, faFileImport, faFloppyDisk, faShareFromSquare, faSquareMinus, faUserGroup } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext, useEffect, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
@@ -235,16 +233,16 @@ const FleetDisplay = () => {
             }
             info={
                 <span class="points">
-                    <FontAwesomeIcon icon={faCoins} />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;{ fleetData.points.max }
+                    <i class="fas fa-coins" />&nbsp;&nbsp;{ fleetData.points.current }&nbsp;/&nbsp;{ fleetData.points.max }
                 </span>
             }
             actions={
                 <>
-                    <button class="export" onClick={exportFleet} title="Export to file"><FontAwesomeIcon icon={faShareFromSquare} /></button>
-                    <button class="import" onClick={importFleet} title="Import from file"><FontAwesomeIcon icon={faFileImport} /></button>
-                    <button class="save" onClick={saveFleet} title="Save in browser"><FontAwesomeIcon icon={faFloppyDisk} /></button>
-                    <button class="clear" onClick={clearFleet} title="Clear fleet"><FontAwesomeIcon icon={faEraser} /></button>
-                    <button class="settings" onClick={editFleetSettings} title="Edit fleet settings"><FontAwesomeIcon icon={faCog} /></button>
+                    <button class="export" onClick={exportFleet} title="Export to file"><i class="fas fa-share-square" /></button>
+                    <button class="import" onClick={importFleet} title="Import from file"><i class="fas fa-file-import" /></button>
+                    <button class="save" onClick={saveFleet} title="Save in browser"><i class="fas fa-save" /></button>
+                    <button class="clear" onClick={clearFleet} title="Clear fleet"><i class="fas fa-eraser" /></button>
+                    <button class="settings" onClick={editFleetSettings} title="Edit fleet settings"><i class="fas fa-cog" /></button>
                 </>
             }
             items={
@@ -257,12 +255,10 @@ const FleetDisplay = () => {
                             <>
                                 <button onClick={() => showCrew(ship)} 
                                         data-crew-room={ ship.crew.length ? ship.crew.length : null }>
-                                    <FontAwesomeIcon
-                                        icon={faUserGroup}
-                                    />
+                                    <i class="fas fa-users-cog" />
                                 </button>
                                 <button onClick={() => removeShip(ship)}>
-                                    <FontAwesomeIcon icon={faSquareMinus} />
+                                    <i class="fas fa-minus-square" />
                                 </button>
                             </>
                         }

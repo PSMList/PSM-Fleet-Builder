@@ -1,5 +1,3 @@
-import { faSquarePlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { CrewItemsContext, CrewItemType, crewList } from "..";
 import factions from "../../../data/faction";
@@ -20,7 +18,7 @@ const CrewSearch = ({ factionID }: CrewSearchProps) => {
             <CrewItem
                 data={ crew }
                 actions={
-                    <button onClick={ () => selectItem( crew ) }><FontAwesomeIcon icon={ faSquarePlus } /></button>
+                    <button onClick={ () => selectItem( crew ) }><i class="fas fa-plus-square" /></button>
                 }
             />
     })), []);
