@@ -1,6 +1,7 @@
 import { createRef } from "preact"
 import { useState } from "preact/hooks"
 import { JSX } from "preact/jsx-runtime"
+import IconButton from "../../IconButton"
 import './ValidationInput.css'
 
 type TextInputProps = {
@@ -46,16 +47,18 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
                         if (focus) setTimeout(() => ref.focus(), 1);
                     } }
                 />
-                <button onClick={ () => {
-                    if (inputRef.current) inputRef.current.value = defaultValue;
-                } }>
-                    <i class="fas fa-undo" />
-                </button>
-                <button onClick={ () => {
-                    validate();
-                 } } >
-                    <i class="fas fa-check" />
-                </button>
+                <IconButton
+                    onClick={ () => {
+                        if (inputRef.current) inputRef.current.value = defaultValue;
+                    } }
+                    iconID="undo"
+                />
+                <IconButton
+                    onClick={ () => {
+                        validate();
+                    } }
+                    iconID="check"
+                />
             </div>
         </form>
     );

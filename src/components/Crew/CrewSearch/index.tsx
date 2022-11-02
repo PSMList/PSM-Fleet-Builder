@@ -1,6 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { CrewItemsContext, CrewItemType, crewList } from "..";
 import factions from "../../../data/faction";
+import IconButton from "../../commons/IconButton";
 import Select from "../../commons/Inputs/Select";
 import Search, { SearchItemType } from "../../commons/Search";
 import CrewItem from "../CrewItem";
@@ -18,7 +19,7 @@ const CrewSearch = ({ factionID }: CrewSearchProps) => {
             <CrewItem
                 data={ crew }
                 actions={
-                    <button onClick={ () => selectItem( crew ) }><i class="fas fa-plus-square" /></button>
+                    <IconButton iconID="plus-square" onClick={ () => selectItem( crew ) } />
                 }
             />
     })), []);

@@ -1,5 +1,6 @@
 import { createContext, JSX } from 'preact';
 import { useContext, useState } from 'preact/hooks';
+import IconButton from '../IconButton';
 import './Modal.css';
 
 
@@ -60,15 +61,13 @@ const ModalContainer = ({ modal }: ModalContainerProps) => {
                 <h3 class="modal-header">
                     <span class="modal-title">{modal.title}</span>
                     <div class="modal-actions">
-                        <button
+                        <IconButton
                             class="modal-close"
                             onClick={() => {
                                 if (modal.onClose) modal.onClose();
                                 modalContext.hideModal();
                             }}
-                        >
-                            <i class="fas fa-window-close" />
-                        </button>
+                            iconID="window-close" />
                     </div>
                 </h3>
                 <div class="modal-content">

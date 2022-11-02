@@ -8,34 +8,11 @@
     overflow-y: auto;
 }
 
-#fleet_builder button {
-    background: none;
-    border: none;
-    font-size: 1.2em;
-}
-
-@media only screen and (min-width: 992px) {
-    #fleet_builder button {
-        margin-left: 0.25em;
-        margin-right: 0.25em;
-        font-size: 1.5em;
-    }
-}
-
-#fleet_builder button:hover>*,
-#fleet_builder button:focus>*,
-#fleet_builder button:focus-within>* {
-    font-size: 1.2em;
-    margin: -0.08em;
-    transform: translate(-0.05em, 0.05em);
-    cursor: pointer;
-}
-
-#fleet_builder .actions {
+.actions {
     text-align: right;
 }
 
-#fleet_builder .fa-coins {
+.fa-coins {
     color: darkgoldenrod;
 }
 

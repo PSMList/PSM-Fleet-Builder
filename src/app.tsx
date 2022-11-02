@@ -1,4 +1,4 @@
-import './app.css';
+import './App.css';
 import { ModalRoot } from './components/commons/Modal';
 import Ship from './components/Ship';
 

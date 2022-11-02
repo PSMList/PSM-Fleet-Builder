@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
-import { removeItemFromArray } from "../../../utils";
-import Display from "../../commons/Display";
-import IconButton from "../../commons/IconButton";
-import { ModalContext } from "../../commons/Modal";
-import Settings from "../../commons/Settings";
+import { removeItemFromArray } from "../../../../../utils";
+import Display from "../../../../commons/Display";
+import IconButton from "../../../../commons/IconButton";
+import { ModalContext } from "../../../../commons/Modal";
+import Settings from "../../../../commons/Settings";
 import Crew, { crewDict, CrewItemType } from "../../Crew";
 import { CrewSavedDataType } from "../../Crew/CrewDisplay";
 import ShipItem from "../ShipItem";

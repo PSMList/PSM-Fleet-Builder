@@ -1,11 +1,11 @@
 import { useContext, useEffect, useState } from "preact/hooks";
+import { CrewItemsContext, CrewItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
-import { CrewItemsContext, CrewItemType } from "../../Crew";
+import IconButton from "../../commons/IconButton";
 import { ShipItemType } from "../../Ship";
 import CrewItem from "../CrewItem";
 import './CrewDisplay.css';
-
 
 export type CrewSavedDataType = {
     id: number
@@ -101,7 +101,7 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
             }
             actions={
                 <>
-                    <button class="clear" onClick={clearCrew} title="Clear crew"><i class="fas fa-eraser" /></button>
+                    <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear crew" />
                 </>
             }
             items={
@@ -111,9 +111,7 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
                             crew
                         }
                         actions={
-                            <button onClick={() => removeCrew(crew)}>
-                                <i class="fas fa-minuss-square" />
-                            </button>
+                            <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} />
                         }
                     />
                 )

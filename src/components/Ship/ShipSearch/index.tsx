@@ -1,6 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { ShipItemsContext, ShipItemType, shipList } from "..";
 import factions from "../../../data/faction";
+import IconButton from "../../commons/IconButton";
 import Select from "../../commons/Inputs/Select";
 import Search, { SearchItemType } from "../../commons/Search";
 import ShipItem from "../ShipItem";
@@ -14,7 +15,7 @@ const ShipSearch = () => {
             <ShipItem
                 data={ ship }
                 actions={
-                    <button onClick={ () => selectItem( ship ) }><i class="fas fa-plus-square" /></button>
+                    <IconButton iconID="plus-square" onClick={ () => selectItem( ship ) } />
                 }
             />
     })), []);

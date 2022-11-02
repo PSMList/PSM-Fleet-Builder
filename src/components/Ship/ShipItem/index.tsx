@@ -1,8 +1,7 @@
 import { JSX } from "preact/jsx-runtime"
 import { ShipItemType } from ".."
 import Item from "../../commons/Item"
-import './ShipItem.css'
-
+import './ShipItem.css';
 
 type SearchItemProps = {
     data: ShipItemType

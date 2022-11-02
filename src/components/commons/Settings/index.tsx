@@ -2,6 +2,7 @@ import { createRef } from "preact";
 import { useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import { capitalize } from "../../../utils";
+import IconButton from "../IconButton";
 import ValidationInput from "../Inputs/ValidationInput";
 import './Settings.css';
 
@@ -88,26 +89,28 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class, classNam
             <div class="settings_header">
                 <h3>
                     Save&nbsp;
-                    <button onClick={ () => {
-                        const newSettings = {
-                            ...settings
-                        }
-                        onSave(newSettings);
-                        setSettings(() => newSettings);
-                    } }>
-                        <i class="fas fa-save" />
-                    </button>
+                    <IconButton
+                        onClick={ () => {
+                            const newSettings = {
+                                ...settings
+                            }
+                            onSave(newSettings);
+                            setSettings(() => newSettings);
+                        } }
+                        iconID="save"
+                    />
                 </h3>
                 { defaultData &&
                     <h3>
                         Reset to default&nbsp;
-                        <button onClick={ () => {
-                            setSettings(() => ({
-                                ...defaultData
-                            }));
-                        } }>
-                            <i class="fas fa-eraser" />
-                        </button>
+                        <IconButton
+                            onClick={ () => {
+                                setSettings(() => ({
+                                    ...defaultData
+                                }));
+                            } }
+                            iconID="eraser"
+                        />
                     </h3>
                 }
             </div>
