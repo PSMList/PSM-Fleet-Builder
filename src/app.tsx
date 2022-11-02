@@ -1,4 +1,4 @@
-import './App.css'
+import './app.css';
 import { ModalRoot } from './components/commons/Modal';
 import Ship from './components/Ship';
 
@@ -6,8 +6,8 @@ export function App() {
 
   return (
     <>
-      <Ship />
       <ModalRoot />
+      <Ship />
     </>
   );
 }

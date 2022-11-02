@@ -48,7 +48,7 @@ const Ship = () => {
     
     return (
         <>
-            <div class="search_and_display" id="fleet_container">
+            <div class="main_container" id="fleet_container">
                 <ShipSearch />
                 <FleetDisplay />
             </div>

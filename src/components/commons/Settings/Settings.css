@@ -1,19 +1,15 @@
-div.settings {
-    height: 100%;
-}
-
-div.settings > .settings_header > h3 {
+.settings_container > .settings_header > h3 {
     display: inline-block;
     padding-left: 1em;
 }
 
-div.settings > .settings_inputs {
+.settings_container > .settings_inputs {
     max-height: 100%;
     display: flex;
     flex-wrap: wrap;
 }
 
-div.settings > .settings_inputs > div {
+.settings_container > .settings_inputs > div {
     flex: 1 0 fit-content;
     max-width: 35em;
     display: flex;

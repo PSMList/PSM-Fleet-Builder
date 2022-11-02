@@ -9,11 +9,13 @@ type SettingsProps = {
     data: { [key: string]: any }
     defaultData?: { [key: string]: any }
     onChange: (data: { [key: string]: any }) => void
+    class?: string
+    className?: string
 }
 
 type InputSettings = { onChange: (event: Event) => void, onValidate: (event: Event) => void, name: string, type: string, value: string, min?: number | undefined }
 
-const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {    
+const Settings = ({ data, defaultData, onChange: onSave, class: _class, className }: SettingsProps) => {    
 
     const [settings, setSettings] = useState(data);
 
@@ -82,7 +84,7 @@ const Settings = ({ data, defaultData, onChange: onSave }: SettingsProps) => {
     const settingsRef = createRef<HTMLDivElement>();
 
     return (
-        <div class="settings" ref={ settingsRef }>
+        <div class={ "settings_container" + (_class ? ' ' + _class : '') } className={ className } ref={ settingsRef } >
             <div class="settings_header">
                 <h3>
                     Save&nbsp;

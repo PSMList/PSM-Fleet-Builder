@@ -55,7 +55,7 @@ const ModalContainer = ({ modal }: ModalContainerProps) => {
 
     // return useMemo<JSX.Element>(() =>
     return (
-        <div className={"modal-shadow" + (modal.visible ? '' : ' cache')} id={ modal.id }>
+        <div className={"modal-shadow" + (modal.visible ? '' : ' hidden')} id={ modal.id }>
             <div class="modal-container">
                 <h3 class="modal-header">
                     <span class="modal-title">{modal.title}</span>
@@ -121,6 +121,9 @@ export const ModalRoot = () => {
         state.currentModal.visible = false;
         return setState(() => ({ ...state }));
     }
+
+    // disable scrolling on the main window
+    document.body.style.overflowY = state.currentModal.visible ? 'hidden' : '';
 
     return (
         <>

@@ -8,7 +8,6 @@
 }
 
 .search_container {
-    /* height: 100%; */
     display: flex;
     flex-direction: column;
 }
@@ -16,7 +15,7 @@
 .search_container > .search_inputs {
     margin-top: 1em;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
     gap: 0.5em;
 }
 
