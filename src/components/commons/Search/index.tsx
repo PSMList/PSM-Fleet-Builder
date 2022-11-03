@@ -22,8 +22,8 @@ const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
     
     const [ searchQuery, setQuery ] = useState(defaultSearchQuery);
     
-    const searchInItems = (event: Event) => {
-        setQuery(() => new RegExp((event.target as HTMLInputElement).value, 'i'));
+    const searchInItems = (value: string) => {
+        setQuery(() => new RegExp(value, 'i'));
     }
 
     const content = (() => {

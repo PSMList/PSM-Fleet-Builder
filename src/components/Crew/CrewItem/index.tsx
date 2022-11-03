@@ -22,6 +22,6 @@ const CrewItem = ({ data: crew, actions }: SearchItemProps) => useMemo(() => (
             <span class="crew_points"><i class="fas fa-coins" />&nbsp;&nbsp;{ crew.points }</span>
         </div>
     </Item>
-), []);
+), [crew]);
 
 export default CrewItem;

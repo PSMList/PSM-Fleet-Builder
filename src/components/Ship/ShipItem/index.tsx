@@ -23,6 +23,6 @@ const ShipItem = ({ data: ship, actions }: SearchItemProps) => useMemo(() => (
             <span class="ship_"></span>
         </div>
     </Item>
-), []);
+), [ship]);
 
 export default ShipItem;

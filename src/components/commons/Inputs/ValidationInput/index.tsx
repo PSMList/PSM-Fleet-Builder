@@ -6,36 +6,40 @@ import './ValidationInput.css'
 
 type TextInputProps = {
     focus?: boolean
-    onValidate: (event: InputEvent) => void
-    onChange?: (event: InputEvent) => void
+    onValidate: (value: string) => void
     onKeyPress?: (event: KeyboardEvent) => void
 } & JSX.HTMLAttributes<HTMLInputElement>
 
 const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: TextInputProps) => {
-    const [ defaultValue, setDefaultValue ] = useState((props.value || props.defaultValue || '') as string);
-
+    const [ defaultValue, setDefaultValue ] = useState((props.value?.toString() || props.defaultValue?.toString() || '') as string);
+    
     const inputRef = createRef<HTMLInputElement>();
-    const inputEventRef = createRef<InputEvent>();
 
-    const validate = useCallback(() => {
-        if (!inputEventRef.current) return;
-        onValidate(inputEventRef.current);
-        setDefaultValue(() => inputRef.current?.value || '');
-    }, []);
+    console.log(defaultValue);
+
+    const validate = () => {
+        if (!inputRef.current) return;
+        const newValue = inputRef.current.value;
+        setDefaultValue(() => newValue);
+        onValidate(newValue);
+    }
+
+    const undo = () => {
+        if (!inputRef.current) return;
+        console.log(defaultValue);
+        inputRef.current.value = defaultValue;
+    }
 
     return (
         <form class="validation_input" onSubmit={ (event) => event.preventDefault() }>
             <div class="validation_container">
                 <input
+                    value={ defaultValue }
                     { ...props }
-                    onChange={ (event) => {
-                        const _event = event as Event as InputEvent;
-                        inputEventRef.current = _event;
-                        if (onChange) onChange(_event);
-                    } }
                     onKeyPress={ (event) => {
                         if (event.key === 'Enter') {
-                            validate()
+                            event.preventDefault();
+                            validate();
                         }
                         if (props.onKeyPress) {
                             props.onKeyPress(event);
@@ -48,15 +52,11 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
                     } }
                 />
                 <IconButton
-                    onClick={ () => {
-                        if (inputRef.current) inputRef.current.value = defaultValue;
-                    } }
+                    onClick={ undo }
                     iconID="undo"
                 />
                 <IconButton
-                    onClick={ () => {
-                        validate();
-                    } }
+                    onClick={ validate }
                     iconID="check"
                 />
             </div>
