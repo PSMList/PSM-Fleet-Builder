@@ -15,8 +15,6 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
     
     const inputRef = createRef<HTMLInputElement>();
 
-    console.log(defaultValue);
-
     const validate = () => {
         if (!inputRef.current) return;
         const newValue = inputRef.current.value;
@@ -26,7 +24,6 @@ const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: Text
 
     const undo = () => {
         if (!inputRef.current) return;
-        console.log(defaultValue);
         inputRef.current.value = defaultValue;
     }
 

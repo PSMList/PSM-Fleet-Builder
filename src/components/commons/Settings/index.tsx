@@ -14,7 +14,7 @@ type SettingsProps = {
     className?: string
 }
 
-type InputSettings = { onChange: (event: Event) => void, onValidate: (event: Event) => void, name: string, type: string, value: string, min?: number | undefined }
+type InputSettings = { onValidate: (value: string) => void, name: string, type: string, value: string, min?: number | undefined }
 
 const Settings = ({ data, defaultData, onChange: onSave, class: _class, className }: SettingsProps) => {    
 
@@ -25,19 +25,15 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class, classNam
         for (const itemKey in inputData) {
             const item = inputData[itemKey];
             
-            const onChange = (event: Event) => {
-                const input = (event.target as HTMLInputElement);
-                switch (input.type) {
-                    case 'text':
-                        inputData[itemKey] = input.value;
+            const onValidate = (value: string) => {
+                switch (typeof item) {
+                    case 'string':
+                        inputData[itemKey] = value;
                         break;
                     case 'number':
-                        inputData[itemKey] = parseInt(input.value);
+                        inputData[itemKey] = parseInt(value);
                         break;
                 }
-            };
-            const onValidate = (event: Event) => {
-                onChange(event);
                 const newSettings = {
                     ...settings
                 }
@@ -55,7 +51,6 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class, classNam
                     const inputType = typeof item === 'string' ? 'text' : 'number';
                     const inputSettings: InputSettings = {
                         onValidate,
-                        onChange,
                         name: inputDataLabel,
                         type: inputType,
                         value: item.toString()
