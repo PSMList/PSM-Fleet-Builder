@@ -6,4 +6,4 @@
 !src/
 !src/**/
 !src/**/*
-src/*Data.ts
+psm.html
