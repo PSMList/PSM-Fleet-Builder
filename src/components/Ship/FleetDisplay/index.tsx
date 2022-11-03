@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
+import { useCallback, useContext, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
 import { removeItemFromArray, useEffectOnce } from "../../../utils";
 import Display from "../../commons/Display";
@@ -87,10 +87,8 @@ function getSavedFleetData() {
 }
 
 const FleetDisplay = () => {
-    
-    const savedFleetData = useMemo(() => getSavedFleetData(), []);
-    
-    const [fleetData, setData] = useState<FleetDataType>(savedFleetData || defaultFleetData);
+
+    const [fleetData, setData] = useState<FleetDataType>(() => getSavedFleetData() || defaultFleetData);
 
     fleetData.points.current = fleetData.ships.reduce(
         (shipTotal: number, ship: ShipItemType) =>
@@ -105,38 +103,28 @@ const FleetDisplay = () => {
     const toastContext = useContext(ToastContext);
 
     const addShip = (ship: ShipItemType) => {
-        setData((oldFleetData) => {
-            if (oldFleetData.ships.some(_ship => _ship.name === ship.name)) {
-                toastContext.createToast({
-                    type: 'error',
-                    title: 'Add ship',
-                    description: 'Ship with the same name already selected.'
-                });
-                return oldFleetData;
-            }
-            if (oldFleetData.points.current + ship.points > oldFleetData.points.max) toastContext.createToast({
-                type: 'warning',
-                title: 'Add ship',
-                description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
-            });
-            oldFleetData.ships.push(ship);
-            return {
-                ...oldFleetData
-            }
+        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return toastContext.createToast({
+            type: 'error',
+            title: 'Add ship',
+            description: 'Ship with the same name already selected.'
         });
+        if (fleetData.points.current + ship.points > fleetData.points.max) toastContext.createToast({
+            type: 'warning',
+            title: 'Add ship',
+            description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
+        });
+        fleetData.ships.push(ship);
+        setData(() => ({
+            ...fleetData
+        }));
     }
 
     const removeShip = (ship: ShipItemType) => {
-        setData((oldFleetData) => {
-            const shipIndex = oldFleetData.ships.findIndex(_ship => ship.id === _ship.id);
-            if (shipIndex >= 0) {
-                oldFleetData.ships.splice(shipIndex, 1);
-                return {
-                    ...oldFleetData
-                }
-            }
-            return oldFleetData;
-        });
+        if (removeItemFromArray(fleetData.ships, _ship => ship.id === _ship.id)) {
+            setData(() => ({
+                ...fleetData
+            }));
+        }
     }
 
     useEffectOnce(() => {
@@ -191,7 +179,7 @@ const FleetDisplay = () => {
                     return toastContext.createToast({
                         type: 'success',
                         title: 'Import fleet data',
-                        description: 'Fleet data imported successfully.'
+                        description: 'Fleet data imported successfully (not saved).'
                     });
                 }
             }
@@ -244,12 +232,10 @@ const FleetDisplay = () => {
             title: 'Clear ships',
             description: 'Removed ships data (not saved).'
         });
-        setData((oldFleetData) => {
-            oldFleetData.ships.length = 0;
-            return {
-                ...oldFleetData
-            };
-        });
+        fleetData.ships.length = 0;
+        setData(() => ({
+            ...fleetData
+        }));
     }
 
     const showCrew = (ship: ShipItemType) => {

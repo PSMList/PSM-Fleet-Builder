@@ -1,5 +1,4 @@
-import { createRef } from "preact";
-import { useEffect, useMemo, useState } from "preact/hooks";
+import { useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import { capitalize } from "../../../utils";
 import IconButton from "../IconButton";

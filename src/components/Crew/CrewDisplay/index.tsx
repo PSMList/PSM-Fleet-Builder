@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from "preact/hooks";
+import { useContext, useEffect, useState } from "preact/hooks";
 import { CrewItemsContext, CrewItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
@@ -79,12 +79,10 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
             title: 'Add crew',
             description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
         });
-        setData((oldCrewData) => {
-            oldCrewData.crews.push(crew);
-            return {
-                ...oldCrewData
-            }
-        });
+        crewData.crews.push(crew);
+        setData(() => ({
+            ...crewData
+        }));
     }
 
     useEffect(() => {
@@ -96,16 +94,11 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
     }, [ship]);
 
     const removeCrew = (crew: CrewItemType) => {
-        setData((oldCrewData) => {
-            const crewIndex = oldCrewData.crews.findIndex(_crew => crew.id === _crew.id);
-            if (crewIndex >= 0) {
-                oldCrewData.crews.splice(crewIndex, 1);
-                return {
-                    ...oldCrewData
-                }
-            }
-            return oldCrewData;
-        });
+        if (removeItemFromArray(crewData.crews, _crew => crew.id === _crew.id)) {
+            setData(() => ({
+                ...crewData
+            }));
+        }
     }
     
     const clearCrew = () => {
@@ -114,12 +107,10 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
             title: 'Clear crew',
             description: 'Removed crew data (not saved).'
         });
-        setData((oldCrewData) => {
-            oldCrewData.crews.length = 0;
-            return {
-                ...oldCrewData
-            };
-        });
+        crewData.crews.length = 0;
+        setData(() => ({
+            ...crewData
+        }));
     }
 
     const headerInfo = (
