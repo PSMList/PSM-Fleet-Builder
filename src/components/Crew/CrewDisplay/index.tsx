@@ -3,6 +3,7 @@ import { CrewItemsContext, CrewItemType } from "..";
 import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
 import IconButton from "../../commons/IconButton";
+import { ToastContext } from "../../commons/Toasts";
 import { ShipItemType } from "../../Ship";
 import CrewItem from "../CrewItem";
 import './CrewDisplay.css';
@@ -55,16 +56,35 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
     crewData.room.current = ship.crew.length;
 
     const crewItemsContext = useContext(CrewItemsContext);
+    const toastContext = useContext(ToastContext);
 
     const addCrew = (crew: CrewItemType) => {
-        if (crewData.points.current + crew.points > crewData.points.max) return alert('/!\ Exceeding fleet max points. Return to fleet and double-click on the max points to edit it.');
-        if ( crew.faction.id !== ship.faction.id ) return alert('Crew must be from the same nation of its ship.');
-        if ( ship.crew.length + 1 > ship.cargo ) return alert('Can\'t add crew due to cargo limit.');
-        if ( ship.crew.some(_crew => _crew.name === crew.name)) return alert('Crew with the same name already selected.');
-        ship.crew.push(crew);
-        setData(() => ({
-            ...crewData
-        }));
+        if ( crew.faction.id !== ship.faction.id ) return toastContext.createToast({
+            type: 'error',
+            title: 'Add crew',
+            description: 'Crew must be from the same nation of its ship.'
+        });
+        if ( ship.crew.length + 1 > ship.cargo ) return toastContext.createToast({
+            type: 'error',
+            title: 'Add crew',
+            description: 'Can\'t add crew due to cargo limit.'
+        });
+        if ( ship.crew.some(_crew => _crew.name === crew.name)) return toastContext.createToast({
+            type: 'error',
+            title: 'Add crew',
+            description: 'Crew with the same name already selected.'
+        });
+        if (crewData.points.current + crew.points > crewData.points.max) return toastContext.createToast({
+            type: 'warning',
+            title: 'Add crew',
+            description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
+        });
+        setData((oldCrewData) => {
+            oldCrewData.crews.push(crew);
+            return {
+                ...oldCrewData
+            }
+        });
     }
 
     useEffect(() => {
@@ -76,18 +96,30 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
     }, [ship]);
 
     const removeCrew = (crew: CrewItemType) => {
-        if (removeItemFromArray(ship.crew, _crew => crew.id === _crew.id)) {
-            setData(() => ({
-                ...crewData
-            }));
-        }
+        setData((oldCrewData) => {
+            const crewIndex = oldCrewData.crews.findIndex(_crew => crew.id === _crew.id);
+            if (crewIndex >= 0) {
+                oldCrewData.crews.splice(crewIndex, 1);
+                return {
+                    ...oldCrewData
+                }
+            }
+            return oldCrewData;
+        });
     }
     
     const clearCrew = () => {
-        ship.crew.length = 0;
-        setData(() => ({
-            ...crewData
-        }));
+        toastContext.createToast({
+            type: 'info',
+            title: 'Clear crew',
+            description: 'Removed crew data (not saved).'
+        });
+        setData((oldCrewData) => {
+            oldCrewData.crews.length = 0;
+            return {
+                ...oldCrewData
+            };
+        });
     }
 
     const headerInfo = (
@@ -98,12 +130,12 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
         </>
     );
 
-    const actions = useMemo(() => (
+    const actions = (
         <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear crew" />
-    ), []);
+    );
 
     const shipCrew = 
-        ship.crew.map(crew =>
+        crewData.crews.map(crew =>
             <CrewItem
                 data={
                     crew

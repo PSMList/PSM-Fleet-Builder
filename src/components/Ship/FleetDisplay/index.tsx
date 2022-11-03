@@ -60,26 +60,37 @@ function getFleetData(stringData: string): FleetDataType | undefined {
 }
 
 function getSavedFleetData() {
+    const toastContext = useContext(ToastContext);
+    
     const stringData = localStorage.getItem('fleet_data');
 
     if (!stringData) return;
     
     try {
-        return getFleetData(stringData);
+        const fleetData = getFleetData(stringData);
+        if (!fleetData) return;
+        toastContext.createToast({
+            type: 'info',
+            title: 'Load fleet data',
+            description: 'Saved fleet data loaded successfully.'
+        });
+        return fleetData;
     }
     catch (err) {
         console.error(err);
     }
-    alert('Failed to load saved data. Please clear browser cache.');
-}
-
-type ShipDisplayProps = {
-
+    toastContext.createToast({
+        type: 'error',
+        title: 'Load fleet data',
+        description: 'Failed to load saved data. Please clear your browser cache.'
+    });
 }
 
 const FleetDisplay = () => {
-
-    const [fleetData, setData] = useState<FleetDataType>(getSavedFleetData() || defaultFleetData);
+    
+    const savedFleetData = useMemo(() => getSavedFleetData(), []);
+    
+    const [fleetData, setData] = useState<FleetDataType>(savedFleetData || defaultFleetData);
 
     fleetData.points.current = fleetData.ships.reduce(
         (shipTotal: number, ship: ShipItemType) =>
@@ -94,20 +105,35 @@ const FleetDisplay = () => {
     const toastContext = useContext(ToastContext);
 
     const addShip = (ship: ShipItemType) => {
-        if (fleetData.points.current + ship.points > fleetData.points.max) return alert('/!\ Exceeding fleet max points. Double-click on the max points to edit it.');
-        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return alert('Ship with the same name already selected.');
-        fleetData.ships.push(ship);
-        setData(() => ({
-            ...fleetData
-        }));
+        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return toastContext.createToast({
+            type: 'error',
+            title: 'Add ship',
+            description: 'Ship with the same name already selected.'
+        });
+        if (fleetData.points.current + ship.points > fleetData.points.max) toastContext.createToast({
+            type: 'warning',
+            title: 'Add ship',
+            description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
+        });
+        setData((oldFleetData) => {
+            oldFleetData.ships.push(ship);
+            return {
+                ...oldFleetData
+            }
+        });
     }
 
     const removeShip = (ship: ShipItemType) => {
-        if (removeItemFromArray(fleetData.ships, _ship => ship.id === _ship.id)) {
-            setData(() => ({
-                ...fleetData
-            }));
-        }
+        setData((oldFleetData) => {
+            const shipIndex = oldFleetData.ships.findIndex(_ship => ship.id === _ship.id);
+            if (shipIndex >= 0) {
+                oldFleetData.ships.splice(shipIndex, 1);
+                return {
+                    ...oldFleetData
+                }
+            }
+            return oldFleetData;
+        });
     }
 
     useEffect(() => {
@@ -141,47 +167,86 @@ const FleetDisplay = () => {
         inputFile.type = 'file';
         inputFile.addEventListener('change', async () => {
             if (!inputFile.files || !inputFile.files.item(0)) {
-                return alert('No file provided.');
+                return toastContext.createToast({
+                    type: 'warning',
+                    title: 'Import fleet data',
+                    description: 'No file provided.'
+                });
             }
             const file = inputFile.files.item(0);
             if (file?.type !== 'application/json') {
-                return alert('Please provide a valid .json file.');
+                return toastContext.createToast({
+                    type: 'warning',
+                    title: 'Import fleet data',
+                    description: 'Provided file is not a valid .json file. Please provide a valid one.'
+                });
             }
             try {
                 const fileFleetData = getFleetData(await file.text());
-                if ( fileFleetData ) return setData(() => fileFleetData);
+                if ( fileFleetData ) {
+                    setData(() => fileFleetData);
+                    return toastContext.createToast({
+                        type: 'success',
+                        title: 'Import fleet data',
+                        description: 'Fleet data imported successfully.'
+                    });
+                }
             }
             catch {}
-            alert('Failed to import data from provided file. Please provide a valid .json file.');
+            toastContext.createToast({
+                type: 'error',
+                title: 'Import fleet data',
+                description: 'Fleet data not imported. Please try again later.'
+            });
         });
         inputFile.click();
     }
 
     const exportFleet = useCallback(() => {
         const fleetStr = fleetDataToString();
-        if (!fleetStr) return alert('Failed to export fleet data. Please try again later.');
+        if (!fleetStr) return toastContext.createToast({
+            type: 'error',
+            title: 'Export fleet data',
+            description: 'Fleet data not exported. Please try again later.'
+        });
         const a = document.createElement('a');
         a.download = 'fleet_data.json';
         a.href = "data:text/json;charset=utf-8," + encodeURIComponent(fleetStr);
         a.click();
+        toastContext.createToast({
+            type: 'success',
+            title: 'Export fleet data',
+            description: 'Fleet data exported in your download folder.'
+        });
     }, []);
 
     const saveFleet = () => {
         const fleetStr = fleetDataToString();
-        if (!fleetStr) return alert('Failed to save fleet data. Please try again later.');
+        if (!fleetStr) return toastContext.createToast({
+            type: 'error',
+            title: 'Save fleet data',
+            description: 'Fleet data not saved. Please try again later.'
+        });
         localStorage.setItem('fleet_data', fleetStr);
         toastContext.createToast({
             type: 'success',
-            title: 'Saved data',
+            title: 'Save fleet data',
             description: 'Fleet data successfully saved on your browser.'
-        })
+        });
     }
     
     const clearFleet = () => {
-        fleetData.ships.length = 0;
-        setData(() => ({
-            ...fleetData
-        }));
+        toastContext.createToast({
+            type: 'info',
+            title: 'Clear ships',
+            description: 'Removed ships data (not saved).'
+        });
+        setData((oldFleetData) => {
+            oldFleetData.ships.length = 0;
+            return {
+                ...oldFleetData
+            };
+        });
     }
 
     const showCrew = (ship: ShipItemType) => {
@@ -237,7 +302,7 @@ const FleetDisplay = () => {
         </span>
     );
 
-    const actions = useMemo(() => (
+    const actions = (
         <>
             <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
             <IconButton iconID="file-import" class="import" onClick={importFleet} title="Import from file" />
@@ -245,7 +310,7 @@ const FleetDisplay = () => {
             <IconButton iconID="eraser" class="clear" onClick={clearFleet} title="Clear fleet" />
             <IconButton iconID="cog" class="settings" onClick={editFleetSettings} title="Edit fleet settings" />
         </>
-    ), []);
+    );
 
     const fleet = 
         fleetData.ships.map( ship =>
