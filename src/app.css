@@ -4,6 +4,13 @@
     height: 99.5vh;
 }
 
+@media only screen and (max-width : 992px) {
+    #content_container {
+        height: 199.5vh;
+        font-size: 0.9em;
+    }
+}
+
 #fleet_builder {
     flex-grow: 1;
     overflow-y: hidden;
@@ -26,13 +33,13 @@
     align-items: flex-start;
     flex-direction: row;
     height: 100%;
+    gap: 1em;
 }
 
 @media only screen and (max-width : 992px) {
     .main_container {
         flex-direction: column;
         align-items: normal;
-        overflow-y: auto;
     }
 }
 

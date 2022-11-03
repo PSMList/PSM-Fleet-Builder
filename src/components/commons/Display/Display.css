@@ -28,6 +28,7 @@
     word-break: break-word;
     display: flex;
     align-items: center;
+    margin-bottom: 0.5em;
 }
 
 @media only screen and (max-width : 992px) {
@@ -47,6 +48,7 @@
 
 .display_container > .display_header > .info {
     flex-shrink: 0;
+    margin: 0;
     margin-left: auto;
 }
 
