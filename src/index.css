@@ -1,11 +1,13 @@
 * {
     box-sizing: border-box;
+    position: relative;
 }
 
 h1 {
-    margin-bottom: 0;
+    margin-bottom: 0.25em;
     position: sticky;
     top: 0;
+    background: inherit;
 }
 
 h2 {
