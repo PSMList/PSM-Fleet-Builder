@@ -72,7 +72,7 @@ function getSavedFleetData() {
         toastContext.createToast({
             type: 'info',
             title: 'Load saved fleet data',
-            description: 'Loaded saved fleet data successfully.'
+            description: `Successfully loaded fleet data from ${fleetData.name}.`
         });
         return fleetData;
     }
@@ -82,7 +82,7 @@ function getSavedFleetData() {
     toastContext.createToast({
         type: 'error',
         title: 'Load saved fleet data',
-        description: 'Saved fleet data was not loaded. Please clear your browser cache.'
+        description: 'Failed to load cached fleet data. Please clear your browser cache.'
     });
 }
 
@@ -103,15 +103,15 @@ const FleetDisplay = () => {
     const toastContext = useContext(ToastContext);
 
     const addShip = (ship: ShipItemType) => {
-        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return toastContext.createToast({
-            type: 'error',
+        if (fleetData.ships.some(_ship => _ship.name === ship.name)) toastContext.createToast({
+            type: 'warning',
             title: 'Add ship',
-            description: 'Ship with the same name already selected.'
+            description: 'You happen to have picked two or more ships with an identical name. Please check if this what you really want to do before saving.'
         });
         if (fleetData.points.current + ship.points > fleetData.points.max) toastContext.createToast({
             type: 'warning',
             title: 'Add ship',
-            description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
+            description: 'Exceeding fleet max points. Please go to the settings if you want to increase the limit.'
         });
         fleetData.ships.push(ship);
         setData(() => ({
@@ -179,7 +179,7 @@ const FleetDisplay = () => {
                     return toastContext.createToast({
                         type: 'success',
                         title: 'Import fleet data',
-                        description: 'Fleet data imported successfully (not saved).'
+                        description: `Successfully loaded fleet data from ${fleetData.name} (not saved).`
                     });
                 }
             }

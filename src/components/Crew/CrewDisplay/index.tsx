@@ -59,25 +59,25 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
     const toastContext = useContext(ToastContext);
 
     const addCrew = (crew: CrewItemType) => {
-        if ( crew.faction.id !== ship.faction.id ) return toastContext.createToast({
-            type: 'error',
-            title: 'Add crew',
-            description: 'Crew must be from the same nation of its ship.'
-        });
         if ( ship.crew.length + 1 > ship.cargo ) return toastContext.createToast({
             type: 'error',
             title: 'Add crew',
             description: 'Can\'t add crew due to cargo limit.'
         });
-        if ( ship.crew.some(_crew => _crew.name === crew.name)) return toastContext.createToast({
-            type: 'error',
-            title: 'Add crew',
-            description: 'Crew with the same name already selected.'
-        });
-        if (crewData.points.current + crew.points > crewData.points.max) return toastContext.createToast({
+        if ( crew.faction.id !== ship.faction.id ) toastContext.createToast({
             type: 'warning',
             title: 'Add crew',
-            description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
+            description: 'You happen to have picked a crew with a different from its ship faction. Please check if this what you really want to do before saving.'
+        });
+        if ( ship.crew.some(_crew => _crew.name === crew.name)) toastContext.createToast({
+            type: 'warning',
+            title: 'Add crew',
+            description: 'You happen to have picked two or more crew with an identical name. Please check if this what you really want to do before saving.'
+        });
+        if (crewData.points.current + crew.points > crewData.points.max) toastContext.createToast({
+            type: 'warning',
+            title: 'Add crew',
+            description: 'Exceeding fleet max points. Please go to the settings if you want to increase the limit.'
         });
         crewData.crews.push(crew);
         setData(() => ({
