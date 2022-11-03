@@ -1,3 +1,7 @@
-.item {
-    
+
+.search_faction img,
+.search_extension img {
+    width: 1.5em;
+    margin-right: 0.5em;
+    vertical-align: middle;
 }
