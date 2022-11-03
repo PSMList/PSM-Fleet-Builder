@@ -201,7 +201,6 @@ const FleetDisplay = () => {
             },
             inside:
                 <Settings
-                    class="main_container"
                     key={ Math.random() } // will surely reset the component (reset default data)
                     defaultData={{
                         name: defaultFleetData.name,
