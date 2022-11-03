@@ -21,15 +21,13 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class }: Settin
 
     const [settings, setSettings] = useState(data);
 
-    const save = (newSettings: DataType) => {
-        setSettings(() => ({
-            ...newSettings
-        }));
+    const save = (settings: DataType) => {
+        const newSettings = {
+            ...settings
+        }
+        onSave(newSettings);
+        setSettings(() => newSettings);
     }
-
-    useEffect(() => {
-        onSave(settings);
-    }, [settings]);
 
     const setInputData = (inputData: DataType, title: string): JSX.Element => {
         const elements = [];

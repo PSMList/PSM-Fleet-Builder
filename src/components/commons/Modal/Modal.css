@@ -7,7 +7,7 @@
   padding: 2%;
   background: rgba(0, 0, 0, 0.6);
   scroll-snap-type: y mandatory;
-  z-index: 999;
+  z-index: 10;
 }
 
 .modal-shadow.hidden {

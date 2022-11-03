@@ -7,7 +7,7 @@ export function App() {
 
   return (
     <>
-      <Toasts position='top-right' autoDeleteTime={ 8000 } />
+      <Toasts position='bottom-right' autoDeleteTime={ 8000 } />
       <ModalRoot />
       <Ship />
     </>

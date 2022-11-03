@@ -71,8 +71,8 @@ function getSavedFleetData() {
         if (!fleetData) return;
         toastContext.createToast({
             type: 'info',
-            title: 'Load fleet data',
-            description: 'Saved fleet data loaded successfully.'
+            title: 'Load saved fleet data',
+            description: 'Loaded saved fleet data successfully.'
         });
         return fleetData;
     }
@@ -81,8 +81,8 @@ function getSavedFleetData() {
     }
     toastContext.createToast({
         type: 'error',
-        title: 'Load fleet data',
-        description: 'Failed to load saved data. Please clear your browser cache.'
+        title: 'Load saved fleet data',
+        description: 'Saved fleet data was not loaded. Please clear your browser cache.'
     });
 }
 
