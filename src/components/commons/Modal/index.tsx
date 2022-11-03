@@ -58,7 +58,7 @@ const ModalContainer = ({ modal }: ModalContainerProps) => {
     return (
         <div className={"modal-shadow" + (modal.visible ? '' : ' hidden')} id={ modal.id }>
             <div class="modal-container">
-                <h3 class="modal-header">
+                <h2 class="modal-header">
                     <span class="modal-title">{modal.title}</span>
                     <div class="modal-actions">
                         <IconButton
@@ -69,7 +69,7 @@ const ModalContainer = ({ modal }: ModalContainerProps) => {
                             }}
                             iconID="window-close" />
                     </div>
-                </h3>
+                </h2>
                 <div class="modal-content">
                     {modal.inside}
                 </div>
