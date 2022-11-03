@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useMemo, useState } from "preact/hooks";
 import { shipDict, ShipItemsContext, ShipItemType } from "..";
-import { removeItemFromArray } from "../../../utils";
+import { removeItemFromArray, useEffectOnce } from "../../../utils";
 import Display from "../../commons/Display";
 import IconButton from "../../commons/IconButton";
 import { ModalContext } from "../../commons/Modal";
@@ -105,17 +105,20 @@ const FleetDisplay = () => {
     const toastContext = useContext(ToastContext);
 
     const addShip = (ship: ShipItemType) => {
-        if (fleetData.ships.some(_ship => _ship.name === ship.name)) return toastContext.createToast({
-            type: 'error',
-            title: 'Add ship',
-            description: 'Ship with the same name already selected.'
-        });
-        if (fleetData.points.current + ship.points > fleetData.points.max) toastContext.createToast({
-            type: 'warning',
-            title: 'Add ship',
-            description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
-        });
         setData((oldFleetData) => {
+            if (oldFleetData.ships.some(_ship => _ship.name === ship.name)) {
+                toastContext.createToast({
+                    type: 'error',
+                    title: 'Add ship',
+                    description: 'Ship with the same name already selected.'
+                });
+                return oldFleetData;
+            }
+            if (oldFleetData.points.current + ship.points > oldFleetData.points.max) toastContext.createToast({
+                type: 'warning',
+                title: 'Add ship',
+                description: 'Exceeding fleet max points. Use settings if you want to increase the limit.'
+            });
             oldFleetData.ships.push(ship);
             return {
                 ...oldFleetData
@@ -136,13 +139,13 @@ const FleetDisplay = () => {
         });
     }
 
-    useEffect(() => {
+    useEffectOnce(() => {
         shipItemsContext.selectItemCallbacks.push(addShip);
 
         return () => {
             removeItemFromArray(shipItemsContext.selectItemCallbacks, func => func === addShip);
         }
-    }, []);
+    });
 
     const fleetDataToString = () => {
         try {
