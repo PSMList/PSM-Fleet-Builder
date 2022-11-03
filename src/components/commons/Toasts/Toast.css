@@ -1,0 +1,137 @@
+/* source: https://github.com/uzoeddie/react-toast/blob/master/src/components/toast/Toast.css */
+
+#notification-container {
+	position: fixed;
+	z-index: 999;
+	max-width: 100%;
+	padding: 1.5em 2.5em;
+	pointer-events: none;
+}
+
+.top-right {
+	top: 0;
+	right: 0;
+	transition: transform .6s ease-in-out;
+	animation: toast-in-right .7s;
+}
+
+.bottom-right {
+	bottom: 0;
+	right: 0;
+	transition: transform .6s ease-in-out;
+	animation: toast-in-right .7s;
+}
+
+.top-left {
+	top: 0;
+	left: 0;
+	transition: transform .6s ease-in;
+	animation: toast-in-left .7s;
+}
+
+.bottom-left {
+	bottom: 0;
+	left: 0;
+	transition: transform .6s ease-in;
+	animation: toast-in-left .7s;
+}
+
+.notification {
+	background: #fff;
+	transition: .3s ease;
+	position: relative;
+	pointer-events: auto;
+	padding: 30px;
+	border-radius: 0.25em;
+	box-shadow: 0 0 0.75em #999;
+	opacity: .98;
+	display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+	"icon title"
+	"icon message";
+    max-height: 10em;
+    width: 20em;
+	max-width: 100%;
+	color: #fff;
+	padding: 1em;
+	pointer-events: all;
+}
+
+.notification + hr {
+	border: 0;
+}
+
+.notification.hide {
+	max-height: 0;
+	padding-top: 0;
+	padding-bottom: 0;
+	overflow: hidden;
+}
+
+.notification.hide + hr {
+	margin: 0;
+	scale: 0;
+	transition: scale 0s ease 0.3s, margin 0s ease 0.3s;
+}
+
+.notification:hover,
+.notification:focus,
+.notification:focus-within {
+	box-shadow: 0 0 1.25em #999;
+	opacity: 1;
+}
+
+.notification-title {
+	font-weight: 700;
+	font-size: 16px;
+	text-align: left;
+	margin-top: 0;
+	margin-bottom: 0;
+	padding-bottom: 6px;
+	grid-area: title;
+}
+
+.notification-message {
+	margin: 0;
+	text-align: left;
+    margin-left: -1px;
+	grid-area: message;
+}
+
+.notification-image {
+    margin-right: 15px;
+	grid-area: icon;
+	align-self: center;
+    width: 1.5em;
+    height: 1.5em;
+}
+
+#notification-container button {
+	position: absolute;
+	right: 0.7em;
+	top: 0.7em;
+	z-index: 1;
+	color: #fff;
+}
+
+@keyframes toast-in-right {
+	from {
+	  transform: translateX(100%);
+	  
+	}
+	to {
+	  transform: translateX(0);
+	}
+}
+
+@keyframes toast-in-left {
+	from {
+		transform: translateX(-100%);
+		
+	}
+	to {
+		transform: translateX(0);
+	}
+}

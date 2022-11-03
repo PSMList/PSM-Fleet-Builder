@@ -5,6 +5,7 @@ import Display from "../../commons/Display";
 import IconButton from "../../commons/IconButton";
 import { ModalContext } from "../../commons/Modal";
 import Settings, { DataType } from "../../commons/Settings";
+import { ToastContext } from "../../commons/Toasts";
 import Crew, { crewDict, CrewItemType } from "../../Crew";
 import { CrewSavedDataType } from "../../Crew/CrewDisplay";
 import ShipItem from "../ShipItem";
@@ -90,6 +91,7 @@ const FleetDisplay = () => {
 
     const shipItemsContext = useContext(ShipItemsContext);
     const modalContext = useContext(ModalContext);
+    const toastContext = useContext(ToastContext);
 
     const addShip = (ship: ShipItemType) => {
         if (fleetData.points.current + ship.points > fleetData.points.max) return alert('/!\ Exceeding fleet max points. Double-click on the max points to edit it.');
@@ -168,6 +170,11 @@ const FleetDisplay = () => {
         const fleetStr = fleetDataToString();
         if (!fleetStr) return alert('Failed to save fleet data. Please try again later.');
         localStorage.setItem('fleet_data', fleetStr);
+        toastContext.createToast({
+            type: 'success',
+            title: 'Saved data',
+            description: 'Fleet data successfully saved on your browser.'
+        })
     }
     
     const clearFleet = () => {
