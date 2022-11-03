@@ -156,6 +156,7 @@ const FleetDisplay = () => {
     const importFleet = () => {
         const inputFile = document.createElement('input');
         inputFile.type = 'file';
+        inputFile.accept = 'application/json';
         inputFile.addEventListener('change', async () => {
             if (!inputFile.files || !inputFile.files.item(0)) {
                 return toastContext.createToast({
