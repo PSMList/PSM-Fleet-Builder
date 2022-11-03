@@ -1,7 +1,6 @@
 .select-container {
     display: inline-block;
     position: relative;
-    z-index: 2;
     width: 100%;
 }
 
@@ -25,7 +24,7 @@
 }
 
 .select-container > .selected-text.active::after {
-    top: 8px;
+    top: 15%;
     border-color: transparent transparent #000 transparent;
 }
 
@@ -38,6 +37,7 @@
     height: 20vh;
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-top: none;
+    z-index: 1;
 }
 
 .select-container > .select-options > .select-option {

@@ -1,3 +1,4 @@
+import { createRef } from "preact";
 import { useCallback, useEffect, useMemo, useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import './Select.css';
@@ -16,9 +17,11 @@ const Select = ({ defaultSelectText, defaultSelectOption, optionsList, onOptionS
     const [selectText, setSelectText] = useState<string | JSX.Element | undefined>(defaultSelectText);
     const [showOptionList, setShowOptionList] = useState(false);
 
+    const containerRef = createRef<HTMLDivElement>();
+
     return useMemo(() => {
         useEffect(() => {
-            document.addEventListener("mousedown", handleClickOutside);
+            document.addEventListener("click", handleClickOutside);
 
             if (defaultSelectOption) {
                 const defaultOption = optionsList.find( option => option.value === defaultSelectOption);
@@ -31,16 +34,14 @@ const Select = ({ defaultSelectText, defaultSelectOption, optionsList, onOptionS
             }
 
             return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
+                document.removeEventListener("click", handleClickOutside);
             }
         }, [defaultSelectOption]);
 
         const handleClickOutside = useCallback((event: MouseEvent) => {
-            const element = (event.target as HTMLElement)
-            if (
-                !element.classList.contains("select-option") &&
-                !element.classList.contains("selected-text")
-            ) {
+            const element = (event.target as HTMLElement);
+            
+            if (!(element === containerRef.current || containerRef.current?.contains(element))) {
                 setShowOptionList(() => false);
             }
         }, []);
@@ -58,7 +59,10 @@ const Select = ({ defaultSelectText, defaultSelectOption, optionsList, onOptionS
         }, []);
 
         return (
-            <div className={ 'select-container' + ( props.className && ' ' + props.className ) }>
+            <div
+                className={ 'select-container' + ( props.className && ' ' + props.className ) }
+                ref={ (ref) => { if (!ref) return; containerRef.current = ref } }
+            >
                 <div
                     className={ 'selected-text' + (showOptionList ? ' active' : '') }
                     onClick={ handleListDisplay }
