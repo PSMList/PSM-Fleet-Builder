@@ -1,44 +1,54 @@
 import { createRef } from "preact";
-import { useState } from "preact/hooks";
+import { useEffect, useMemo, useState } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import { capitalize } from "../../../utils";
 import IconButton from "../IconButton";
 import ValidationInput from "../Inputs/ValidationInput";
 import './Settings.css';
 
+export type DataType = { [key: string]: string | number | DataType }
+
 type SettingsProps = {
-    data: { [key: string]: any }
-    defaultData?: { [key: string]: any }
-    onChange: (data: { [key: string]: any }) => void
+    data: DataType
+    defaultData?: DataType
+    onChange: (data: DataType) => void
     class?: string
-    className?: string
 }
 
-type InputSettings = { onValidate: (value: string) => void, name: string, type: string, value: string, min?: number | undefined }
+type InputSettings = { onChange: (event: Event) => void, onValidate: (value: string) => void, name: string, type: string, value: string, min?: number | undefined }
 
-const Settings = ({ data, defaultData, onChange: onSave, class: _class, className }: SettingsProps) => {    
+const Settings = ({ data, defaultData, onChange: onSave, class: _class }: SettingsProps) => {    
 
     const [settings, setSettings] = useState(data);
 
-    const setInputData = (inputData: { [key: string]: any }, title: string): JSX.Element => {
+    const save = (newSettings: DataType) => {
+        setSettings(() => ({
+            ...newSettings
+        }));
+    }
+
+    useEffect(() => {
+        onSave(settings);
+    }, [settings]);
+
+    const setInputData = (inputData: DataType, title: string): JSX.Element => {
         const elements = [];
         for (const itemKey in inputData) {
             const item = inputData[itemKey];
             
-            const onValidate = (value: string) => {
-                switch (typeof item) {
-                    case 'string':
-                        inputData[itemKey] = value;
+            const onChange = (event: Event) => {
+                const input = (event.target as HTMLInputElement);
+                switch (input.type) {
+                    case 'text':
+                        inputData[itemKey] = input.value;
                         break;
                     case 'number':
-                        inputData[itemKey] = parseInt(value);
+                        inputData[itemKey] = parseInt(input.value);
                         break;
                 }
-                const newSettings = {
-                    ...settings
-                }
-                onSave(newSettings);
-                setSettings(() => newSettings);
+            };
+            const onValidate = (value: string) => {
+                save(settings);
             };
 
             let element: JSX.Element;
@@ -51,10 +61,12 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class, classNam
                     const inputType = typeof item === 'string' ? 'text' : 'number';
                     const inputSettings: InputSettings = {
                         onValidate,
+                        onChange,
                         name: inputDataLabel,
                         type: inputType,
                         value: item.toString()
                     }
+                    
                     if (inputType === 'number') inputSettings.min = 0;
                     
                     element = <div class="whitebox" key={ inputDataLabel }>
@@ -77,21 +89,13 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class, classNam
 
     const inputsData = setInputData(settings, '');
 
-    const settingsRef = createRef<HTMLDivElement>();
-
     return (
-        <div class={ "settings_container" + (_class ? ' ' + _class : '') } className={ className } ref={ settingsRef } >
+        <div class={ "settings_container" + (_class ? ' ' + _class : '') } >
             <div class="settings_header">
                 <h3>
                     Save&nbsp;
                     <IconButton
-                        onClick={ () => {
-                            const newSettings = {
-                                ...settings
-                            }
-                            onSave(newSettings);
-                            setSettings(() => newSettings);
-                        } }
+                        onClick={ () => save(settings) }
                         iconID="save"
                     />
                 </h3>
@@ -100,9 +104,7 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class, classNam
                         Reset to default&nbsp;
                         <IconButton
                             onClick={ () => {
-                                setSettings(() => ({
-                                    ...defaultData
-                                }));
+                                save(defaultData);
                             } }
                             iconID="eraser"
                         />

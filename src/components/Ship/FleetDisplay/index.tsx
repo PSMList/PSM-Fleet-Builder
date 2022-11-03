@@ -4,7 +4,7 @@ import { removeItemFromArray } from "../../../utils";
 import Display from "../../commons/Display";
 import IconButton from "../../commons/IconButton";
 import { ModalContext } from "../../commons/Modal";
-import Settings from "../../commons/Settings";
+import Settings, { DataType } from "../../commons/Settings";
 import Crew, { crewDict, CrewItemType } from "../../Crew";
 import { CrewSavedDataType } from "../../Crew/CrewDisplay";
 import ShipItem from "../ShipItem";
@@ -164,11 +164,11 @@ const FleetDisplay = () => {
         a.click();
     }, []);
 
-    const saveFleet = useCallback(() => {
+    const saveFleet = () => {
         const fleetStr = fleetDataToString();
         if (!fleetStr) return alert('Failed to save fleet data. Please try again later.');
         localStorage.setItem('fleet_data', fleetStr);
-    }, []);
+    }
     
     const clearFleet = () => {
         fleetData.ships.length = 0;
@@ -195,9 +195,6 @@ const FleetDisplay = () => {
             id: 'edit_fleet_settings',
             title: 'Fleet settings',
             onClose: () => {
-                setData(() => ({
-                    ...fleetData
-                }));
             },
             inside:
                 <Settings
@@ -215,12 +212,13 @@ const FleetDisplay = () => {
                         }
                     }}
                     onChange={ (newData) => {
-                        setTimeout(() => saveFleet(), 3000);
-                        fleetData.name = newData.name;
-                        fleetData.points.max = newData.points.max;
+                        fleetData.name = newData.name as string;
+                        fleetData.points.max = (newData.points as DataType).max as number;
                         setData(() => ({
                             ...fleetData
                         }));
+
+                        setTimeout(() => saveFleet(), 1);
                     }}
                 />
         });

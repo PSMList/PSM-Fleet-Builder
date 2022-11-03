@@ -7,10 +7,10 @@ import './ValidationInput.css'
 type TextInputProps = {
     focus?: boolean
     onValidate: (value: string) => void
-    onKeyPress?: (event: KeyboardEvent) => void
+    onKeyPress?: (event: Event) => void
 } & JSX.HTMLAttributes<HTMLInputElement>
 
-const ValidationInput = ({ focus = false, onValidate, onChange, ...props }: TextInputProps) => {
+const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps) => {
     const [ defaultValue, setDefaultValue ] = useState((props.value?.toString() || props.defaultValue?.toString() || '') as string);
     
     const inputRef = createRef<HTMLInputElement>();
