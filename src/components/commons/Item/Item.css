@@ -1,5 +1,4 @@
 .item {
-    cursor: grab;
     position: relative;
     z-index: initial;
 }
