@@ -18,8 +18,9 @@ const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps
     const validate = () => {
         if (!inputRef.current) return;
         const newValue = inputRef.current.value;
-        setDefaultValue(() => newValue);
+        if (newValue === defaultValue) return;
         onValidate(newValue);
+        setDefaultValue(() => newValue);
     }
 
     const undo = () => {
@@ -35,7 +36,7 @@ const ValidationInput = ({ focus = false, onValidate, ...props }: TextInputProps
                     { ...props }
                     onKeyPress={ (event) => {
                         if (event.key === 'Enter') {
-                            event.preventDefault();
+                            // event.preventDefault();
                             validate();
                         }
                         if (props.onKeyPress) {

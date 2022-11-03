@@ -45,6 +45,14 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class }: Settin
                 }
             };
             const onValidate = (value: string) => {
+                switch (typeof item) {
+                    case 'string':
+                        inputData[itemKey] = value;
+                        break;
+                    case 'number':
+                        inputData[itemKey] = parseInt(value);
+                        break;
+                }
                 save(settings);
             };
 
