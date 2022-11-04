@@ -48,7 +48,7 @@ const Crew = ({ ship, remainingFleetPoints }: CrewProps) => {
     return (
         <>
             <div class="main_container" id="crew_container">
-                <CrewSearch factionID={ ship.faction.id } />
+                <CrewSearch factionID={ ship.faction.id.toString() } />
                 <CrewDisplay ship={ ship } remainingFleetPoints={ remainingFleetPoints } />
             </div>
         </>

@@ -9,10 +9,30 @@ import CrewItem from "../CrewItem";
 import './CrewSearch.css';
 
 type CrewSearchProps = {
-    factionID: number
+    factionID?: string
+    extensionID?: string
 }
 
-const CrewSearch = ({ factionID }: CrewSearchProps) => {
+const selectFactions = Object.values(factions);
+selectFactions.unshift({ id: -1, img: '', name: 'All factions' });
+const selectFactionsOptions = selectFactions.map( faction => ({ value: faction.id.toString(), display: <><img src={ faction.img } />{ faction.name }</> }) )
+
+const selectExtensions = Object.values(extensions);
+selectExtensions.unshift({ id: -1, img: '', name: 'All extensions', short: '' });
+const selectExtensionsOptions = selectExtensions.map( extension => ({ value: extension.id.toString(), display: <><img src={ extension.img } />{ extension.name }</> }) )
+
+const CrewSearch = ({ factionID = '-1', extensionID = '-1' }: CrewSearchProps) => {
+
+    const [ factionFilter, setFactionFilter ] = useState(-1);
+    const [ extensionFilter, setExtensionFilter ] = useState(-1);
+    
+    const crewItemsContext = useContext(CrewItemsContext);
+    
+    const selectItem = useCallback( (crew: CrewItemType) => {
+        crewItemsContext.selectItemCallbacks.forEach( selectItemCallback => {
+            selectItemCallback( crew );
+        });
+    }, []);
 
     const crews: SearchItemType[] = useMemo(() => crewList.map( crew => ({
         search_field: crew.fullname,
@@ -25,46 +45,31 @@ const CrewSearch = ({ factionID }: CrewSearchProps) => {
             />
     })), []);
 
-    const [ filteredCrews, setFilteredCrews ] = useState(crews);
-    
-    const crewItemsContext = useContext(CrewItemsContext);
-    
-    const selectItem = useCallback( (crew: CrewItemType) => {
-        crewItemsContext.selectItemCallbacks.forEach( selectItemCallback => {
-            selectItemCallback( crew );
-        });
+    const searchByFaction = useCallback((factionID: string) => {
+        setFactionFilter(() => parseInt(factionID));
     }, []);
 
-    const selectFactions = useMemo(() => {
-        const factionsList = Object.values(factions);
-        factionsList.unshift({ id: -1, img: '', name: 'All factions' });
-        return factionsList;
+    const searchByExtension = useCallback((extensionID: string) => {
+        setExtensionFilter(() => parseInt(extensionID));
     }, []);
 
-    // TODO: cache searchByFaction output to reuse instead of recompute
-    const searchByFaction = useCallback((value: string) => {
-        const selectedFaction = parseInt(value);
-        if (selectedFaction === -1 ) {
-            return setFilteredCrews(() => crews);
+    // TODO: cache output to reuse instead of recompute
+    const filteredCrews = (() => {
+        if (factionFilter === -1 && extensionFilter === -1) {
+            return crews;
         };
-        
-        setFilteredCrews(() => crews.filter( (_, index) => crewList[index].faction.id === selectedFaction));
-    }, []);
-
-    const selectExtensions = useMemo(() => {
-        const extensionsList = Object.values(extensions);
-        extensionsList.unshift({ id: -1, img: '', name: 'All extensions', short: '' });
-        return extensionsList;
-    }, []);
-
-    // TODO: cache searchByExtension output to reuse instead of recompute
-    const searchByExtension = useCallback((value: string) => {
-        const selectedExtension = parseInt(value);
-        if (selectedExtension === -1 ) {
-            return setFilteredCrews(() => crews);
-        };
-        setFilteredCrews(() => crews.filter( (_, index) => crewList[index].extension.id === selectedExtension));
-    }, []);
+        const filteredShips = [];
+        for (const index in crews) {
+            if (
+                (factionFilter === -1 || crewList[index].faction.id === factionFilter)
+                &&
+                (extensionFilter === -1 || crewList[index].extension.id === extensionFilter)
+            ) {
+                filteredShips.push(crews[index]);
+            }
+        }
+        return filteredShips;
+    })();
 
     return (
         <>
@@ -77,17 +82,18 @@ const CrewSearch = ({ factionID }: CrewSearchProps) => {
                             className="search_faction"
                             onOptionSelect={ searchByFaction }
                             optionsList={
-                                selectFactions.map( faction => ({ value: faction.id.toString(), display: <><img src={ faction.img } />{ faction.name }</> }) )
+                                selectFactionsOptions
                             }
-                            defaultSelectOption={ factionID.toString() }
+                            defaultSelectOption={ factionID }
                         />
                         <Select
                             defaultSelectText="Select extension"
                             className="search_extension"
                             onOptionSelect={ searchByExtension }
                             optionsList={
-                                selectExtensions.map( extension => ({ value: extension.id.toString(), display: <><img src={ extension.img } />{ extension.name }</> }) )
+                                selectExtensionsOptions
                             }
+                            defaultSelectOption={ extensionID }
                         />
                     </>
                 }
