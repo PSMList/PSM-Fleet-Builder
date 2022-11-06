@@ -5,7 +5,7 @@ import IconButton from "../IconButton";
 import ValidationInput from "../Inputs/ValidationInput";
 import './Settings.css';
 
-export type DataType = { [key: string]: string | number | DataType }
+export type DataType = { [key: string]: string | number | boolean | DataType }
 
 type SettingsProps = {
     data: DataType
@@ -14,7 +14,14 @@ type SettingsProps = {
     class?: string
 }
 
-type InputSettings = { onChange: (event: Event) => void, onValidate: (value: string) => void, name: string, type: string, value: string, min?: number | undefined }
+type InputSettings = {
+    onChange: (event: Event) => void
+    onValidate: (value: string | boolean) => void
+    name: string, type: string
+    value?: string
+    checked?: boolean
+    min?: number
+}
 
 const Settings = ({ data, defaultData, onChange: onSave, class: _class }: SettingsProps) => {    
 
@@ -42,15 +49,21 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class }: Settin
                     case 'number':
                         inputData[itemKey] = parseInt(input.value);
                         break;
+                    case 'checkbox':
+                        inputData[itemKey] = input.checked;
+                        break;
                 }
             };
-            const onValidate = (value: string) => {
+            const onValidate = (value: string | boolean) => {
                 switch (typeof item) {
                     case 'string':
-                        inputData[itemKey] = value;
+                        inputData[itemKey] = value as string;
                         break;
                     case 'number':
-                        inputData[itemKey] = parseInt(value);
+                        inputData[itemKey] = parseInt(value as string);
+                        break;
+                    case 'boolean':
+                        inputData[itemKey] = value as boolean;
                         break;
                 }
                 save(settings);
@@ -63,13 +76,19 @@ const Settings = ({ data, defaultData, onChange: onSave, class: _class }: Settin
             switch(typeof item) {
                 case 'string':
                 case 'number':
-                    const inputType = typeof item === 'string' ? 'text' : 'number';
+                case 'boolean':
+                    const inputType = typeof item === 'boolean' ? 'checkbox' : (typeof item === 'number' ? 'number' : 'text');
                     const inputSettings: InputSettings = {
                         onValidate,
                         onChange,
                         name: inputDataLabel,
-                        type: inputType,
-                        value: item.toString()
+                        type: inputType
+                    }
+                    if (typeof item === 'boolean') {
+                        inputSettings.checked = item;
+                    }
+                    else {
+                        inputSettings.value = item.toString();
                     }
                     
                     if (inputType === 'number') inputSettings.min = 0;
