@@ -13,7 +13,7 @@
 }
 
 .search_container > .search_inputs {
-    margin-top: 1em;
+    margin-top: 0.5em;
     display: flex;
     flex-direction: column;
     gap: 0.5em;

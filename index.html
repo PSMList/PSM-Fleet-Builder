@@ -17,6 +17,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <!-- <script type="module" crossorigin src="/public/fleet/builder/assets/index.js"></script>
   <link rel="stylesheet" href="/public/fleet/builder/assets/index.css"> -->
+  <style>
+    input {
+        border: 2px solid rgba(0, 0, 0, 0.08);
+        border-radius: 5px;
+        padding: 5px;
+        background-color: rgba(0, 0, 0, 0.02);
+        width: 100%;
+        font-size: 0.9em;
+        color:rgba(0, 0, 0, 0.45);
+    }
+  </style>
 </head>
 <body>
   <div id="bg_container"></div>
@@ -264,14 +275,16 @@
       <div id="content_container">
         <h1>Fleet Builder</h1>
         <div id="fleet_builder"></div>
-      </div>
-      <div class="whitebox">
-        If you like PSMList, please consider donating. This means a lot to us. Raised money will directly help improving
-        existing and future PSMList features.
-        <div class="blog_donation_container">
-          <div class="blog_donation">
-            <i class="fa-solid fa-star"></i>
-            <a href="https://www.buymeacoffee.com/psmlist" target="_blank">Support PSMList now</a>
+        <div id="donation_container">
+          <div class="whitebox">
+            If you like PSMList, please consider donating. This means a lot to us. Raised money will directly help improving
+            existing and future PSMList features.
+            <div class="blog_donation_container">
+              <div class="blog_donation">
+                <i class="fas fa-star"></i>
+                <a href="https://www.buymeacoffee.com/psmlist" target="_blank">Support PSMList now</a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

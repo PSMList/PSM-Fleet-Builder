@@ -11,6 +11,15 @@
     }
 }
 
+#content_container * {
+    box-sizing: border-box;
+}
+
+#content_container h2 {
+    font-family: Windlass, Roboto, sans-serif;
+    margin: 0;
+}
+
 #fleet_builder {
     flex-grow: 1;
     overflow-y: hidden;
