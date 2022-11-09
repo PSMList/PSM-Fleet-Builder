@@ -19,7 +19,7 @@ const CrewItem = ({ data: crew, actions }: SearchItemProps) => useMemo(() => (
                 <div class="crew_name">{ crew.name }</div>
             </span>
             <img class="faction_img" loading="lazy" src={ crew.faction.img } />
-            <span class="crew_points"><i class="fas fa-coins" />&nbsp;&nbsp;{ crew.points }</span>
+            <span class="crew_points"><i class="fas fa-coins" /><b> { crew.points }</b></span>
         </div>
     </Item>
 ), [crew]);

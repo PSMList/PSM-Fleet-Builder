@@ -1,5 +1,6 @@
 import { useCallback, useContext, useMemo, useState } from "preact/hooks";
 import { ShipItemsContext, ShipItemType, shipList } from "..";
+import { onlyDisplay } from "../../../app";
 import extensions from "../../../data/extension";
 import factions from "../../../data/faction";
 import IconButton from "../../commons/IconButton";
@@ -17,6 +18,7 @@ selectExtensions.unshift({ id: -1, img: '', name: 'All extensions', short: '' })
 const selectExtensionsOptions = selectExtensions.map( extension => ({ value: extension.id.toString(), display: <><img src={ extension.img } />{ extension.name }</> }) )
 
 const ShipSearch = () => {
+    if (onlyDisplay) return <></>;
 
     const [ factionFilter, setFactionFilter ] = useState(-1);
     const [ extensionFilter, setExtensionFilter ] = useState(-1);

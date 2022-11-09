@@ -19,7 +19,7 @@ const ShipItem = ({ data: ship, actions }: SearchItemProps) => useMemo(() => (
             </span>
             <img class="faction_img" loading="lazy" src={ ship.faction.img } />
             <span class="ship_points"><i class="fas fa-coins" /><b> { ship.points }</b></span>
-            <span class="ship_cargo"><img src="/public/img/svg/cargo_nobg.svg" />{ ship.cargo }</span>
+            <span class="ship_cargo"><img src="/public/img/svg/cargo_nobg.svg" /><b> { ship.cargo }</b></span>
             <span class="ship_"></span>
         </div>
     </Item>

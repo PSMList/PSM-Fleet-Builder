@@ -3,6 +3,8 @@ import { ModalRoot } from './components/commons/Modal';
 import Toasts from './components/commons/Toasts';
 import Ship from './components/Ship';
 
+export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(window.location.pathname);
+
 export function App() {
 
   return (
