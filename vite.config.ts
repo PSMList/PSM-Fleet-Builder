@@ -1,13 +1,20 @@
 import { defineConfig } from 'vite'
-import preact from '@preact/preset-vite'
+import suidPlugin from '@suid/vite-plugin';
+import solidPlugin from 'vite-plugin-solid';
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  // server: {
-  //   host: true
-  // },
-  build: {
-    copyPublicDir: false
+  server: {
+    host: true
   },
-  plugins: [preact()]
-})
+  plugins: [
+    suidPlugin(),
+    solidPlugin()
+  ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, './src'),
+    },
+  },
+});

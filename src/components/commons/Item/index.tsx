@@ -1,6 +1,6 @@
-import { JSX } from 'preact/jsx-runtime';
-import { ExtensionType } from '../../../data/extension';
-import { FactionType } from '../../../data/faction';
+import { ExtensionType } from "@/data/extension";
+import { FactionType } from "@/data/faction";
+import { JSX } from "solid-js";
 import './Item.css';
 
 export type ItemType = {
@@ -24,13 +24,16 @@ export type ItemProps = {
     children: JSX.Element
 };
 
-export const Item = ({ actions, children }: ItemProps) => (
-    <li class="item">
-        <div class="actions">{ actions }</div>
-        <div class="item_background">
-            { children }
-        </div>
-    </li>
-);
+export const Item = (props: ItemProps) => {
+
+    return (
+        <li class="item">
+            <div class="actions">{ props.actions }</div>
+            <div class="item_background">
+                { props.children }
+            </div>
+        </li>
+    );
+}
 
 export default Item;

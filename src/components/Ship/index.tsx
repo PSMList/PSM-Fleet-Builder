@@ -1,12 +1,12 @@
-import { createContext } from 'preact';
-import extensions, { ExtensionType } from '../../data/extension';
-import factions, { FactionType } from '../../data/faction';
-import { shipData } from '../../data/ship';
-import { ItemsContextType, ItemType } from '../commons/Item';
-import { CrewItemType } from '../Crew';
-import FleetDisplay from './FleetDisplay';
+import { createContext } from "solid-js";
+import extensions, { ExtensionType } from "@/data/extension";
+import factions, { FactionType } from "@/data/faction";
+import { shipData } from "@/data/ship";
+import { ItemsContextType, ItemType } from "@/components/commons/Item";
+import { CrewItemType } from "@/components/Crew";
+import FleetDisplay from "./FleetDisplay";
 import './Ship.css';
-import ShipSearch from './ShipSearch';
+import ShipSearch from "./ShipSearch";
 
 
 export type ShipItemType = ItemType & {
@@ -47,12 +47,10 @@ export const ShipItemsContext = createContext<ItemsContextType>({
 const Ship = () => {
     
     return (
-        <>
-            <div class="main_container" id="fleet_container">
-                <ShipSearch />
-                <FleetDisplay />
-            </div>
-        </>
+        <div class="main_container" id="fleet_container">
+            <ShipSearch />
+            <FleetDisplay />
+        </div>
     );
 }
 

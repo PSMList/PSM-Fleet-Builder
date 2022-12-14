@@ -1,6 +1,6 @@
-import { createContext, JSX } from 'preact';
-import { useContext, useState } from 'preact/hooks';
-import IconButton from '../IconButton';
+import IconButton from "@/components/commons/IconButton";
+import { createContext, createEffect, For, JSX, useContext } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 import './Modal.css';
 
 
@@ -16,122 +16,83 @@ type ModalState = ModalProperties & { visible: boolean };
 export const ModalContext = createContext({
     // createModal(properties: ModalProperties) { },
     showModal(properties: ModalProperties) { },
-    // showModal(id: string) { },
-    hideModal() { },
+    hideModal(id: string) { },
 });
 
-// type ModalProps = {
-//     onOpen: () => void
-// } & ModalProperties;
-
-// const Modal = ({ id, inside, title, onClose, onOpen }: ModalProps) => {
-
-//     const modalContext = useContext(ModalContext);
-
-//     useEffect(() => {
-//         modalContext.createModal({
-//             id,
-//             inside,
-//             title,
-//             onClose
-//         });
-//     });
-
-//     modalContext.createModal();
-
-//     return (
-//         <></>
-//     );
-// }
-
-// export default Modal;
-
-type ModalContainerProps = {
-    modal: ModalState
+type ModalProps = {
+    properties: ModalState
 }
 
-const ModalContainer = ({ modal }: ModalContainerProps) => {
+const Modal = (props: ModalProps) => {
 
     const modalContext = useContext(ModalContext);
 
-    // return useMemo<JSX.Element>(() =>
     return (
-        <div className={"modal-shadow" + (modal.visible ? '' : ' hidden')} id={ modal.id }>
+        <div classList={{ "modal-shadow": true, hidden: !props.properties.visible }} id={ props.properties.id }>
             <div class="modal-container">
                 <h2 class="modal-header">
-                    <span class="modal-title">{modal.title}</span>
+                    <span class="modal-title">{props.properties.title}</span>
                     <div class="modal-actions">
                         <IconButton
                             class="modal-close"
                             onClick={() => {
-                                if (modal.onClose) modal.onClose();
-                                modalContext.hideModal();
+                                if (props.properties.onClose) props.properties.onClose();
+                                modalContext.hideModal(props.properties.id);
                             }}
                             iconID="window-close" />
                     </div>
                 </h2>
                 <div class="modal-content">
-                    {modal.inside}
+                    {props.properties.inside}
                 </div>
             </div>
         </div>
     );
-        // , [modal.visible]);
 }
-
-const initialState: ModalState = { id: '', visible: false, title: '', inside: <></>, onClose: () => { } };
 
 export const ModalRoot = () => {
 
     const modalContext = useContext(ModalContext);
-
-    const [state, setState] = useState<{ currentModal: ModalState, oldModals: ModalState[] }>({
-        currentModal: initialState,
-        oldModals: []
-    });
+    const [modals, setModals] = createStore<ModalState[]>([]);
 
     modalContext.showModal = (properties: ModalProperties) => {
-        const newModal: ModalState = {
-            ...properties,
-            visible: true
-        }
-        state.currentModal = newModal;
-        // state.oldModals.push(newModal);
-        return setState(() => ({ ...state }));
+        setModals(produce( _modals => {
+            const modal = _modals.find( modal => modal.id === properties.id);
+            if (modal) {
+                modal.visible = true;
+            }
+            else {
+                const newModal: ModalState = {
+                    ...properties,
+                    visible: true
+                }
+                _modals.push(newModal);
+            }
+        }));
     }
 
-    // modalContext.createModal = (properties: ModalProperties) => {
-    //     const newModal: ModalState = {
-    //         ...properties,
-    //         visible: true
-    //     }
-    //     state.modals.push(newModal);
-    //     return setState(() => ({ ...state }));
-    // }
-
-    // modalContext.showModal = (id: string) => {
-    //     const newModal = state.modals.find(modal => modal.id === id);
-    //     if (!newModal) return;
-    //     state.currentModal = newModal;
-    //     return setState(() => ({ ...state }));
-    // }
-
-    modalContext.hideModal = () => {
-        state.currentModal.visible = false;
-        return setState(() => ({ ...state }));
+    modalContext.hideModal = (id: string) => {
+        setModals(produce( _modals => {
+            const modal = _modals.find( modal => modal.id === id);
+            if (modal) {
+                modal.visible = false;
+            }
+            setModals(() => _modals);
+        }));
     }
 
     // disable scrolling on the main window
-    document.body.style.overflowY = state.currentModal.visible ? 'hidden' : '';
+    createEffect(() => {
+        document.body.style.overflowY = modals.some( modal => modal.visible) ? 'hidden' : '';
+    });
 
     return (
-        <>
-            <ModalContainer modal={ state.currentModal } />
-            {/* {
-                state.modals.map((modal, index) =>
-                    <ModalContainer modal={modal} key={index} />
-                )
-            } */}
-        </>
+        <div id="modal-root">
+            <For each={ modals }>
+                {
+                    modal => <Modal properties={ modal } />
+                }
+            </For>
+        </div>
     )
 }

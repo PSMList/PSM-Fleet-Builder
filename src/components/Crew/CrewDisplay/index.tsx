@@ -1,13 +1,13 @@
-import { useContext, useEffect, useState } from "preact/hooks";
-import { JSX } from "preact/jsx-runtime";
-import { CrewItemsContext, CrewItemType } from "..";
-import { onlyDisplay } from "../../../app";
-import { removeItemFromArray } from "../../../utils";
-import Display from "../../commons/Display";
-import IconButton from "../../commons/IconButton";
-import { ToastContext } from "../../commons/Toasts";
-import { ShipItemType } from "../../Ship";
-import CrewItem from "../CrewItem";
+import { onlyDisplay } from "@/App";
+import Display from "@/components/commons/Display";
+import IconButton from "@/components/commons/IconButton";
+import { ToastContext } from "@/components/commons/Toasts";
+import { CrewItemsContext, CrewItemType } from "@/components/Crew";
+import CrewItem from "@/components/Crew/CrewItem";
+import { ShipItemType } from "@/components/Ship";
+import { removeItemFromArray } from "@/utils";
+import { createEffect, For, JSX, onCleanup, useContext } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 import './CrewDisplay.css';
 
 export type CrewSavedDataType = {
@@ -31,53 +31,50 @@ type CrewDisplayProps = {
     remainingFleetPoints: number
 }
 
-const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
+const CrewDisplay = (props: CrewDisplayProps) => {
 
-    const [crewData, setData] = useState<CrewDataType>({
+    const [crewData, setData] = createStore<CrewDataType>({
         points: {
             current: 0,
             max: 0
         },
         room: {
             current: 0,
-            max: 0
+            max: props.ship.cargo
         },
         crews: []
     });
 
-    useEffect(() => {
-        crewData.points.max = crewData.points.current + remainingFleetPoints;
-        crewData.room.max = ship.cargo;
-        crewData.crews = ship.crew;
-        setData(() => ({
-            ...crewData
+    createEffect(() => {
+        setData(produce(data => {
+            data.crews = props.ship.crew;
+            data.room.current = data.crews.length;
+            data.points.current = data.crews.reduce((total: number, crew: CrewItemType) => total + crew.points, 0);
+            data.points.max = data.points.current + props.remainingFleetPoints;
         }));
-    }, [ship]);
-
-    crewData.points.current = ship.crew.reduce((total: number, crew: CrewItemType) => total + crew.points, 0);
-    crewData.room.current = ship.crew.length;
-
-    const toastContext = useContext(ToastContext);
+    });
     
     let removeCrewAction: (crew: CrewItemType) => JSX.Element | undefined;
     let crewActions: JSX.Element | undefined;
     
     if (!onlyDisplay) {
 
+        const toastContext = useContext(ToastContext);
+
         const crewItemsContext = useContext(CrewItemsContext);
 
         const addCrew = (crew: CrewItemType) => {
-            if ( ship.crew.length + 1 > ship.cargo ) return toastContext.createToast({
+            if ( props.ship.crew.length + 1 > props.ship.cargo ) return toastContext.createToast({
                 type: 'error',
                 title: 'Add crew',
                 description: 'Can\'t add crew due to cargo limit.'
             });
-            if ( crew.faction.id !== ship.faction.id ) toastContext.createToast({
+            if ( crew.faction.id !== props.ship.faction.id ) toastContext.createToast({
                 type: 'warning',
                 title: 'Add crew',
                 description: 'You happen to have picked a crew with a different from its ship faction. Please check if this what you really want to do before saving.'
             });
-            if ( ship.crew.some(_crew => _crew.name === crew.name)) toastContext.createToast({
+            if ( props.ship.crew.some(_crew => _crew.name === crew.name)) toastContext.createToast({
                 type: 'warning',
                 title: 'Add crew',
                 description: 'You happen to have picked two or more crew with an identical name. Please check if this what you really want to do before saving.'
@@ -87,24 +84,21 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
                 title: 'Add crew',
                 description: 'Exceeding fleet max points. Please go to the settings if you want to increase the limit.'
             });
-            crewData.crews.push(crew);
-            setData(() => ({
-                ...crewData
+            setData(produce(data => {
+                data.crews.push({ ...crew });
             }));
         }
 
-        useEffect(() => {
-            crewItemsContext.selectItemCallbacks.push(addCrew);
-
-            return () => {
-                removeItemFromArray(crewItemsContext.selectItemCallbacks, func => func === addCrew);
-            }
-        }, [ship]);
+        crewItemsContext.selectItemCallbacks.push(addCrew);
+        onCleanup(() => {
+            removeItemFromArray(crewItemsContext.selectItemCallbacks, func => func === addCrew);
+        });
 
         const removeCrew = (crew: CrewItemType) => {
-            if (removeItemFromArray(crewData.crews, _crew => crew.id === _crew.id)) {
-                setData(() => ({
-                    ...crewData
+            const crewIndex = crewData.crews.findIndex(_crew => crew === _crew);
+            if (crewIndex >= 0) {
+                setData(produce((data) => {
+                    data.crews.splice(crewIndex, 1);
                 }));
             }
         }
@@ -115,9 +109,8 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
                 title: 'Clear crew',
                 description: 'Removed crew data (not saved).'
             });
-            crewData.crews.length = 0;
-            setData(() => ({
-                ...crewData
+            setData(produce(data => {
+                data.crews.length = 0;
             }));
         }
 
@@ -136,17 +129,21 @@ const CrewDisplay = ({ ship, remainingFleetPoints }: CrewDisplayProps) => {
         </>
     );
 
-    const shipCrew = 
-        crewData.crews.map(crew =>
-            <CrewItem
-                data={
-                    crew
-                }
-                actions={
-                    removeCrewAction && removeCrewAction(ship)
-                }
-            />
-        );
+    const shipCrew = (
+        <For each={crewData.crews}>
+            {
+                crew =>
+                    <CrewItem
+                        data={
+                            crew
+                        }
+                        actions={
+                            removeCrewAction && removeCrewAction(crew)
+                        }
+                    />
+            }
+        </For>
+    );
 
     return (
         <Display

@@ -1,5 +1,5 @@
-import { render } from 'preact'
-import { App } from './App'
+import { render } from "solid-js/web";
+import { App } from "./app";
 import './index.css'
 
-render(<App />, document.getElementById('fleet_builder') as HTMLElement)
+render(() => <App />, document.getElementById('fleet_builder') as HTMLElement)

@@ -1,6 +1,6 @@
-import { createContext, createRef, JSX } from 'preact';
-import { useContext, useEffect, useState } from 'preact/hooks';
-import Toast, { ToastPosition, ToastProps, ToastType } from '../Toast';
+import Toast, { ToastPosition, ToastType } from "@/components/commons/Toast";
+import { createContext, For, JSX, onCleanup, onMount, useContext } from "solid-js";
+import { createStore, produce } from "solid-js/store";
 import './Toast.css';
 
 // source: https://github.com/uzoeddie/react-toast/blob/master/src/components/toast/Toast.js
@@ -14,43 +14,34 @@ export const ToastContext = createContext({
     createToast(properties: ToastType) { },
 });
 
-const Toasts = ({ position, autoDeleteTime }: ToastsProps) => {
+const Toasts = (props: ToastsProps) => {
 
     const toastContext = useContext(ToastContext);
 
-    const [data, setData] = useState<{
-        toastList: {
-            id: number,
-            element: JSX.Element
-        }[]
-    }>({
-        toastList: []
-    });
+    const [toastList, setToastList] = createStore<{ id: number, element: JSX.Element }[]>([]);
 
-    if (autoDeleteTime) {
-        useEffect(() => {
-            const toastListCount = data.toastList.length;
-            const timeout = setTimeout(() => {
-                setData((oldData) => {
-                    if (oldData.toastList.length !== toastListCount) return oldData;
+    if (props.autoDeleteTime) {
+        let timeout = -1;
+        onMount(() => {
+            const toastListCount = toastList.length;
+            timeout = setTimeout(() => {
+                if (toastList.length !== toastListCount) return;
+                setToastList(produce(toastList => {
                     const container = document.getElementById('notification-container');
-                    const newData = {
-                        toastList: oldData.toastList.filter( (_, index) => {
-                            const toastElement = container?.querySelector(`:nth-child(${index * 2 + 1})`);
-                            return toastElement && !toastElement.classList.contains('hide');
-                        })
-                    }
-                    if (oldData.toastList.length !== toastListCount) return oldData;
-                    return newData;
-                });
-            }, autoDeleteTime);
-
-            return () => clearTimeout(timeout);
+                    toastList.filter( (_, index, _toastList) => {
+                        const toastElement = container?.querySelector(`:nth-child(${index * 2 + 1})`);
+                        if (toastElement && !toastElement.classList.contains('hide')) {
+                            _toastList.splice(index, 1);
+                        }
+                    });
+                }));
+            }, props.autoDeleteTime);
         });
+        onCleanup(() => clearTimeout(timeout));
     }
 
     const deleteToast = (id: number) => {
-        const toastIndex = data.toastList.findIndex(toast => toast.id === id);
+        const toastIndex = toastList.findIndex(toast => toast.id === id);
         if (toastIndex >= 0) {
             const container = document.getElementById('notification-container');
             const toastElement = container?.querySelector(`.notification:nth-child(${toastIndex * 2 + 1})`);
@@ -69,37 +60,34 @@ const Toasts = ({ position, autoDeleteTime }: ToastsProps) => {
                     <Toast { ...{
                         ...properties,
                         id,
-                        position,
+                        position: props.position,
                         deleteToast
                     } } />
                     <hr />
                 </>
         }
-        setData((oldData) => {
-            oldData.toastList.push(newToast);
-            return {
-                toastList: oldData.toastList
-            }
-        });
+        setToastList(produce(toastList => {
+            toastList.push(newToast);
+        }));
 
-        if (!autoDeleteTime) return;
+        if (!props.autoDeleteTime) return;
         setTimeout(() => {
             deleteToast(newToast.id);
-        }, autoDeleteTime);
+        }, props.autoDeleteTime);
     }
 
     toastContext.createToast = createToast;
 
     return (
-        <>
-            <div className={ position } id="notification-container">
+        <div class={ props.position } id="notification-container">
+            <For each={
+                toastList
+            }>
                 {
-                    data.toastList.map( toast =>
-                        toast.element
-                    )
+                    toast => toast.element
                 }
-            </div>
-        </>
+            </For>
+        </div>
     );
 }
 

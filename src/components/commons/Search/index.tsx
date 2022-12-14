@@ -1,7 +1,6 @@
-import { useState } from "preact/hooks";
-import { JSX } from 'preact/jsx-runtime';
-import ValidationInput from "../Inputs/ValidationInput";
-import Items from '../Items';
+import ValidationInput from "@/components/commons/Inputs/ValidationInput";
+import Items from "@/components/commons/Items";
+import { createSignal, For, JSX } from "solid-js";
 import './Search.css';
 
 export type SearchItemType = {
@@ -18,22 +17,24 @@ type SearchProps = {
 const defaultSearchQuery = new RegExp('', 'i');
 const defaultSearchQueryString = defaultSearchQuery.toString();
 
-const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
+const Search = (props: SearchProps) => {
     
-    const [ searchQuery, setQuery ] = useState(defaultSearchQuery);
+    const [ searchQuery, setQuery ] = createSignal(defaultSearchQuery);
     
     const searchInItems = (value: string) => {
         setQuery(() => new RegExp(value, 'i'));
     }
 
-    const content = (() => {
-        if (searchQuery.toString() === defaultSearchQueryString) {
+    const content = () => {
+        const _searchQuery = searchQuery();
+        if (_searchQuery.toString() === defaultSearchQueryString) {
             return <h3 class="search_info">Enter any text in the search bar to show items.</h3>
         }
 
         const filteredItems: JSX.Element[] = [];
-        for (const item of items) {
-            if ( searchQuery.test( item.search_field ) ) {
+
+        for (const item of props.items) {
+            if ( _searchQuery.test( item.search_field ) ) {
                 filteredItems.push( item.element );
             }
         }
@@ -44,10 +45,14 @@ const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
 
         return (
             <Items class="search_results">
-                { filteredItems }
+                <For each={ filteredItems }>
+                    {
+                        filteredItem => filteredItem
+                    }
+                </For>
             </Items>
         );
-    })();
+    }
 
     return (
         <div class="search_container whitebox">
@@ -55,12 +60,12 @@ const Search = ({ placeholder, items, additionalInputs }: SearchProps) => {
                 <ValidationInput
                     type="text"
                     class="search_input"
-                    placeholder={ placeholder }
+                    placeholder={ props.placeholder }
                     onValidate={ searchInItems }
                 />
-                { additionalInputs }
+                { props.additionalInputs }
             </div>
-            { content }
+            { content() }
         </div>
     )
 }

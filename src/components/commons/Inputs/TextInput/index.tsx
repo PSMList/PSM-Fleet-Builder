@@ -1,20 +1,23 @@
-import { useMemo } from "preact/hooks"
-import { JSX } from "preact/jsx-runtime"
+import { splitProps } from "solid-js";
+import { JSX } from "solid-js/jsx-runtime";
 
 type TextInputProps = {
     focus?: boolean
-} & JSX.HTMLAttributes<HTMLInputElement>
+    type: string
+    defaultValue?: string
+} & JSX.HTMLAttributes<HTMLInputElement>;
 
-const Input = ({ focus = false, ...props }: TextInputProps) => {
+const Input = (props: TextInputProps) => {
+    const [localProps, formProps] = splitProps(props, ['focus']);
 
-    return useMemo(() =>
+    return (
         <form onSubmit={ (event) => event.preventDefault() }>
             <input
-                { ...props }
-                ref={ (ref) => focus && setTimeout(() => ref?.focus(), 1) }
+                { ...formProps }
+                ref={ (ref) => localProps.focus && setTimeout(() => ref?.focus(), 1) }
             />
         </form>
-    , []);
+    );
 }
 
 export default Input;

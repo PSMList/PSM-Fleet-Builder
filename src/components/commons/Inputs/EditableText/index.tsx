@@ -1,44 +1,42 @@
+import Input from "@/components/commons/Inputs/TextInput";
+import { createSignal, Show } from 'solid-js';
 import './EditableText.css';
-import { useCallback, useMemo, useState } from "preact/hooks";
-import Input from '../TextInput';
 
 type EditableTextProps = {
     onEdit: (newValue: string) => boolean
     value: string
 }
 
-const EditableText = ({ onEdit, value }: EditableTextProps) => {
+const EditableText = (props: EditableTextProps) => {
 
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] = createSignal(false);
 
-    return useMemo(() => {
-        const handleTyping = useCallback((event: KeyboardEvent) => {
-            if (event.key === 'Escape') return setIsEditing(() => false);
-            if (event.key !== 'Enter') return;
-            const element = (event.target as HTMLInputElement);
-            const confirm = onEdit(element.value);
-            if (confirm) {
-                setIsEditing(() => false);
+    const handleTyping = (event: KeyboardEvent) => {
+        if (event.key === 'Escape') return setIsEditing(() => false);
+        if (event.key !== 'Enter') return;
+        const element = (event.target as HTMLInputElement);
+        const confirm = props.onEdit(element.value);
+        if (confirm) {
+            setIsEditing(() => false);
+        }
+    };
+
+    return (
+        <Show
+            when={ isEditing() }
+            fallback= {
+                <span onDblClick={ ()=> setIsEditing(() => true) }>{ props.value }</span>
             }
-        }, []);
-        
-        return (
-            <>
-                {
-                    isEditing ?
-                        <Input
-                            type='text'
-                            onKeyPress={ (event) => handleTyping(event as KeyboardEvent) }
-                            onfocusout={ () => setIsEditing(() => false) }
-                            defaultValue={ value }
-                            focus={ true }
-                        />
-                        :
-                        <span onDblClick={ ()=> setIsEditing(() => true) }>{ value }</span>
-                }
-            </>
-        );
-    }, [isEditing]);
+        >
+            <Input
+                type="text"
+                onKeyPress={ (event) => handleTyping(event as KeyboardEvent) }
+                onfocusout={ () => setIsEditing(() => false) }
+                defaultValue={ props.value }
+                focus={ true }
+            />
+        </Show>
+    );
 }
 
 export default EditableText;

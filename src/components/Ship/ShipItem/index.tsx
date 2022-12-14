@@ -1,7 +1,6 @@
-import { useMemo } from "preact/hooks";
-import { JSX } from "preact/jsx-runtime"
-import { ShipItemType } from ".."
-import Item from "../../commons/Item"
+import Item from "@/components/commons/Item";
+import { ShipItemType } from "@/components/Ship";
+import { JSX } from "solid-js";
 import './ShipItem.css';
 
 type SearchItemProps = {
@@ -9,20 +8,23 @@ type SearchItemProps = {
     actions?: JSX.Element
 }
 
-const ShipItem = ({ data: ship, actions }: SearchItemProps) => useMemo(() => (
-    <Item actions={ actions }>
-        <div class="ship_info">
-            <img class="ship_preview" loading="lazy" src={ ship.img } onError={ (event) => (event.target as HTMLImageElement).src = ship.altimg } />
-            <span class="ship_title">
-                <div class="ship_id">{ ship.extension.short + ship.numid }</div>
-                <div class="ship_name">{ ship.name }</div>
-            </span>
-            <img class="faction_img" loading="lazy" src={ ship.faction.img } />
-            <span class="ship_points"><i class="fas fa-coins" /><b> { ship.points }</b></span>
-            <span class="ship_cargo"><img src="/public/img/svg/cargo_nobg.svg" /><b> { ship.cargo }</b></span>
-            <span class="ship_"></span>
-        </div>
-    </Item>
-), [ship, ship.crew.length]);
+const ShipItem = (props: SearchItemProps) => {
+
+    return (
+        <Item actions={ props.actions }>
+            <div class="ship_info">
+                <img width="50" height="50" loading="lazy" class="ship_preview" src={ props.data.img } alt="" />
+                <span class="ship_title">
+                    <div class="ship_id">{ props.data.extension.short + props.data.numid }</div>
+                    <div class="ship_name">{ props.data.name }</div>
+                </span>
+                <img loading="lazy" class="faction_img" src={ props.data.faction.img } />
+                <span class="ship_points"><i class="fas fa-coins" /><b> { props.data.points }</b></span>
+                <span class="ship_cargo"><img src="/public/img/svg/cargo_nobg.svg" /><b> { props.data.cargo }</b></span>
+                <span class="ship_"></span>
+            </div>
+        </Item>
+    );
+}
 
 export default ShipItem;

@@ -1,12 +1,12 @@
-import { createContext } from 'preact';
-import { crewData } from '../../data/crew';
-import extensions, { ExtensionType } from '../../data/extension';
-import factions, { FactionType } from '../../data/faction';
-import { ItemsContextType, ItemType } from '../commons/Item';
-import { ShipItemType } from '../Ship';
+import { ItemsContextType, ItemType } from "@/components/commons/Item";
+import { ShipItemType } from "@/components/Ship";
+import { crewData } from "@/data/crew";
+import extensions, { ExtensionType } from "@/data/extension";
+import factions, { FactionType } from "@/data/faction";
+import { createContext } from "solid-js";
 import './Crew.css';
-import CrewDisplay from './CrewDisplay';
-import CrewSearch from './CrewSearch';
+import CrewDisplay from "./CrewDisplay";
+import CrewSearch from "./CrewSearch";
 
 
 export type CrewItemType = ItemType & {
@@ -43,15 +43,13 @@ type CrewProps = {
     remainingFleetPoints: number
 }
 
-const Crew = ({ ship, remainingFleetPoints }: CrewProps) => {
+const Crew = (props: CrewProps) => {
     
     return (
-        <>
-            <div class="main_container" id="crew_container">
-                <CrewSearch factionID={ ship.faction.id.toString() } />
-                <CrewDisplay ship={ ship } remainingFleetPoints={ remainingFleetPoints } />
-            </div>
-        </>
+        <div class="main_container" id="crew_container">
+            <CrewSearch factionID={ props.ship.faction.id.toString() } />
+            <CrewDisplay ship={ props.ship } remainingFleetPoints={ props.remainingFleetPoints } />
+        </div>
     );
 }
 

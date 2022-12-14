@@ -1,5 +1,5 @@
-import { capitalize } from "../../../utils";
-import IconButton from "../IconButton";
+import IconButton from "@/components/commons/IconButton";
+import { capitalize } from "@/utils";
 
 
 type ToastTypes = 'info' | 'success' | 'warning' | 'error';
@@ -25,9 +25,9 @@ export type ToastProps = ToastType & {
     deleteToast: (id: number) => void
 }
 
-const Toast = ({ id, type, position, title, description, deleteToast }: ToastProps) => {
+const Toast = (props: ToastProps) => {
     const backgroundColor = (() => {
-        switch (type) {
+        switch (props.type) {
             case 'info':
                 return '#5bc0de';
             case 'success':
@@ -39,20 +39,20 @@ const Toast = ({ id, type, position, title, description, deleteToast }: ToastPro
         }
     })();
     
-    if (!title) {
-        title = capitalize(type);
+    if (!props.title) {
+        props.title = capitalize(props.type);
     }
 
     return (
         <div
-            className={`notification ${position}`}
-            style={{ backgroundColor: backgroundColor }}
+            class={`notification ${props.position}`}
+            style={{ 'background-color': backgroundColor }}
         >
-            <IconButton iconID="times" onClick={() => deleteToast(id)} />
-            <i class={ "notification-image fas fa-" + icons[type] } alt={ title } title={ title } />
-            <p className="notification-title">{title}</p>
-            <p className="notification-message">
-                {description}
+            <IconButton iconID="times" onClick={() => props.deleteToast(props.id)} />
+            <i class={ "notification-image fas fa-" + icons[props.type] } title={ props.title } />
+            <p class="notification-title">{props.title}</p>
+            <p class="notification-message">
+                {props.description}
             </p>
         </div>
     );
