@@ -19,6 +19,7 @@
     text-align: center;
     align-items: center;
     gap: 0.6em;
+    min-height: 5em;
 }
 
 .item > .item_background > [class$=_info] * {
@@ -26,19 +27,12 @@
     vertical-align: text-top;
 }
 
-.item > .item_background > [class$=_info] > img {
+.item > .item_background > [class$=_info] img {
     user-select: none;
-}
-
-.item > .item_background > [class$=_info] > img:first-child {
     height: auto;
 }
 
 .item > .item_background > [class$=_info] > [class$=_title] {
     text-align: center;
     /* word-break: break-word; */
-}
-
-.item > .item_background > [class$=_info] > img:last-child {
-    height: auto;
 }
