@@ -309,6 +309,7 @@ const FleetDisplay = () => {
                                 },
                                 ships: fleetData.ships
                             });
+                            setTimeout(saveFleet, 500);
                         }}
                     />
             });
