@@ -6,6 +6,16 @@ h1 {
     background: inherit;
 }
 
+input[type="text"],
+input[type="number"] {
+    border: 2px solid rgba(0,0,0,0.08);
+    border-radius: 5px;
+    padding: 5px;
+    background-color: rgba(0,0,0,0.02);
+    width: 100%;
+    box-sizing: border-box;
+}
+
 #donation_container {
     margin: 0 1.25em;
 }
