@@ -67,6 +67,7 @@ const [hash, slug] = window.location.pathname.split('/').splice(-2, 2);
 async function getSavedFleetData() {
     try {
         const response = await fetch(`/public/fleet/get/${hash}/${slug}`);
+        // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
         const data = await response.json();
 
         if (!data) return;
