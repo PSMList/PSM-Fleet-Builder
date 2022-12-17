@@ -19,9 +19,12 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
     });
 
     let inputRef: HTMLInputElement;
+    let formRef: HTMLFormElement;
 
     const validate = () => {
         if (!inputRef) return;
+        // trigger for submit to invoke native input error message
+        if (!inputRef.checkValidity() && formRef) return formRef.submit();
         const newValue = (inputRef.type !== 'checkbox' ? inputRef.value : inputRef.checked) as T;
         if (newValue === defaultValue()) return;
         localProps.onValidate(newValue);
@@ -39,7 +42,13 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
     }
 
     return (
-        <form class="validation_input" onSubmit={ (event) => event.preventDefault() }>
+        <form
+            class="validation_input"
+            onSubmit={ (event) => event.preventDefault() }
+            ref={ (ref) => {
+                if (!ref) return;
+                formRef = ref; 
+            } }>
             <div class="validation_container">
                 <input
                     ref={ (ref) => {
@@ -47,10 +56,10 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                         inputRef = ref;
                         if (localProps.focus) setTimeout(() => ref.focus(), 1);
                     } }
+                    { ...inputProps }
                     { ... {
                         [typeof defaultValue() === 'boolean' ? 'value': 'checked']: defaultValue()
                     }}
-                    { ...inputProps }
                     onKeyPress={ (event) => {
                         if (event.key === 'Enter') {
                             // event.preventDefault();
