@@ -1,10 +1,13 @@
 import IconButton from "@/components/commons/IconButton";
 import ValidationInput from "@/components/commons/Inputs/ValidationInput";
 import { capitalize } from "@/utils";
-import { For, JSX, Show } from "solid-js";
+import { For, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
 import './Settings.css';
-type DataType = string | number | boolean
+
+type DataType = {
+    onKeyPress?: (event: KeyboardEvent) => void
+} & JSX.InputHTMLAttributes<HTMLInputElement>
 export type Data = { [key: string]: DataType }
 
 type SettingsProps = {
@@ -14,13 +17,8 @@ type SettingsProps = {
 }
 
 type InputSettings = {
-    onChange: (event: Event) => void
-    onValidate: (value: DataType) => void
-    name: string, type: string
-    value?: string
-    checked?: boolean
-    min?: number
-}
+    onValidate: (value: string | boolean) => void
+} & DataType
 
 const Settings = (props: SettingsProps) => {    
 
@@ -34,55 +32,46 @@ const Settings = (props: SettingsProps) => {
     const inputsData = (
         <For each={Object.entries(props.data)}>
             {
-                ([ name, value ]) => {
+                ([ name, _input ]) => {
                     const onChange = (event: Event) => {
                         const input = (event.target as HTMLInputElement);
                         switch (input.type) {
                             case 'text':
-                                setSettings(name, input.value);
+                                setSettings(name, "value", input.value);
                                 break;
                             case 'number':
-                                setSettings(name, parseInt(input.value));
+                                setSettings(name, "value", parseInt(input.value));
                                 break;
                             case 'checkbox':
-                                setSettings(name, input.checked);
+                                setSettings(name, "checked", input.checked);
                                 break;
                         }
                     };
-                    const onValidate = (newValue: DataType) => {
-                        switch (typeof value) {
-                            case 'string':
-                                setSettings(name, newValue as string);
+                    const onValidate = (newValue: string | boolean) => {
+                        switch (_input.type) {
+                            case 'text':
+                                setSettings(name, "value", newValue as string);
                                 break;
                             case 'number':
-                                setSettings(name, parseInt(newValue as string));
+                                setSettings(name, "value", parseInt(newValue as string));
                                 break;
-                            case 'boolean':
-                                setSettings(name, newValue as boolean);
+                            case 'checkbox':
+                                setSettings(name, "checked", newValue as boolean);
                                 break;
                         }
                         save(settings);
                     };
 
-                    const inputType = typeof value === 'boolean' ? 'checkbox' : (typeof value === 'number' ? 'number' : 'text');
                     const inputSettings: InputSettings = {
+                        ..._input,
                         onValidate,
                         onChange,
-                        name,
-                        type: inputType
-                    }
-                    if (typeof value === 'boolean') {
-                        inputSettings.checked = value;
-                    }
-                    else {
-                        inputSettings.value = value.toString();
-                        if (inputType === 'number') inputSettings.min = 0;
                     }
                     
 
                     return (
                         <div class="whitebox">
-                            <label for={ name }>{ capitalize(name) }</label>
+                            <label for={ name }>{ capitalize(_input.name!) }</label>
                             <ValidationInput { ...inputSettings } />
                         </div>
                     );

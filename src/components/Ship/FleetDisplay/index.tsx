@@ -66,8 +66,8 @@ const [hash, slug] = window.location.pathname.split('/').splice(-2, 2);
 
 async function getSavedFleetData() {
     try {
-        const response = await fetch(`/public/fleet/get/${hash}/${slug}`);
-        // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
+        // const response = await fetch(`/public/fleet/get/${hash}/${slug}`);
+        const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
         const data = await response.json();
 
         if (!data) return;
@@ -295,16 +295,32 @@ const FleetDisplay = () => {
                 inside:
                     <Settings
                         data={{
-                            "Fleet name": fleetData.name,
-                            "Max points": fleetData.points.max,
-                            "Public": fleetData.ispublic
+                            name: {
+                                name: "Fleet name",
+                                type: "text",
+                                value: fleetData.name,
+                            },
+                            maxpoints: {
+                                name: "Max points",
+                                type: "number",
+                                value: fleetData.points.max,
+                                // @ts-expect-error just ignore
+                                min: fleetMaxpointsMin,
+                                // @ts-expect-error just ignore
+                                max: fleetMaxpointsMax,
+                            },
+                            ispublic: {
+                                name: "Public",
+                                type: "checkbox",
+                                checked: fleetData.ispublic,
+                            },
                         }}
                         onSave={data => {
                             setNewData({
-                                name: data["Fleet name"] as string,
-                                ispublic: data["Public"] as boolean,
+                                name: data.name.value as string,
+                                ispublic: data.ispublic.checked as boolean,
                                 points: {
-                                    max: data["Max points"] as number,
+                                    max: data.maxpoints.value as number,
                                     current: fleetData.points.current
                                 },
                                 ships: fleetData.ships
