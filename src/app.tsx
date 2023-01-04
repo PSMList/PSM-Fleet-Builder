@@ -4,6 +4,9 @@ import Ship from "@/components/Ship";
 import './App.css';
 
 export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(window.location.pathname);
+export const fleetMaxpointsMin = 30;
+export const fleetMaxpointsMax = 200;
+export const baseUrl = `${window.location.origin}/public`;
 
 export function App() {
 
