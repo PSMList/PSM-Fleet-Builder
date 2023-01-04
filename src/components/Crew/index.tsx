@@ -1,8 +1,10 @@
+import { baseUrl } from "@/App";
 import { ItemsContextType, ItemType } from "@/components/commons/Item";
 import { ShipItemType } from "@/components/Ship";
 import { crewData } from "@/data/crew";
-import extensions, { ExtensionType } from "@/data/extension";
-import factions, { FactionType } from "@/data/faction";
+import extensionsData, { ExtensionType } from "@/data/extension";
+import factionsData, { FactionType } from "@/data/faction";
+import raritiesData, { RarityType } from "@/data/rarity";
 import { createContext } from "solid-js";
 import './Crew.css';
 import CrewDisplay from "./CrewDisplay";
@@ -15,22 +17,24 @@ export type CrewItemType = ItemType & {
 export const crewDict: { [id: string]: CrewItemType } = {};
 export const crewList = crewData.map<CrewItemType>(
     data => {
-        const [ id, idfaction, idextension, name, numid, points, lookingforbetterpic ] = data;
-        const faction = factions[idfaction] as FactionType;
-        const extension = extensions[idextension] as ExtensionType;
+        const faction = factionsData[data.idfaction] as FactionType;
+        const extension = extensionsData[data.idextension] as ExtensionType;
+        const rarity = raritiesData[data.idrarity] as RarityType;
 
         const crew: CrewItemType = {
-            id,
-            img: (!lookingforbetterpic ? `/public/img/gameicons/x80/${extension.short}/${numid}.jpg` : '/public/img/logos/crew.png'),
-            altimg: '/public/img/logos/crew.png',
+            id: data.id,
+            img: (!data.lookingforbetterpic ? `${baseUrl}/img/gameicons/x80/${extension.short}/${data.numid}.jpg` : `${baseUrl}/img/logos/crew.png`),
+            altimg: `${baseUrl}/img/logos/crew.png`,
             faction,
+            rarity,
             extension,
-            numid,
-            name,
-            fullname: `${ extension.short }${ numid } ${ name }`,
-            points
+            numid: data.numid,
+            name: data.name,
+            fullname: `${extension.short}${data.numid} ${name}`,
+            points: data.points,
+            defaultaptitude: data.defaultaptitude
         };
-        return crewDict[id] = crew;
+        return crewDict[data.id] = crew;
     });
 
 
