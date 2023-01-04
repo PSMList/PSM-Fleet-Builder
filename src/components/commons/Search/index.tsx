@@ -15,7 +15,6 @@ type SearchProps = {
 }
 
 const defaultSearchQuery = new RegExp('', 'i');
-const defaultSearchQueryString = defaultSearchQuery.toString();
 
 const Search = (props: SearchProps) => {
     
@@ -27,8 +26,12 @@ const Search = (props: SearchProps) => {
 
     const content = () => {
         const _searchQuery = searchQuery();
-        if (_searchQuery.toString() === defaultSearchQueryString) {
-            return <h3 class="search_info">Enter any text in the search bar to show items.</h3>
+        if (_searchQuery === defaultSearchQuery) {
+            return <h3 class="search_info">
+                Enter any text in the search bar to show items.
+                <br />
+                (leave blank and click search to show all)
+            </h3>
         }
 
         const filteredItems: JSX.Element[] = [];
@@ -62,6 +65,7 @@ const Search = (props: SearchProps) => {
                     class="search_input"
                     placeholder={ props.placeholder }
                     onValidate={ searchInItems }
+                    validationIcon="search"
                 />
                 { props.additionalInputs }
             </div>

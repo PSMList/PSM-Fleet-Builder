@@ -21,7 +21,7 @@
 
 .search_container > .search_info {
     flex: 1 0 auto;
-    max-width: 13em;
+    max-width: 16em;
     margin: 3em auto 2em;
     display: flex;
     text-align: center;
