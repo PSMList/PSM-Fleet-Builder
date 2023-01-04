@@ -1,5 +1,6 @@
 import { ExtensionType } from "@/data/extension";
 import { FactionType } from "@/data/faction";
+import { RarityType } from "@/data/rarity";
 import { JSX } from "solid-js";
 import './Item.css';
 
@@ -7,16 +8,18 @@ export type ItemType = {
     id: number
     img: string
     altimg: string
-    extension: ExtensionType
     faction: FactionType
+    rarity: RarityType
+    extension: ExtensionType
     name: string
     numid: string
     fullname: string
     points: number
+    defaultaptitude: string
 }
 
-export type ItemsContextType = {
-    selectItemCallbacks: Function[]
+export type ItemsContextType<T extends ItemType> = {
+    add: (item: T) => void
 };
 
 export type ItemProps = {
@@ -25,13 +28,13 @@ export type ItemProps = {
 };
 
 export const Item = (props: ItemProps) => {
-
+    const children = <>{ props.children }</>;
     return (
         <li class="item">
             <div class="actions">{ props.actions }</div>
             <div class="item_background">
-                { props.children }
             </div>
+            { children }
         </li>
     );
 }

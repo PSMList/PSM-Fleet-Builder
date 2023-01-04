@@ -1,3 +1,5 @@
+import { baseUrl } from "@/App";
+import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
 import { CrewItemType } from "@/components/Crew";
 import { JSX } from "solid-js";
@@ -8,18 +10,44 @@ type SearchItemProps = {
     actions?: JSX.Element
 }
 
-const CrewItem = (props: SearchItemProps) => () => {
+function onError(this: any, target: HTMLImageElement, url: string) {
+    target.src = url;
+    target.onerror = null;
+}
 
+function setBackground(element: HTMLDivElement, short: string) {
+    if (element.parentElement) {
+        element.parentElement.style.backgroundImage = `url(${baseUrl}/img/bg_card/m/bg_${short}.png)`;
+    }
+}
+
+const CrewItem = (props: SearchItemProps) => () => {
+    
     return (
-        <Item actions={ props.actions }>
-            <div class="crew_info">
-                <img class="crew_preview" loading="lazy" src={ props.data.img } onError={ (event) => (event.target as HTMLImageElement).src = props.data.altimg } />
-                <span class="crew_title">
-                    <div class="crew_id">{ props.data.extension.short + props.data.numid }</div>
-                    <div class="crew_name">{ props.data.name }</div>
-                </span>
-                <img class="faction_img" loading="lazy" src={ props.data.faction.img } />
-                <span class="crew_points"><i class="fas fa-coins" /><b> { props.data.points }</b></span>
+        <Item
+            actions={<>
+                { props.actions }
+                <IconButton
+                    iconID="book-open"
+                    onClick={
+                        () => open(`${baseUrl}/crew/${props.data.extension.short}${props.data.numid}`, '_blank')
+                    }
+                    title="More info"
+                />
+            </>}
+        >
+            <div class="info" ref={ (ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace('U', '')), 1) }>
+                <div class="top">
+                    <div class="name">{ props.data.name }</div>
+                    <img class="extension" src={ `${baseUrl}/img/logos/logo_${props.data.extension.short.replace('U', '')}_o.png` } alt={ props.data.faction.defaultname } />
+                    <span class="id">{ `${props.data.extension.short} ${props.data.numid}` }</span>
+                    <img class="faction" src={ `${baseUrl}/img/flag/search/${props.data.faction.nameimg}.png` } alt={ props.data.faction.defaultname } />
+                </div>
+                <div class="bottom">
+                    <img class="preview" loading="lazy" src={ props.data.img } alt={ props.data.fullname } width="80" height="80"
+                        onerror={ ({ target }) => onError(target as HTMLImageElement, props.data.altimg) } />
+                    <span class="aptitude">{ props.data.defaultaptitude }</span>
+                </div>
             </div>
         </Item>
     );

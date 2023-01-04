@@ -1,38 +1,134 @@
 .item {
     position: relative;
-    z-index: initial;
-}
-
-.item > .item_background {
-    padding: 1em;
-    margin-bottom: 1em;
-    border-radius: 10px;
-    box-shadow: 0 8px 15px -10px rgba(0,0,0,0.2);
-    /* "disable" selection on elements inside of item container */
-    position: relative;
     z-index: -1;
+    background-size: cover;
+    border-radius: 10px;
 }
 
-.item > .item_background > [class$=_info] {
-    display: grid;
-    grid-template-columns: minmax(auto, 3em) 1fr minmax(auto, 2em);
-    text-align: center;
-    align-items: center;
-    gap: 0.6em;
+.item > .actions {
+    position: absolute;
+    right: 1em;
+    top: 0;
+    transform: translateY(-50%);
+    display: flex;
+    padding: 0.25em;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 2px solid lightgray;
+}
+
+.item > .actions > * {
+    margin: 0;
+}
+
+.item > .info {
+    padding: 0.6em;
+    margin: 0.6em;
+    background-color: rgba(0,0,0,0.2);
     min-height: 5em;
+    border-radius: 3px;
 }
 
-.item > .item_background > [class$=_info] * {
+.item > .info * {
+    color: white;
+    text-shadow: rgb(0,0,0) 0px 0px 4px, rgb(0,0,0) 0px 0px 2px;
     max-width: 100%;
-    vertical-align: text-top;
 }
 
-.item > .item_background > [class$=_info] img {
+.item > .info *:not(i) {
+    font-family: Windlass;
+    font-weight: bold;
+}
+
+.item > .info img {
     user-select: none;
     height: auto;
 }
 
-.item > .item_background > [class$=_info] > [class$=_title] {
+.item > .info > .top {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0px 0px;
+    grid-template-areas:
+      "name name name"
+      "extension id faction";
+}
+.item > .info > .top > .name {
+    font-size: 1.1em;
+    grid-area: name;
+}
+.item > .info > .top > .id {
+    grid-area: id;
+}
+.item > .info > .top > .faction {
+    width: 2em;
+    grid-area: faction;
+}
+.item > .info > .top > .extension {
+    width: 1em;
+    margin-right: 0.25em;
+    grid-area: extension;
+    filter: invert(1);
+}
+
+.item > .info > .bottom {
+    margin-top: 0.5em;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.2em;
+    grid-template-areas:
+      "preview stats"
+      "preview cannons";
+}
+
+.item > .info > .bottom > .preview {
+    width: 3em;
+    border-radius: 5px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    grid-area: preview;
+    align-self: center;
+}
+
+.item > .info > .bottom > .stats {
+    grid-area: stats;
+}
+
+.item > .info > .bottom > .stats img,
+.item > .info > .bottom > .cannons img:first-child {
+    width: 1.5em;
+    margin-left: 0.3em;
+    vertical-align: middle;
+}
+
+.item > .info > .bottom > .cannons {
+    grid-area: cannons;
+}
+
+.item > .info > .bottom > .cannons img {
+    width: 0.8em;
+    margin-left: 0.15em;
+    vertical-align: middle;
+}
+
+.item > .info > .bottom > .stats,
+.item > .info > .bottom > .cannons {
+    background-color: #000;
+    padding: 0.1em;
+    border-radius: 2px;
+}
+
+.item > .info .aptitude {
+    border: 1.5px solid black;
     text-align: center;
-    /* word-break: break-word; */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4em;
+    padding: 0.2em;
+    margin-top: 0.4em;
+    font-size: 0.72em;
+    /* line-height: 1em; */
+    font-family: Roboto;
+    width: 100%;
 }
