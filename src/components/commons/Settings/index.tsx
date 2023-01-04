@@ -8,7 +8,7 @@ import './Settings.css';
 type DataType = {
     onKeyPress?: (event: KeyboardEvent) => void
 } & JSX.InputHTMLAttributes<HTMLInputElement>
-export type Data = { [key: string]: DataType }
+export type Data = { [name: string]: DataType }
 
 type SettingsProps = {
     data: Data
@@ -20,17 +20,21 @@ type InputSettings = {
     onValidate: (value: string | boolean) => void
 } & DataType
 
-const Settings = (props: SettingsProps) => {    
+const Settings = (props: SettingsProps) => {
 
     const [settings, setSettings] = createStore(props.data);
 
-    const save = (settings: Data) => {
+    const save = () => {
         props.onSave(settings);
         setSettings(() => settings);
     }
 
+    const undo = () => {
+        setSettings(() => props.data);
+    }
+
     const inputsData = (
-        <For each={Object.entries(props.data)}>
+        <For each={Object.entries(settings)}>
             {
                 ([ name, _input ]) => {
                     const onChange = (event: Event) => {
@@ -59,7 +63,7 @@ const Settings = (props: SettingsProps) => {
                                 setSettings(name, "checked", newValue as boolean);
                                 break;
                         }
-                        save(settings);
+                        save();
                     };
 
                     const inputSettings: InputSettings = {
@@ -67,7 +71,6 @@ const Settings = (props: SettingsProps) => {
                         onValidate,
                         onChange,
                     }
-                    
 
                     return (
                         <div class="whitebox">
@@ -86,15 +89,17 @@ const Settings = (props: SettingsProps) => {
                 <h3>
                     Save&nbsp;
                     <IconButton
-                        onClick={ () => save(settings) }
+                        onClick={ save }
                         iconID="save"
+                        title="Save"
                     />
                 </h3>
                 <h3>
-                    Reset to default&nbsp;
+                    Undo changes&nbsp;
                     <IconButton
-                        onClick={ () => save(props.data) }
+                        onClick={ undo }
                         iconID="eraser"
+                        title="Undo"
                     />
                 </h3>
             </div>

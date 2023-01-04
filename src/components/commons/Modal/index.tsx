@@ -6,7 +6,7 @@ import './Modal.css';
 
 type ModalProperties = {
     id: string
-    inside: JSX.Element,
+    content: JSX.Element,
     title: string,
     onClose?: () => void
 };
@@ -39,11 +39,13 @@ const Modal = (props: ModalProps) => {
                                 if (props.properties.onClose) props.properties.onClose();
                                 modalContext.hideModal(props.properties.id);
                             }}
-                            iconID="window-close" />
+                            iconID="window-close"
+                            title="Close"
+                        />
                     </div>
                 </h2>
                 <div class="modal-content">
-                    {props.properties.inside}
+                    {props.properties.content}
                 </div>
             </div>
         </div>

@@ -1,21 +1,21 @@
-import { onlyDisplay } from "@/App";
+import { baseUrl, onlyDisplay } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Select from "@/components/commons/Inputs/Select";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { ShipItemsContext, ShipItemType, shipList } from "@/components/Ship";
 import ShipItem from "@/components/Ship/ShipItem";
-import extensions from "@/data/extension";
-import factions from "@/data/faction";
+import extensionsData from "@/data/extension";
+import factionsData from "@/data/faction";
 import { createSignal, useContext } from "solid-js";
 import './ShipSearch.css';
 
-const selectFactions = Object.values(factions);
-selectFactions.unshift({ id: -1, img: '', name: 'All factions' });
-const selectFactionsOptions = selectFactions.map( faction => ({ value: faction.id.toString(), display: <span><img src={ /*@once*/faction.img } />{ /*@once*/faction.name }</span> }) )
+const selectFactions = Object.values(factionsData);
+const selectFactionsOptions = selectFactions.map( faction => ({ value: faction.id.toString(), display: <span><img src={ /*@once*/`${baseUrl}/img/flag/search/${faction.nameimg}.png` } />{ /*@once*/faction.defaultname }</span> }) )
+selectFactionsOptions.unshift({ value: '-1', display: <span><img />All factions</span> });
 
-const selectExtensions = Object.values(extensions);
-selectExtensions.unshift({ id: -1, img: '', name: 'All extensions', short: '' });
-const selectExtensionsOptions = selectExtensions.map( extension => ({ value: extension.id.toString(), display: <span><img src={ /*@once*/extension.img } />{ /*@once*/extension.name }</span> }) )
+const selectExtensions = Object.values(extensionsData);
+const selectExtensionsOptions = selectExtensions.map( extension => ({ value: extension.id.toString(), display: <span><img src={ /*@once*/`${baseUrl}/img/logos/logo_${extension.short.replace('U', '')}.png` } />{ /*@once*/extension.name }</span> }) )
+selectExtensionsOptions.unshift({ value: '-1', display: <span><img />All expansions</span> });
 
 const ShipSearch = () => {
     if (onlyDisplay) return <></>;
@@ -37,7 +37,11 @@ const ShipSearch = () => {
             <ShipItem
                 data={ ship }
                 actions={
-                    <IconButton iconID="plus-square" onClick={ () => selectItem( ship ) } />
+                    <IconButton
+                        iconID="plus-square"
+                        onClick={ () => selectItem( ship ) }
+                        title="Add crew"
+                    />
                 }
             />
     }));
@@ -80,7 +84,7 @@ const ShipSearch = () => {
                     }
                 />
                 <Select
-                    defaultSelectText="Select extension"
+                    defaultSelectText="Select expansion"
                     class="search_extension"
                     onOptionSelect={ searchByExtension }
                     optionsList={

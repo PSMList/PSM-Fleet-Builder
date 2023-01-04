@@ -1,11 +1,11 @@
-import { onlyDisplay } from "@/App";
+import { baseUrl, onlyDisplay } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Select from "@/components/commons/Inputs/Select";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { CrewItemsContext, CrewItemType, crewList } from "@/components/Crew";
 import CrewItem from "@/components/Crew/CrewItem";
-import extensions from "@/data/extension";
-import factions from "@/data/faction";
+import extensionsData from "@/data/extension";
+import factionsData from "@/data/faction";
 import { createSignal, useContext } from "solid-js";
 import './CrewSearch.css';
 
@@ -14,13 +14,13 @@ type CrewSearchProps = {
     extensionID?: string
 }
 
-const selectFactions = Object.values(factions);
-selectFactions.unshift({ id: -1, img: '', name: 'All factions' });
-const selectFactionsOptions = selectFactions.map( faction => ({ value: faction.id.toString(), display: <span><img src={ /*@once*/faction.img } />{ /*@once*/faction.name }</span> }) )
+const selectFactions = Object.values(factionsData);
+const selectFactionsOptions = selectFactions.map( faction => ({ value: faction.id.toString(), display: <span><img src={ /*@once*/`${baseUrl}/img/flag/search/${faction.nameimg}.png` } />{ /*@once*/faction.defaultname }</span> }) )
+selectFactionsOptions.unshift({ value: '-1', display: <span><img />All factions</span> });
 
-const selectExtensions = Object.values(extensions);
-selectExtensions.unshift({ id: -1, img: '', name: 'All extensions', short: '' });
-const selectExtensionsOptions = selectExtensions.map( extension => ({ value: extension.id.toString(), display: <span><img src={ /*@once*/extension.img } />{ /*@once*/extension.name }</span> }) )
+const selectExtensions = Object.values(extensionsData);
+const selectExtensionsOptions = selectExtensions.map( extension => ({ value: extension.id.toString(), display: <span><img src={ /*@once*/`${baseUrl}/img/logos/logo_${extension.short.replace('U', '')}.png` } />{ /*@once*/extension.name }</span> }) )
+selectExtensionsOptions.unshift({ value: '-1', display: <span><img />All expansions</span> });
 
 const CrewSearch = (props: CrewSearchProps) => {
     if (onlyDisplay) return <></>;
@@ -42,7 +42,11 @@ const CrewSearch = (props: CrewSearchProps) => {
             <CrewItem
                 data={ crew }
                 actions={
-                    <IconButton iconID="plus-square" onClick={ () => selectItem( crew ) } />
+                    <IconButton
+                        iconID="plus-square"
+                        onClick={ () => selectItem( crew ) }
+                        title="Add crew"
+                    />
                 }
             />
     }));
@@ -55,7 +59,6 @@ const CrewSearch = (props: CrewSearchProps) => {
         setExtensionFilter(() => parseInt(extensionID));
     };
 
-    // TODO: cache output to reuse instead of recompute
     const filteredCrews = () => {
         if (factionFilter() === -1 && extensionFilter() === -1) {
             return crews;
@@ -88,7 +91,7 @@ const CrewSearch = (props: CrewSearchProps) => {
                         defaultSelectOption={ props.factionID || '-1' }
                     />
                     <Select
-                        defaultSelectText="Select extension"
+                        defaultSelectText="Select expansion"
                         class="search_extension"
                         onOptionSelect={ searchByExtension }
                         optionsList={

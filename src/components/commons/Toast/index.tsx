@@ -48,9 +48,18 @@ const Toast = (props: ToastProps) => {
             class={`notification ${props.position}`}
             style={{ 'background-color': backgroundColor }}
         >
-            <IconButton iconID="times" onClick={() => props.deleteToast(props.id)} />
-            <i class={ "notification-image fas fa-" + icons[props.type] } title={ props.title } />
-            <p class="notification-title">{props.title}</p>
+            <IconButton
+                iconID="times"
+                onClick={() => props.deleteToast(props.id)}
+                title="Close"
+            />
+            <i
+                class={ "notification-image fas fa-" + icons[props.type] }
+                title={ props.title }
+            />
+            <p class="notification-title">
+                {props.title}
+            </p>
             <p class="notification-message">
                 {props.description}
             </p>

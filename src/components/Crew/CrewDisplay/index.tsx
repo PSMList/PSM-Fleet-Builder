@@ -64,10 +64,10 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         const crewItemsContext = useContext(CrewItemsContext);
 
         const addCrew = (crew: CrewItemType) => {
-            if ( props.ship.crew.length + 1 > props.ship.cargo ) return toastContext.createToast({
-                type: 'error',
+            if ( props.ship.crew.length + 1 > props.ship.cargo ) toastContext.createToast({
+                type: 'warning',
                 title: 'Add crew',
-                description: 'Can\'t add crew due to cargo limit.'
+                description: 'Exceeding cargo limit.'
             });
             if ( crew.faction.id !== props.ship.faction.id ) toastContext.createToast({
                 type: 'warning',
@@ -115,10 +115,20 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         }
 
         crewActions = (
-            <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear crew" />
+            <IconButton
+                iconID="eraser"
+                class="clear"
+                onClick={clearCrew}
+                title="Clear all crew"
+            />
         );
     
-        removeCrewAction = (crew: CrewItemType) => <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} />
+        removeCrewAction = (crew: CrewItemType) =>
+            <IconButton
+                iconID="minus-square"
+                onClick={() => removeCrew(crew)}
+                title="Remove crew"
+            />
     }
 
     const headerInfo = (

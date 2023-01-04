@@ -2,6 +2,7 @@
 @media only screen and (max-width : 992px) {
     #crew_container {
         flex-direction: column-reverse;
+        height: 200%;
     }
 
     #crew_container > * {

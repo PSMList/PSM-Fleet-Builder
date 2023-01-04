@@ -3,22 +3,21 @@
 .icon_button {
     background: none;
     border: none;
-    font-size: 1.2em;
+    color: rgba(0,0,0,0.5);
+    font-size: 1.5em;
 }
 
-@media only screen and (min-width: 992px) {
-    .icon_button {
-        margin-left: 0.25em;
-        margin-right: 0.25em;
-        font-size: 1.5em;
-    }
+.icon_button:first-of-type {
+    margin-left: 0.25em;
+}
+
+.icon_button:last-of-type {
+    margin-right: 0.25em;
 }
 
 .icon_button:hover>*,
 .icon_button:focus>*,
 .icon_button:focus-within>* {
-    font-size: 1.2em;
-    margin: -0.08em;
-    transform: translate(-0.05em, 0.05em);
     cursor: pointer;
+    color: #428BCA;
 }
