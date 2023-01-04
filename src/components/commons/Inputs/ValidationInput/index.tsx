@@ -6,6 +6,8 @@ type ValidationInputProps<T extends string | boolean> = {
     focus?: boolean
     onValidate: (value: T) => void
     onKeyPress?: (event: KeyboardEvent) => void
+    validationIcon?: string
+    validationTitle?: string
 } & JSX.InputHTMLAttributes<HTMLInputElement>
 
 const ValidationInput = <T extends string | boolean>(props: ValidationInputProps<T>) => {
@@ -26,7 +28,6 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
         // trigger for submit to invoke native input error message
         if (!inputRef.checkValidity() && formRef) return formRef.submit();
         const newValue = (inputRef.type !== 'checkbox' ? inputRef.value : inputRef.checked) as T;
-        if (newValue === defaultValue()) return;
         localProps.onValidate(newValue);
         setDefaultValue(() => newValue);
     }
@@ -73,10 +74,12 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                 <IconButton
                     onClick={ undo }
                     iconID="undo"
+                    title="Undo"
                 />
                 <IconButton
                     onClick={ validate }
-                    iconID="check"
+                    iconID={ props.validationIcon || "check" }
+                    title={ props.validationTitle || "Validate" }
                 />
             </div>
         </form>
