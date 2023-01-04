@@ -52,8 +52,8 @@ export const shipList = shipData.map<ShipItemType>(
     });
 
 
-export const ShipItemsContext = createContext<ItemsContextType>({
-    selectItemCallbacks: []
+export const ShipItemsContext = createContext<ItemsContextType<ShipItemType>>({
+    add: () => {}
 });
 
 const Ship = () => {

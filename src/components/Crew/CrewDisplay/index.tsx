@@ -5,8 +5,7 @@ import { ToastContext } from "@/components/commons/Toasts";
 import { CrewItemsContext, CrewItemType } from "@/components/Crew";
 import CrewItem from "@/components/Crew/CrewItem";
 import { ShipItemType } from "@/components/Ship";
-import { removeItemFromArray } from "@/utils";
-import { createEffect, For, JSX, onCleanup, useContext } from "solid-js";
+import { createEffect, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './CrewDisplay.css';
 
@@ -46,9 +45,12 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     });
 
     createEffect(() => {
+        setData("room", "current", crewData.crews.length);
+    });
+
+    createEffect(() => {
         setData(produce(data => {
             data.crews = props.ship.crew;
-            data.room.current = data.crews.length;
             data.points.current = data.crews.reduce((total: number, crew: CrewItemType) => total + crew.points, 0);
             data.points.max = data.points.current + props.remainingFleetPoints;
         }));
@@ -89,10 +91,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
             }));
         }
 
-        crewItemsContext.selectItemCallbacks.push(addCrew);
-        onCleanup(() => {
-            removeItemFromArray(crewItemsContext.selectItemCallbacks, func => func === addCrew);
-        });
+        crewItemsContext.add = addCrew;
 
         const removeCrew = (crew: CrewItemType) => {
             const crewIndex = crewData.crews.findIndex(_crew => crew === _crew);

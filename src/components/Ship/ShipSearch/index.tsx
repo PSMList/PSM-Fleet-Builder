@@ -26,9 +26,7 @@ const ShipSearch = () => {
     const shipItemsContext = useContext(ShipItemsContext);
     
     const selectItem = (ship: ShipItemType) => {
-        shipItemsContext.selectItemCallbacks.forEach( selectItemCallback => {
-            selectItemCallback( ship );
-        });
+        shipItemsContext.add( ship );
     }
 
     const ships: SearchItemType[] = shipList.map( ship => ({

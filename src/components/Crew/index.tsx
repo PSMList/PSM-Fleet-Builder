@@ -38,8 +38,8 @@ export const crewList = crewData.map<CrewItemType>(
     });
 
 
-export const CrewItemsContext = createContext<ItemsContextType>({
-    selectItemCallbacks: []
+export const CrewItemsContext = createContext<ItemsContextType<CrewItemType>>({
+    add: () => {}
 });
 
 type CrewProps = {

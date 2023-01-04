@@ -1,4 +1,4 @@
-import { onlyDisplay } from "@/App";
+import { baseUrl, fleetMaxpointsMax, fleetMaxpointsMin, onlyDisplay } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -7,11 +7,9 @@ import { ToastContext } from "@/components/commons/Toasts";
 import Crew, { crewDict, CrewItemType } from "@/components/Crew";
 import { shipDict, ShipItemsContext, ShipItemType } from "@/components/Ship";
 import ShipItem from "@/components/Ship/ShipItem";
-import { removeItemFromArray } from "@/utils";
-import { createEffect, For, JSX, onCleanup, useContext } from "solid-js";
+import { createEffect, createSignal, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './FleetDisplay.css';
-
 
 type FleetSavedDataType = {
     name: string
@@ -66,7 +64,7 @@ const [hash, slug] = window.location.pathname.split('/').splice(-2, 2);
 
 async function getSavedFleetData() {
     try {
-        const response = await fetch(`/public/fleet/get/${hash}/${slug}`);
+        const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
         // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
         const data = await response.json();
 
@@ -83,6 +81,8 @@ async function getSavedFleetData() {
 
 const FleetDisplay = () => {
     const [fleetData, setData] = createStore<FleetDataType>(defaultFleetData);
+
+    const [ saved, setSaved ] = createSignal(true);
 
     const setNewData = (newData: FleetDataType) => {
         setData(produce(data => {
@@ -162,12 +162,17 @@ const FleetDisplay = () => {
     };
 
     const showCrew = (ship: ShipItemType) => {
+        const oldState = JSON.stringify(ship);
         modalContext.showModal({
-            id: 'add_crew_' + ship.id,
+            id: 'add_crew_' + ship.uuid,
             title: 'Select crew for ' + ship.fullname,
             onClose: () => {
+                const newState = JSON.stringify(ship);
+                if (!onlyDisplay && oldState !== newState) {
+                    setSaved(() => false);
+                }
             },
-            inside: <Crew ship={ship} remainingFleetPoints={fleetData.points.max - fleetData.points.current} />
+            content: <Crew ship={ship} remainingFleetPoints={fleetData.points.max - fleetData.points.current} />
         });
     }
 
@@ -190,25 +195,29 @@ const FleetDisplay = () => {
                 description: 'Exceeding fleet max points. Please go to the settings if you want to increase the limit.'
             });
             setData(produce(data => {
-                data.ships.push({ ...ship });
+                data.ships.push({ ...ship, crew: [], uuid: Math.random().toString().substring(2) });
             }));
+            setSaved(() => false);
         }
 
         const removeShip = (ship: ShipItemType) => {
-            const shipIndex = fleetData.ships.findIndex(_ship => ship === _ship);
+            const shipIndex = fleetData.ships.reverse().findIndex(_ship => ship === _ship);
             if (shipIndex >= 0) {
                 setData(produce((data) => {
                     data.ships.splice(shipIndex, 1);
                 }));
+                setSaved(() => false);
             }
         }
 
-        removeShipAction = (ship: ShipItemType) => <IconButton iconID="minus-square" onClick={() => removeShip(ship)} />
+        removeShipAction = (ship: ShipItemType) =>
+            <IconButton
+                iconID="minus-square"
+                onClick={() => removeShip(ship)}
+                title="Remove ship"
+            />
 
-        shipItemsContext.selectItemCallbacks.push(addShip);
-        onCleanup(() => {
-            removeItemFromArray(shipItemsContext.selectItemCallbacks, func => func === addShip);
-        });
+        shipItemsContext.add = addShip;
 
         const importFleet = () => {
             const inputFile = document.createElement('input');
@@ -234,6 +243,7 @@ const FleetDisplay = () => {
                     const fileFleetData = getFleetData(JSON.parse(await file.text()));
                     if (fileFleetData) {
                         setNewData(fileFleetData);
+                        setSaved(() => false);
                         return toastContext.createToast({
                             type: 'success',
                             title: 'Import fleet data',
@@ -253,7 +263,8 @@ const FleetDisplay = () => {
 
         const saveFleet = async () => {
             const fleetStr = fleetDataToString();
-            fetch(`/public/fleet/self/set/${hash}/${slug}`, {
+            fetch(`${baseUrl}/fleet/self/set/${hash}/${slug}`, {
+            // fetch(`http://psmlist/public/fleet/self/set/${hash}/${slug}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -262,6 +273,7 @@ const FleetDisplay = () => {
             })
                 .then((res) => {
                     if (!res.ok) throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
+                    setSaved(() => true);
                     toastContext.createToast({
                         type: 'success',
                         title: 'Save fleet data',
@@ -286,13 +298,14 @@ const FleetDisplay = () => {
             setData(produce(data => {
                 data.ships.length = 0;
             }));
+            setSaved(() => false);
         }
 
         const editFleetSettings = () => {
             modalContext.showModal({
                 id: 'edit_fleet_settings',
                 title: 'Fleet settings',
-                inside:
+                content:
                     <Settings
                         data={{
                             name: {
@@ -305,9 +318,7 @@ const FleetDisplay = () => {
                                 name: "Max points",
                                 type: "number",
                                 value: fleetData.points.max,
-                                // @ts-expect-error just ignore
                                 min: fleetMaxpointsMin,
-                                // @ts-expect-error just ignore
                                 max: fleetMaxpointsMax,
                             },
                             ispublic: {
@@ -326,6 +337,7 @@ const FleetDisplay = () => {
                                 },
                                 ships: fleetData.ships
                             });
+                            setSaved(() => false);
                             setTimeout(saveFleet, 500);
                         }}
                     />
@@ -334,11 +346,37 @@ const FleetDisplay = () => {
 
         fleetActions = (
             <>
-                <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
-                <IconButton iconID="file-import" class="import" onClick={importFleet} title="Import from file" />
-                <IconButton iconID="save" class="save" onClick={saveFleet} title="Save" />
-                <IconButton iconID="eraser" class="clear" onClick={clearFleet} title="Clear fleet" />
-                <IconButton iconID="cog" class="settings" onClick={editFleetSettings} title="Edit fleet settings" />
+                <IconButton
+                    iconID="share-square"
+                    class="export"
+                    onClick={exportFleet}
+                    title="Export to file"
+                />
+                <IconButton
+                    iconID="file-import"
+                    class="import"
+                    onClick={importFleet}
+                    title="Import from file"
+                />
+                <IconButton
+                    iconID="save"
+                    class="save"
+                    onClick={saveFleet}
+                    title="Save"
+                    style={{ color: saved() ? "green" : "red" }}
+                />
+                <IconButton
+                    iconID="eraser"
+                    class="clear"
+                    onClick={clearFleet}
+                    title="Clear fleet"
+                />
+                <IconButton
+                    iconID="cog"
+                    class="settings"
+                    onClick={editFleetSettings}
+                    title="Edit fleet settings"
+                />
             </>
         );
     }
@@ -351,7 +389,12 @@ const FleetDisplay = () => {
 
     if (!fleetActions) {
         fleetActions = (
-            <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
+            <IconButton
+                iconID="share-square"
+                class="export"
+                onClick={exportFleet}
+                title="Export to file"
+            />
         );
     }
 
@@ -366,6 +409,7 @@ const FleetDisplay = () => {
                                 onClick={() => showCrew(ship)}
                                 data-crew-room={ship.crew.length ? ship.crew.length : null}
                                 iconID="users-cog"
+                                title="Show crew"
                             />
                             {removeShipAction && removeShipAction(ship)}
                         </>}

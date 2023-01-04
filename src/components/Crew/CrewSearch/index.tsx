@@ -31,9 +31,7 @@ const CrewSearch = (props: CrewSearchProps) => {
     const crewItemsContext = useContext(CrewItemsContext);
     
     const selectItem = (crew: CrewItemType) => {
-        crewItemsContext.selectItemCallbacks.forEach( selectItemCallback => {
-            selectItemCallback( crew );
-        });
+        crewItemsContext.add( crew );
     };
 
     const crews: SearchItemType[] = crewList.map( crew => ({
