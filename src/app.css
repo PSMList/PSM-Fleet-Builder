@@ -6,7 +6,7 @@
 
 @media only screen and (max-width : 992px) {
     #content_container {
-        height: 199.5vh;
+        height: max(199.5vh, 65em);
         font-size: 0.9em;
     }
 }
