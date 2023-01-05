@@ -4,9 +4,12 @@ import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
 import Settings from "@/components/commons/Settings";
 import { ToastContext } from "@/components/commons/Toasts";
-import Crew, { crewDict, CrewItemType } from "@/components/Crew";
-import { shipDict, ShipItemsContext, ShipItemType } from "@/components/Ship";
+import Crew from "@/components/Crew";
+import { ShipItemsContext } from "@/components/Ship";
 import ShipItem from "@/components/Ship/ShipItem";
+import { CrewType } from "@/data/crew";
+import { ShipType } from "@/data/ship";
+import { StoreProvider, useStore } from "@/data/store";
 import { createEffect, createSignal, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './FleetDisplay.css';
@@ -28,7 +31,7 @@ export type FleetDataType = {
         max: number
     }
     ispublic: boolean
-    ships: ShipItemType[]
+    ships: ShipType[]
 }
 
 const defaultFleetData: FleetDataType = {
@@ -41,46 +44,47 @@ const defaultFleetData: FleetDataType = {
     ispublic: false
 }
 
-function getFleetData(savedData: FleetSavedDataType): FleetDataType | undefined {
-    // if ( !fleetDataSchema.test(stringData) ) return;
-
-    return {
-        name: savedData.name,
-        points: {
-            current: 0,
-            max: savedData.maxpoints
-        },
-        ships: savedData.data.map((item: any) => {
-            const { id: shipID, crew: crews } = item;
-            const ship = { ...shipDict[shipID] };
-            ship.crew = crews.map((crew: { id: number }) => ({ ...crewDict[crew.id] }));
-            return ship;
-        }),
-        ispublic: savedData.ispublic
-    };
-}
-
 const [hash, slug] = window.location.pathname.split('/').splice(-2, 2);
 
-async function getSavedFleetData() {
-    try {
-        const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
-        // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
-        const data = await response.json();
-
-        if (!data) return;
-
-        const fleetData = getFleetData(data);
-        if (!fleetData) return;
-        return fleetData;
-    }
-    catch (err) {
-        console.error(err);
-    }
-}
-
 const FleetDisplay = () => {
+    const { database, loadingPromise } = useStore().databaseService;
+
     const [fleetData, setData] = createStore<FleetDataType>(defaultFleetData);
+
+    function getFleetData(savedData: FleetSavedDataType): FleetDataType | undefined {
+        // if ( !fleetDataSchema.test(stringData) ) return;
+
+        return {
+            name: savedData.name,
+            points: {
+                current: 0,
+                max: savedData.maxpoints
+            },
+            ships: savedData.data.map((item: any) => {
+                const { id: shipID, crew: crews } = item;
+                const ship = { ...database.ships.get(shipID)!, uuid: Math.random().toString().substring(2) };
+                ship.crew = crews.map((crew: { id: number }) => ({ ...database.crews.get(crew.id)! }));
+                return ship;
+            }),
+            ispublic: savedData.ispublic
+        };
+    }
+
+    async function getSavedFleetData() {
+        try {
+            const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
+            // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
+            const data = await response.json();
+            if (!data) return;
+
+            const fleetData = getFleetData(data);
+            if (!fleetData) return;
+            return fleetData;
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
 
     const [ saved, setSaved ] = createSignal(true);
 
@@ -95,10 +99,10 @@ const FleetDisplay = () => {
 
     createEffect(() => {
         setData("points", "current", fleetData.ships.reduce(
-            (shipTotal: number, ship: ShipItemType) =>
+            (shipTotal: number, ship: ShipType) =>
                 shipTotal
                 +
-                ship.crew.reduce((crewTotal: number, crew: CrewItemType) => crewTotal + crew.points, ship.points),
+                ship.crew.reduce((crewTotal: number, crew: CrewType) => crewTotal + crew.points, ship.points),
             0
         ));
     });
@@ -125,6 +129,7 @@ const FleetDisplay = () => {
     const toastContext = useContext(ToastContext);
 
     (async () => {
+        await loadingPromise;
         const savedFleetData = await getSavedFleetData();
         if (savedFleetData) {
             setNewData(savedFleetData);
@@ -161,7 +166,7 @@ const FleetDisplay = () => {
         });
     };
 
-    const showCrew = (ship: ShipItemType) => {
+    const showCrew = (ship: ShipType) => {
         const oldState = JSON.stringify(ship);
         modalContext.showModal({
             id: 'add_crew_' + ship.uuid,
@@ -172,18 +177,24 @@ const FleetDisplay = () => {
                     setSaved(() => false);
                 }
             },
-            content: <Crew ship={ship} remainingFleetPoints={fleetData.points.max - fleetData.points.current} />
+            // TODO: rework addCrew system, then avoid Crew rerender with () => on next line
+            content: <StoreProvider>
+                    <Crew
+                        ship={ship}
+                        remainingFleetPoints={fleetData.points.max - fleetData.points.current}
+                    />
+                </StoreProvider>
         });
     }
 
-    let removeShipAction: (ship: ShipItemType) => JSX.Element | undefined;
+    let removeShipAction: (ship: ShipType) => JSX.Element | undefined;
     let fleetActions: JSX.Element | undefined;
 
     if (!onlyDisplay) {
 
         const shipItemsContext = useContext(ShipItemsContext);
 
-        const addShip = (ship: ShipItemType) => {
+        const addShip = (ship: ShipType) => {
             if (fleetData.ships.some(_ship => _ship.name === ship.name)) toastContext.createToast({
                 type: 'warning',
                 title: 'Add ship',
@@ -200,7 +211,7 @@ const FleetDisplay = () => {
             setSaved(() => false);
         }
 
-        const removeShip = (ship: ShipItemType) => {
+        const removeShip = (ship: ShipType) => {
             const shipIndex = fleetData.ships.reverse().findIndex(_ship => ship === _ship);
             if (shipIndex >= 0) {
                 setData(produce((data) => {
@@ -210,7 +221,7 @@ const FleetDisplay = () => {
             }
         }
 
-        removeShipAction = (ship: ShipItemType) =>
+        removeShipAction = (ship: ShipType) =>
             <IconButton
                 iconID="minus-square"
                 onClick={() => removeShip(ship)}
@@ -305,8 +316,9 @@ const FleetDisplay = () => {
             modalContext.showModal({
                 id: 'edit_fleet_settings',
                 title: 'Fleet settings',
+                onClose() {},
                 content:
-                    <Settings
+                    () => <Settings
                         data={{
                             name: {
                                 name: "Fleet name",

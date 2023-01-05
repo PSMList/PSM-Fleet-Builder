@@ -1,12 +1,12 @@
 import { baseUrl } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
-import { CrewItemType } from "@/components/Crew";
+import { CrewType } from "@/data/crew";
 import { JSX } from "solid-js";
 import './CrewItem.css';
 
 type SearchItemProps = {
-    data: CrewItemType
+    data: CrewType
     actions?: JSX.Element
 }
 

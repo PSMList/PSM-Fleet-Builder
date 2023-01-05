@@ -1,3 +1,9 @@
+import { baseUrl } from "@/App"
+import { ItemType } from "@/components/commons/Item"
+import { CrewType } from "./crew"
+import { extensionDataPromise } from "./extension"
+import { factionDataPromise } from "./faction"
+import { rarityDataPromise } from "./rarity"
 
 type ShipDataItem = {
     id: number
@@ -27,21 +33,49 @@ type ShipDataItem = {
     idauthor: number
 }
 
-export type ShipType = {
-    id: number
-    idfaction: number
-    idrarity: number
-    idextension: number
-    name: string
-    numid: string
-    points: number
-    masts: number
-    cargo: number
+export type ShipType = ItemType & {
     basemove: string
     cannons: string
-    defaultaptitude: string
+    crew: CrewType[]
+    masts: number
+    cargo: number
     isfort: boolean
-    lookingforbetterpic: boolean
+    uuid: string
 }
 
-export const shipData: ShipType[] = (await fetch('http://localhost:8080/api/ship').then( res => res.json() ) as ShipDataItem[]);
+export const shipDataPromise = fetch('http://localhost:8080/api/ship')
+    .then( res => res.json() as Promise<ShipDataItem[]> )
+    .then( async data => {
+        const factionData = await factionDataPromise;
+        const extensionData = await extensionDataPromise;
+        const rarityData = await rarityDataPromise;
+        const shipData = new Map<number, ShipType>();
+
+        data.forEach( item => {
+            const faction = factionData.get(item.idfaction)!;
+            const extension = extensionData.get(item.idextension)!;
+            const rarity = rarityData.get(item.idrarity)!;
+
+            shipData.set(item.id, {
+                id: item.id,
+                img: (!item.lookingforbetterpic ? `${baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg` : '/public/img/logos/ship.png'),
+                altimg: `${baseUrl}/img/logos/ship.png`,
+                faction,
+                rarity,
+                extension,
+                numid: item.numid,
+                name: item.name,
+                fullname: `${extension.short}${item.numid} ${item.name}`,
+                points: item.points,
+                cargo: item.cargo,
+                masts: item.masts,
+                basemove: item.basemove,
+                cannons: item.cannons,
+                defaultaptitude: item.defaultaptitude,
+                isfort: item.isfort,
+                crew: [],
+                uuid: ''
+            });
+        });
+        return shipData;
+    });

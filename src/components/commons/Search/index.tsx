@@ -52,8 +52,6 @@ const Search = (props: SearchProps) => {
 
     const extensionOptions = createMemo(() => {
         const _extensions = Array.from(database.extensions.values());
-        console.log(_extensions);
-        
         const _extensionOptions = _extensions.map( extension => ({
             value: extension.id.toString(),
             display: <span>

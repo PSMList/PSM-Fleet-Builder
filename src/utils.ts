@@ -1,3 +1,5 @@
+import { Accessor, createEffect, createSignal, on, Setter } from "solid-js";
+
 export function removeItemFromArray<T>(array: Array<T>, func: (value: T, index: number, obj: Array<T>) => boolean) {
     const index = array.findIndex(func);
     if (index !== -1) {

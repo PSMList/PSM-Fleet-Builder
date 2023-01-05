@@ -1,12 +1,12 @@
 import { baseUrl } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
-import { ShipItemType } from "@/components/Ship";
+import { ShipType } from "@/data/ship";
 import { For, JSX } from "solid-js";
 import './ShipItem.css';
 
 type SearchItemProps = {
-    data: ShipItemType
+    data: ShipType
     actions?: JSX.Element
 }
 

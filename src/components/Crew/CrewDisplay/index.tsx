@@ -2,9 +2,10 @@ import { onlyDisplay } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ToastContext } from "@/components/commons/Toasts";
-import { CrewItemsContext, CrewItemType } from "@/components/Crew";
+import { CrewItemsContext } from "@/components/Crew";
 import CrewItem from "@/components/Crew/CrewItem";
-import { ShipItemType } from "@/components/Ship";
+import { CrewType } from "@/data/crew";
+import { ShipType } from "@/data/ship";
 import { createEffect, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './CrewDisplay.css';
@@ -22,11 +23,11 @@ export type CrewDataType = {
         current: number
         max: number
     },
-    crews: CrewItemType[],
+    crews: CrewType[],
 }
 
 type CrewDisplayProps = {
-    ship: ShipItemType
+    ship: ShipType
     remainingFleetPoints: number
 }
 
@@ -51,12 +52,12 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     createEffect(() => {
         setData(produce(data => {
             data.crews = props.ship.crew;
-            data.points.current = data.crews.reduce((total: number, crew: CrewItemType) => total + crew.points, 0);
+            data.points.current = data.crews.reduce((total: number, crew: CrewType) => total + crew.points, 0);
             data.points.max = data.points.current + props.remainingFleetPoints;
         }));
     });
     
-    let removeCrewAction: (crew: CrewItemType) => JSX.Element | undefined;
+    let removeCrewAction: (crew: CrewType) => JSX.Element | undefined;
     let crewActions: JSX.Element | undefined;
     
     if (!onlyDisplay) {
@@ -65,7 +66,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
         const crewItemsContext = useContext(CrewItemsContext);
 
-        const addCrew = (crew: CrewItemType) => {
+        const addCrew = (crew: CrewType) => {
             if ( props.ship.crew.length + 1 > props.ship.cargo ) toastContext.createToast({
                 type: 'warning',
                 title: 'Add crew',
@@ -93,7 +94,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
         crewItemsContext.add = addCrew;
 
-        const removeCrew = (crew: CrewItemType) => {
+        const removeCrew = (crew: CrewType) => {
             const crewIndex = crewData.crews.findIndex(_crew => crew === _crew);
             if (crewIndex >= 0) {
                 setData(produce((data) => {
@@ -122,7 +123,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
             />
         );
     
-        removeCrewAction = (crew: CrewItemType) =>
+        removeCrewAction = (crew: CrewType) =>
             <IconButton
                 iconID="minus-square"
                 onClick={() => removeCrew(crew)}
@@ -137,6 +138,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
             <span class="points"><i class="fas fa-coins" />&nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}</span>
         </>
     );
+    
 
     const shipCrew = (
         <For each={crewData.crews}>
