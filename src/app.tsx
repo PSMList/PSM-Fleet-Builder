@@ -2,7 +2,6 @@ import { ModalRoot } from "@/components/commons/Modal";
 import Toasts from "@/components/commons/Toasts";
 import Ship from "@/components/Ship";
 import './App.css';
-import { StoreProvider } from "./data/store";
 
 export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(window.location.pathname);
 export const fleetMaxpointsMin = 30;
@@ -15,10 +14,10 @@ export const baseUrl = `${window.location.origin}/public`;
 export function App() {
 
   return (
-    <StoreProvider>
+    <>
       <Toasts position='top-right' autoDeleteTime={ 8000 } />
       <ModalRoot />
       <Ship />
-    </StoreProvider>
+    </>
   );
 }

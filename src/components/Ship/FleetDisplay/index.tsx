@@ -72,8 +72,8 @@ const FleetDisplay = () => {
 
     async function getSavedFleetData() {
         try {
-            const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
-            // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
+            // const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
+            const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
             const data = await response.json();
             if (!data) return;
 
@@ -177,7 +177,6 @@ const FleetDisplay = () => {
                     setSaved(() => false);
                 }
             },
-            // TODO: rework addCrew system, then avoid Crew rerender with () => on next line
             content: <StoreProvider>
                     <Crew
                         ship={ship}
