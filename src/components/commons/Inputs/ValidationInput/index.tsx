@@ -15,6 +15,10 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
 
     const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress']);
 
+    if (typeof inputProps.type === "string" || inputProps.type === undefined) {
+        inputProps.pattern = "[-\\w'\":\"\u00C0-\u00FF ]+";
+    }
+
     createEffect(() => {
         // @ts-expect-error just ignore
         setDefaultValue(() => inputProps.value as string || inputProps.checked as boolean || '');

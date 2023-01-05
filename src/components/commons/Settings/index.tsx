@@ -103,6 +103,7 @@ const Settings = (props: SettingsProps) => {
                     />
                 </h3>
             </div>
+            <b>Valid special characters: ' : " _ -</b>
             <div class="settings_inputs">
                 { inputsData }
             </div>
