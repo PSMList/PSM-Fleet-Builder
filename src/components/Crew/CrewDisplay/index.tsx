@@ -133,7 +133,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
     const headerInfo = (
         <>
-            <span class="room"><i class="fas fa-users-friends" />&nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}</span>
+            <span class="room"><i class="fas fa-users" />&nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}</span>
             &nbsp;&nbsp;
             <span class="points"><i class="fas fa-coins" />&nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}</span>
         </>

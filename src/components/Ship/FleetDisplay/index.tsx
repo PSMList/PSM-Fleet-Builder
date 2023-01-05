@@ -167,6 +167,8 @@ const FleetDisplay = () => {
     };
 
     const showCrew = (ship: ShipType) => {
+        console.log(ship);
+        
         const oldState = JSON.stringify(ship);
         modalContext.showModal({
             id: 'add_crew_' + ship.uuid,
@@ -187,6 +189,7 @@ const FleetDisplay = () => {
 
     let removeShipAction: (ship: ShipType) => JSX.Element | undefined;
     let fleetActions: JSX.Element | undefined;
+    let settingsAction: JSX.Element | undefined;
 
     if (!onlyDisplay) {
 
@@ -315,8 +318,8 @@ const FleetDisplay = () => {
                 id: 'edit_fleet_settings',
                 title: 'Fleet settings',
                 onClose() {},
-                content:
-                    () => <Settings
+                content: () =>
+                    <Settings
                         data={{
                             name: {
                                 name: "Fleet name",
@@ -357,6 +360,13 @@ const FleetDisplay = () => {
         fleetActions = (
             <>
                 <IconButton
+                    iconID="save"
+                    class="save"
+                    onClick={saveFleet}
+                    title="Save"
+                    style={{ color: saved() ? "green" : "red" }}
+                />
+                <IconButton
                     iconID="share-square"
                     class="export"
                     onClick={exportFleet}
@@ -369,33 +379,28 @@ const FleetDisplay = () => {
                     title="Import from file"
                 />
                 <IconButton
-                    iconID="save"
-                    class="save"
-                    onClick={saveFleet}
-                    title="Save"
-                    style={{ color: saved() ? "green" : "red" }}
-                />
-                <IconButton
                     iconID="eraser"
                     class="clear"
                     onClick={clearFleet}
                     title="Clear fleet"
                 />
-                <IconButton
-                    iconID="cog"
-                    class="settings"
-                    onClick={editFleetSettings}
-                    title="Edit fleet settings"
-                />
             </>
         );
+        settingsAction = 
+            <IconButton
+                iconID="cog"
+                class="settings"
+                onClick={editFleetSettings}
+                title="Edit fleet settings"
+            />
     }
 
-    const headerInfo = (
+    const headerInfo = <>
         <span class="points">
             <i class="fas fa-coins" />&nbsp;&nbsp;{fleetData.points.current}&nbsp;/&nbsp;{fleetData.points.max}
         </span>
-    );
+        { settingsAction }
+    </>
 
     if (!fleetActions) {
         fleetActions = (

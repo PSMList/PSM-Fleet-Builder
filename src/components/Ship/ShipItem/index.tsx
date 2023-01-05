@@ -38,6 +38,7 @@ const ShipItem = (props: SearchItemProps) => {
         >
             <div class="info" ref={ (ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace('U', '')), 1) }>
                 <div class="top">
+                    <div class="points">{ props.data.points }</div>
                     <div class="name">{ props.data.name }</div>
                     <img class="extension" src={ `${baseUrl}/img/logos/logo_${props.data.extension.short.replace('U', '')}_o.png` } alt={ props.data.faction.defaultname } />
                     <span class="id">{ `${props.data.extension.short} ${props.data.numid}` }</span>

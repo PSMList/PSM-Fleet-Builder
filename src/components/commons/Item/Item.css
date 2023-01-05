@@ -53,6 +53,22 @@
     grid-template-areas:
       "name name name"
       "extension id faction";
+    position: relative;
+}
+.item > .info > .top > .points {
+    position: absolute;
+    font-size: 1.2em;
+    top: 0;
+    left: 0;
+    transform: translate(-75%, -100%);
+    width: 1.75em;
+    height: 1.75em;
+    border: 2px solid #111;
+    border-radius: 2px;
+    background-color: #222;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
 }
 .item > .info > .top > .name {
     font-size: 1.1em;

@@ -14,9 +14,9 @@ const Display = (props: DisplayProps) => {
     return (
         <div class="display_container whitebox">
             <div class="display_header">
-                <h2 class="title">{ props.title }</h2>
+                <div class="title">{ props.title }</div>
                 <Show when={ props.info }>
-                    <h3 class="info">{ props.info }</h3>
+                    { props.info }
                 </Show>
             </div>
             <div class="display_actions actions">{ props.actions }</div>

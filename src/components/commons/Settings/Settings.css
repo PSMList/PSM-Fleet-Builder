@@ -1,6 +1,7 @@
 .settings_container > .settings_header > h3 {
-    display: inline-block;
+    display: inline-flex;
     padding-left: 1em;
+    align-items: center;
 }
 
 .settings_container > .settings_inputs {

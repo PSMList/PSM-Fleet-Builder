@@ -98,8 +98,8 @@ const Settings = (props: SettingsProps) => {
                     Undo changes&nbsp;
                     <IconButton
                         onClick={ undo }
-                        iconID="eraser"
-                        title="Undo"
+                        iconID="undo"
+                        title="Undo all changes"
                     />
                 </h3>
             </div>
