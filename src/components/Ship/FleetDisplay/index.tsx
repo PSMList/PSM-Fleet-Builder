@@ -177,12 +177,11 @@ const FleetDisplay = () => {
                     setSaved(() => false);
                 }
             },
-            content: <StoreProvider>
-                    <Crew
-                        ship={ship}
-                        remainingFleetPoints={fleetData.points.max - fleetData.points.current}
-                    />
-                </StoreProvider>
+            content: () =>
+                <Crew
+                    ship={ship}
+                    remainingFleetPoints={fleetData.points.max - fleetData.points.current}
+                />
         });
     }
 
