@@ -1,5 +1,5 @@
 import IconButton from "@/components/commons/IconButton";
-import { createContext, createEffect, For, JSX, useContext } from "solid-js";
+import { createContext, createEffect, For, JSX, Show, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './Modal.css';
 
@@ -33,15 +33,17 @@ const Modal = (props: ModalProps) => {
                 <h2 class="modal-header">
                     <span class="modal-title">{props.properties.title}</span>
                     <div class="modal-actions">
-                        <IconButton
+                        <Show when={ props.properties.onClose }>
+                            <IconButton
                             class="modal-close"
-                            onClick={() => {
-                                if (props.properties.onClose) props.properties.onClose();
-                                modalContext.hideModal(props.properties.id);
-                            }}
-                            iconID="window-close"
-                            title="Close"
-                        />
+                                onClick={() => {
+                                    props.properties.onClose!();
+                                    modalContext.hideModal(props.properties.id);
+                                }}
+                                iconID="window-close"
+                                title="Close"
+                            />
+                        </Show>
                     </div>
                 </h2>
                 <div class="modal-content">
@@ -85,7 +87,12 @@ export const ModalRoot = () => {
 
     // disable scrolling on the main window
     createEffect(() => {
-        document.body.style.overflowY = modals.some( modal => modal.visible) ? 'hidden' : '';
+        if (modals.some( modal => modal.visible)) {
+            document.body.style.overflowY = 'hidden';
+        }
+        else {
+            document.body.style.overflowY = '';
+        }
     });
 
     return (
