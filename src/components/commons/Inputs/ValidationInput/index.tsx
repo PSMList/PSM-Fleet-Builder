@@ -13,7 +13,7 @@ type ValidationInputProps<T extends string | boolean> = {
 const ValidationInput = <T extends string | boolean>(props: ValidationInputProps<T>) => {
     const [ defaultValue, setDefaultValue ] = createSignal<T>();
 
-    const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress']);
+    const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle']);
 
     if (typeof inputProps.type === "string" || inputProps.type === undefined) {
         inputProps.pattern = "[-\\w'\":\"\u00C0-\u00FF ]+";
@@ -30,7 +30,7 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
     const validate = () => {
         if (!inputRef) return;
         // trigger for submit to invoke native input error message
-        if (!inputRef.checkValidity() && formRef) return formRef.submit();
+        if (!inputRef.checkValidity() && formRef) return formRef.reportValidity();
         const newValue = (inputRef.type !== 'checkbox' ? inputRef.value : inputRef.checked) as T;
         localProps.onValidate(newValue);
         setDefaultValue(() => newValue);
@@ -67,7 +67,7 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                     }}
                     onKeyPress={ (event) => {
                         if (event.key === 'Enter') {
-                            // event.preventDefault();
+                            event.preventDefault();
                             validate();
                         }
                         if (localProps.onKeyPress) {
@@ -82,8 +82,8 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                 />
                 <IconButton
                     onClick={ validate }
-                    iconID={ props.validationIcon || "check" }
-                    title={ props.validationTitle || "Validate" }
+                    iconID={ localProps.validationIcon || "check" }
+                    title={ localProps.validationTitle || "Validate" }
                 />
             </div>
         </form>
