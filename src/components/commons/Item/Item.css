@@ -75,7 +75,7 @@
 .item > .info > .bottom {
     margin-top: 0.5em;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: minmax(1.75em, 3em) minmax(11.75em, 1fr);
     gap: 0.2em;
     grid-template-areas:
       "preview stats"
@@ -83,7 +83,7 @@
 }
 
 .item > .info > .bottom > .preview {
-    width: 3em;
+    width: 100%;
     border-radius: 5px;
     border: 2px solid rgba(255, 255, 255, 0.3);
     grid-area: preview;
@@ -96,7 +96,7 @@
 
 .item > .info > .bottom > .stats img,
 .item > .info > .bottom > .cannons img:first-child {
-    width: 1.5em;
+    height: 0.8em;
     margin-left: 0.3em;
     vertical-align: middle;
 }
@@ -106,7 +106,7 @@
 }
 
 .item > .info > .bottom > .cannons img {
-    width: 0.8em;
+    height: 0.8em;
     margin-left: 0.15em;
     vertical-align: middle;
 }
@@ -115,6 +115,7 @@
 .item > .info > .bottom > .cannons {
     background-color: #000;
     padding: 0.1em;
+    padding-right: 0;
     border-radius: 2px;
 }
 
