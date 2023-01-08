@@ -1,5 +1,5 @@
 import IconButton from "@/components/commons/IconButton";
-import { createEffect, createSignal, JSX, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, Show, splitProps } from "solid-js";
 import './ValidationInput.css';
 
 type ValidationInputProps<T extends string | boolean> = {
@@ -8,12 +8,13 @@ type ValidationInputProps<T extends string | boolean> = {
     onKeyPress?: (event: KeyboardEvent) => void
     validationIcon?: string
     validationTitle?: string
+    undo?: boolean
 } & JSX.InputHTMLAttributes<HTMLInputElement>
 
 const ValidationInput = <T extends string | boolean>(props: ValidationInputProps<T>) => {
     const [ defaultValue, setDefaultValue ] = createSignal<T>();
 
-    const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle']);
+    const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle', 'undo']);
 
     if (typeof inputProps.type === "string" || inputProps.type === undefined) {
         inputProps.pattern = "[-\\w'\":\"À-ſ ]+";
@@ -75,11 +76,13 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                         }
                     } }
                 />
-                <IconButton
-                    onClick={ undo }
-                    iconID="undo"
-                    title="Undo"
-                />
+                <Show when={ localProps.undo }>
+                    <IconButton
+                        onClick={ undo }
+                        iconID="undo"
+                        title="Undo"
+                    />
+                </Show>
                 <IconButton
                     onClick={ validate }
                     iconID={ localProps.validationIcon || "check" }

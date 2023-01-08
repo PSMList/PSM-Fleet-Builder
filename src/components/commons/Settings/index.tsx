@@ -18,6 +18,7 @@ type SettingsProps = {
 
 type InputSettings = {
     onValidate: (value: string | boolean) => void
+    undo?: boolean
 } & DataType
 
 const Settings = (props: SettingsProps) => {
@@ -70,6 +71,7 @@ const Settings = (props: SettingsProps) => {
                         ..._input,
                         onValidate,
                         onChange,
+                        undo: true
                     }
 
                     return (
