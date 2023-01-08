@@ -1,4 +1,4 @@
-import { baseUrl, fleetMaxpointsMax, fleetMaxpointsMin, onlyDisplay } from "@/App";
+import { onlyDisplay } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -72,8 +72,8 @@ const FleetDisplay = () => {
 
     async function getSavedFleetData() {
         try {
-            // const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
-            const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
+            const response = await fetch(`${window.baseUrl}/fleet/get/${hash}/${slug}`);
+            // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
             const data = await response.json();
             if (!data) return;
 
@@ -275,7 +275,7 @@ const FleetDisplay = () => {
 
         const saveFleet = async () => {
             const fleetStr = fleetDataToString();
-            fetch(`${baseUrl}/fleet/self/set/${hash}/${slug}`, {
+            fetch(`${window.baseUrl}/fleet/self/set/${hash}/${slug}`, {
             // fetch(`http://psmlist/public/fleet/self/set/${hash}/${slug}`, {
                 method: 'POST',
                 headers: {
@@ -331,8 +331,8 @@ const FleetDisplay = () => {
                                 name: "Max points",
                                 type: "number",
                                 value: fleetData.points.max,
-                                min: fleetMaxpointsMin,
-                                max: fleetMaxpointsMax,
+                                min: window.fleetMaxpointsMin,
+                                max: window.fleetMaxpointsMax,
                             },
                             ispublic: {
                                 name: "Public",
