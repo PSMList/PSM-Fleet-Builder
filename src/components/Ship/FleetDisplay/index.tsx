@@ -1,4 +1,4 @@
-import { onlyDisplay } from "@/App";
+import { hash, onlyDisplay, slug } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -43,8 +43,6 @@ const defaultFleetData: FleetDataType = {
     ships: [],
     ispublic: false
 }
-
-const [hash, slug] = window.location.pathname.split('/').splice(-2, 2);
 
 const FleetDisplay = () => {
     const { database, loadingPromise } = useStore().databaseService;
