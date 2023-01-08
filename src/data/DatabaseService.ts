@@ -1,4 +1,3 @@
-import { createSignal, onMount } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { crewDataPromise } from "./crew";
 import { extensionDataPromise } from "./extension";

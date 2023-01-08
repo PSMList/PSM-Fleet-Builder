@@ -1,3 +1,5 @@
+import { apiUrl } from "./api"
+
 type FactionDataItem = {
     id: number
     namelocale: string
@@ -15,7 +17,7 @@ export type FactionType = {
     nameimg: string
 }
 
-export const factionDataPromise = fetch('http://localhost:8080/api/faction')
+export const factionDataPromise = fetch(`${apiUrl}/faction`)
     .then( res => res.json() as Promise<FactionDataItem[]> )
     .then( data => {
         const factionData = new Map<number, FactionType>();

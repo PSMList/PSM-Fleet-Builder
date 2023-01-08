@@ -1,3 +1,5 @@
+import { apiUrl } from "./api"
+
 type RarityDataItem = {
     id: number
     namelocale: string
@@ -10,7 +12,7 @@ export type RarityType = {
     colorhex: string
 }
 
-export const rarityDataPromise = fetch('http://localhost:8080/api/rarity')
+export const rarityDataPromise = fetch(`${apiUrl}/rarity`)
     .then( res => res.json() as Promise<RarityDataItem[]> )
     .then( data => {
         const rarityData = new Map<number, RarityType>();

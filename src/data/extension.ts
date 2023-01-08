@@ -1,3 +1,5 @@
+import { apiUrl } from "./api"
+
 type ExtensionDataItem = {
     id: number
     name: string
@@ -21,7 +23,7 @@ export type ExtensionType = {
     short: string
 }
 
-export const extensionDataPromise = fetch('http://localhost:8080/api/extension')
+export const extensionDataPromise = fetch(`${apiUrl}/extension`)
     .then( res => res.json() as Promise<ExtensionDataItem[]> )
     .then( data => {
         const extensionData = new Map<number, ExtensionType>();

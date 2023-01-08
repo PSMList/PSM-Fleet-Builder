@@ -1,5 +1,5 @@
-import { baseUrl } from "@/App"
 import { ItemType } from "@/components/commons/Item"
+import { apiUrl } from "./api"
 import { CrewType } from "./crew"
 import { extensionDataPromise } from "./extension"
 import { factionDataPromise } from "./faction"
@@ -43,7 +43,7 @@ export type ShipType = ItemType & {
     uuid: string
 }
 
-export const shipDataPromise = fetch('http://localhost:8080/api/ship')
+export const shipDataPromise = fetch(`${apiUrl}/ship`)
     .then( res => res.json() as Promise<ShipDataItem[]> )
     .then( async data => {
         const factionData = await factionDataPromise;
@@ -58,8 +58,8 @@ export const shipDataPromise = fetch('http://localhost:8080/api/ship')
 
             shipData.set(item.id, {
                 id: item.id,
-                img: (!item.lookingforbetterpic ? `${baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg` : '/public/img/logos/ship.png'),
-                altimg: `${baseUrl}/img/logos/ship.png`,
+                img: (!item.lookingforbetterpic ? `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg` : '/public/img/logos/ship.png'),
+                altimg: `${window.baseUrl}/img/logos/ship.png`,
                 faction,
                 rarity,
                 extension,

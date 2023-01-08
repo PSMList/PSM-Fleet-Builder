@@ -1,5 +1,5 @@
-import { baseUrl } from "@/App"
 import { ItemType } from "@/components/commons/Item"
+import { apiUrl } from "./api"
 import { extensionDataPromise } from "./extension"
 import { factionDataPromise } from "./faction"
 import { rarityDataPromise } from "./rarity"
@@ -26,7 +26,7 @@ type CrewDataItem = {
 export type CrewType = ItemType & {
 }
 
-export const crewDataPromise = fetch('http://localhost:8080/api/crew')
+export const crewDataPromise = fetch(`${apiUrl}/crew`)
     .then( res => res.json() as Promise<CrewDataItem[]> )
     .then( async data => {
         const factionData = await factionDataPromise;
@@ -34,17 +34,15 @@ export const crewDataPromise = fetch('http://localhost:8080/api/crew')
         const rarityData = await rarityDataPromise;
         const crewData = new Map<number, CrewType>();
 
-        // return data.map( item => {
         data.forEach( item => {
             const faction = factionData.get(item.idfaction)!;
             const extension = extensionData.get(item.idextension)!;
             const rarity = rarityData.get(item.idrarity)!;
 
             crewData.set(item.id, {
-            // return {
                 id: item.id,
-                img: (!item.lookingforbetterpic ? `${baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg` : '/public/img/logos/crew.png'),
-                altimg: `${baseUrl}/img/logos/crew.png`,
+                img: (!item.lookingforbetterpic ? `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg` : '/public/img/logos/crew.png'),
+                altimg: `${window.baseUrl}/img/logos/crew.png`,
                 faction,
                 rarity,
                 extension,
@@ -54,7 +52,6 @@ export const crewDataPromise = fetch('http://localhost:8080/api/crew')
                 points: item.points,
                 defaultaptitude: item.defaultaptitude
             });
-            // }
         });
         return crewData;
     });
