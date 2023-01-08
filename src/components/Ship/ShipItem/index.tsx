@@ -58,8 +58,8 @@ const ShipItem = (props: SearchItemProps) => {
                                 cannon => <img src={ `${window.baseUrl}/img/svg/dice/${cannon}.svg` } alt="■" />
                         }</For>
                     </span>
+                    <span class="aptitude">{ props.data.defaultaptitude }</span>
                 </div>
-                <span class="aptitude">{ props.data.defaultaptitude }</span>
             </div>
         </Item>
     );

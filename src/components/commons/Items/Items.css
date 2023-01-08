@@ -6,7 +6,7 @@
     position: relative;
     z-index: 0;
     display: grid;
-    grid-template-columns: repeat( auto-fill, minmax(min(16em, 100%), 1fr) );
+    grid-template-columns: repeat( auto-fill, minmax(min(18em, 100%), 1fr) );
     overflow-y: auto;
     scroll-snap-type: y mandatory;
     gap: 1em;

@@ -24,17 +24,15 @@ export type ItemsContextType<T extends ItemType> = {
 
 export type ItemProps = {
     actions?: JSX.Element
+    color: string
     children: JSX.Element
 };
 
 export const Item = (props: ItemProps) => {
-    const children = <>{ props.children }</>;
     return (
         <li class="item">
-            <div class="actions">{ props.actions }</div>
-            <div class="item_background">
-            </div>
-            { children }
+            <div class="actions" style={{ "border-color": `#${props.color}` }}>{ props.actions }</div>
+            { props.children }
         </li>
     );
 }

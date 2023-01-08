@@ -31,7 +31,6 @@
 
 .item > .info * {
     color: white;
-    text-shadow: rgb(0,0,0) 0px 0px 4px, rgb(0,0,0) 0px 0px 2px;
     max-width: 100%;
 }
 
@@ -49,7 +48,6 @@
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 0px 0px;
     grid-template-areas:
       "name name name"
       "extension id faction";
@@ -68,7 +66,7 @@
     background-color: #222;
     display: inline-flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-end;
 }
 .item > .info > .top > .name {
     font-size: 1.1em;
@@ -85,7 +83,6 @@
     width: 1em;
     margin-right: 0.25em;
     grid-area: extension;
-    filter: invert(1);
 }
 
 .item > .info > .bottom {
@@ -93,11 +90,7 @@
     display: grid;
     grid-template-columns: minmax(1.75em, 3em) minmax(11.75em, 1fr);
     gap: 0.2em;
-    grid-template-areas:
-      "preview stats"
-      "preview cannons";
 }
-
 .item > .info > .bottom > .preview {
     width: 100%;
     border-radius: 5px;
@@ -105,37 +98,7 @@
     grid-area: preview;
     align-self: center;
 }
-
-.item > .info > .bottom > .stats {
-    grid-area: stats;
-}
-
-.item > .info > .bottom > .stats img,
-.item > .info > .bottom > .cannons img:first-child {
-    height: 0.8em;
-    margin-left: 0.3em;
-    vertical-align: middle;
-}
-
-.item > .info > .bottom > .cannons {
-    grid-area: cannons;
-}
-
-.item > .info > .bottom > .cannons img {
-    height: 0.8em;
-    margin-left: 0.15em;
-    vertical-align: middle;
-}
-
-.item > .info > .bottom > .stats,
-.item > .info > .bottom > .cannons {
-    background-color: #000;
-    padding: 0.1em;
-    padding-right: 0;
-    border-radius: 2px;
-}
-
-.item > .info .aptitude {
+.item > .info > .bottom > .aptitude {
     border: 1.5px solid black;
     text-align: center;
     display: inline-flex;
@@ -144,8 +107,12 @@
     min-height: 4em;
     padding: 0.2em;
     margin-top: 0.4em;
-    font-size: 0.72em;
-    /* line-height: 1em; */
+    font-size: 0.85em;
     font-family: Roboto;
     width: 100%;
+    font-weight: normal;
+}
+.item > .info > .top,
+.item > .info > .bottom > .aptitude {
+    text-shadow: rgb(0,0,0) 0px 0px 4px, rgb(0,0,0) 0px 0px 2px, rgb(0,0,0) 1px 1px 0px;
 }

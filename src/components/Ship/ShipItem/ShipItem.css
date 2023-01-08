@@ -1,1 +1,41 @@
 
+.item > .info > .bottom {
+    grid-template-areas:
+      "preview stats"
+      "preview cannons"
+      "aptitude aptitude";
+}
+
+.item > .info > .bottom > .stats {
+    grid-area: stats;
+}
+
+.item > .info > .bottom > .stats img,
+.item > .info > .bottom > .cannons img:first-child {
+    height: 0.8em;
+    margin-left: 0.4em;
+    margin-right: 0.2em;
+    vertical-align: middle;
+}
+
+.item > .info > .bottom > .cannons {
+    grid-area: cannons;
+}
+
+.item > .info > .bottom > .cannons img {
+    height: 0.8em;
+    margin-left: 0.15em;
+    vertical-align: middle;
+}
+
+.item > .info > .bottom > .stats,
+.item > .info > .bottom > .cannons {
+    background-color: #000;
+    padding: 0.1em;
+    padding-right: 0;
+    border-radius: 2px;
+}
+
+.item > .info > .bottom > .aptitude {
+    grid-area: aptitude;
+}
