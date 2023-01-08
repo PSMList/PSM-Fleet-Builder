@@ -15,12 +15,14 @@ type ExtensionDataItem = {
     idauthor: number
     custom: boolean
     searchsort: number
+    colorhex: string
 }
 
 export type ExtensionType = {
     id: number
     name: string
     short: string
+    colorhex: string
 }
 
 export const extensionDataPromise = fetch(`${apiUrl}/extension`)
@@ -32,6 +34,7 @@ export const extensionDataPromise = fetch(`${apiUrl}/extension`)
                 id: extension.id,
                 name: extension.name,
                 short: extension.short,
+                colorhex: extension.colorhex
             })
         );
         return extensionData;

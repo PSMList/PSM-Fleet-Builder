@@ -35,6 +35,7 @@ const CrewItem = (props: SearchItemProps) => () => {
                     title="More info"
                 />
             </>}
+            color={ props.data.extension.colorhex }
         >
             <div class="info" ref={ (ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace('U', '')), 1) }>
                 <div class="top">
