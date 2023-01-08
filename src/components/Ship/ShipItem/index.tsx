@@ -50,7 +50,8 @@ const ShipItem = (props: SearchItemProps) => {
                     <span class="stats">
                         <span class="masts"><img src={ `${window.baseUrl}/img/svg/masts_nobg.svg` } />{ props.data.masts }</span>
                         <span class="cargo"><img src={ `${window.baseUrl}/img/svg/cargo_nobg.svg` } />{ props.data.cargo }</span>
-                        <span class="basemove"><img src={ `${window.baseUrl}/img/svg/basemove_nobg.svg` } />{ props.data.basemove }</span>
+                        {/* add color by changing L to <span class="L">L</span> */}
+                        <span class="basemove"><img src={ `${window.baseUrl}/img/svg/basemove_nobg.svg` } />{ props.data.basemove.match(/./g)?.map( move => move === 'L' ? <span class="L">L</span> : move ) }</span>
                     </span>
                     <span class="cannons">
                         <img src={ `${window.baseUrl}/img/svg/cannons.svg` } />

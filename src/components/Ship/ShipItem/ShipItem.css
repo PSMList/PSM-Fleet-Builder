@@ -9,7 +9,9 @@
 .item > .info > .bottom > .stats {
     grid-area: stats;
 }
-
+.item > .info > .bottom > .stats > .basemove > .L {
+    color: red;
+}
 .item > .info > .bottom > .stats img,
 .item > .info > .bottom > .cannons img:first-child {
     height: 0.8em;
