@@ -1,4 +1,3 @@
-import { baseUrl } from "@/App";
 import ValidationInput from "@/components/commons/Inputs/ValidationInput";
 import Items from "@/components/commons/Items";
 import { useStore } from "@/data/store";
@@ -37,7 +36,7 @@ const Search = (props: SearchProps) => {
         const _factionOptions = _factions.map( faction => ({
             value: faction.id.toString(),
             display: <span>
-                <img src={ `${baseUrl}/img/flag/search/${faction.nameimg}.png` } />{ faction.defaultname }
+                <img src={ `${window.baseUrl}/img/flag/search/${faction.nameimg}.png` } />{ faction.defaultname }
             </span>
         }));
         _factionOptions.unshift({
@@ -55,7 +54,7 @@ const Search = (props: SearchProps) => {
         const _extensionOptions = _extensions.map( extension => ({
             value: extension.id.toString(),
             display: <span>
-                <img src={ `${baseUrl}/img/logos/logo_${extension.short.replace('U', '')}.png` } />{ extension.name }
+                <img src={ `${window.baseUrl}/img/logos/logo_${extension.short.replace('U', '')}.png` } />{ extension.name }
             </span>
         }));
         _extensionOptions.unshift({
