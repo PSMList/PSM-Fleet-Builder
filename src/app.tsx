@@ -9,14 +9,12 @@ export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(window.location.pathn
 export const fleetMaxpointsMin = window.fleetMaxpointsMin;
 export const fleetMaxpointsMax = window.fleetMaxpointsMax;
 export const baseUrl = window.baseUrl;
-export const isOwn = window.isOwn;
 
 declare global {
   interface Window {
     fleetMaxpointsMin: number
     fleetMaxpointsMax: number
     baseUrl: string
-    isOwn: boolean
   }
 }
 
@@ -26,9 +24,6 @@ export function App() {
     <>
       <Toasts position='top-right' autoDeleteTime={ 8000 } />
       <ModalRoot />
-      <Show when={ onlyDisplay && window.isOwn }>
-        <p class="indent">You own this fleet. You can <a href={ `${baseUrl}/fleet/self/show/${hash}/${slug}` }>edit it</a>.</p>
-      </Show>
       <Ship />
     </>
   );
