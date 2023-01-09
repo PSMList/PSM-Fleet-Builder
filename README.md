@@ -2,89 +2,99 @@
 
 ## Context
 
-This project is a part of the [PSMList](https://www.psmlist.com/public/) project aimed to help Pirates CSG players to find information on elements of the game.
+> The Pirates Constructible Strategy Game is a tabletop game manufactured by WizKids, Inc., with aspects of both miniatures game and collectible card game genres. "Pirates of the Spanish Main" (the initial release of the Pirates line) is the world's first "constructible strategy game," referring to the mechanics of creating game pieces from components that punch out of styrene cards.
+
+[Pirates CSG wiki](https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game)
+
+The commercial edition stopped in 2008 but their still are a lot of players or collectors around the world, espacially in the USA. Projects on top of this boardgame are (or were) keeping the player base in love with it.
+
+The most important one is the community keeping the fan base alive on social networks:
+  * [Discord](https://discord.com/invite/qeY7e3Q) (main one)
+  * [Facebook](https://www.facebook.com/piratesconstructiblestrategygame/)
+  * [Instagram](https://www.instagram.com/piratescsg/)
 
 ## Presentation
 
-The Fleet Builder aims, in the long run, to give the ability to:
- * Define fleet settings (name, max points, rules...)
- * Search through the ship database and add some to the fleet
- * Search through the crew database and add some to each ship
- * Filter research by faction and extension
- * Empty the list of ships and crew to restart from the ground up
- * Save and share the fleet data as public or private
- * See everyone's public fleets
+The Fleet Builder project is a part of the [PSMList](https://www.psmlist.com/public/) website that was built to centralize projetcs aiming to improve Pirates CSG players' experience.
 
-The Fleet Builder is still in an alpha version.
-For now, it is a "standalone" tool (not connected to PSMList accounts, see the [More to come](#more) section).
+The webssite started as an encyclopedia for this boardgame. 
+It went online with a "Fleets" section that promised to bring features for building and sharing fleets.
+
+The Fleet Builder is built on top of the encyclopedia database and aims to enable players to:
+  * Manage their fleets:
+    * Define fleet settings
+    * Search through the PSMList database
+    * Add ships with their crew
+  * Save, export and import fleets
+  * Search through everyone's public fleets
+  * And more...
+
+It still is in an alpha stage of development.
+The connection to PSMList accounts is not visible in the files of this repository as this part belongs to the PSMList code (not shared for security reasons).
 
 # Features
 
 The main features available are:
- * Adding ships and crew via respective search bar
- * Edit fleet name and max points
- * Save your fleet in the browser, so reopening the Fleet Builder will load the last save
- * Export fleet data to a file that you can share to others
- * Import fleet data from a shared file
+  * Searching through the database
+  * Select a ship, submarine, creature, flotilla or fort to add
+  * Show ships' crew and new crew
+  * Deselect unwanted ships and crew
+  * Edit fleet name, max points and public visibility
+  * Add, edit, save and delete fleets linked with your account
+  * Search others' public fleets and show their content
+  * Share, export their data as file or import data to clone your or one another's fleet
 
 There are two types of search inputs:
- * a select input to filter the results by faction and one by extension
- * a text input with validation and rollback to filter results by name or ID ("." to view all results)
-
-Clicking on the "user group" icon on top of a ship in the fleet shows the crew selection window.
-The plus or minus respectively add or remove a ship or crew.
+  * a text input to filter results by name or ID
+  * a select input to filter the results by faction and one by extension
 
 Ship and crew selection gets some validation warnings and errors.
 As an example, adding multiple ships with the same name raises a warning.
-One possible error (causing action rollback) is when the number of crew exceeds ship cargo.
 
 ## Preview
 
 Ship selection:
 
-![Search through spanish ships of the SM extension and display of selected ships](https://cdn.discordapp.com/attachments/848669194508566629/1038095935709925466/image.png)
+![Search through spanish ships of the SM extension and display of selected ships](https://media.discordapp.net/attachments/848669194508566629/1061769104903647402/image.png)
 
 Crew selection with warning/error messages:
 
-![Search through available crew and display of selected crew for one specific ship](https://cdn.discordapp.com/attachments/848669194508566629/1038100535460507699/image.png)
+![Search through available crew and display of selected crew for one specific ship with rules warnings](https://media.discordapp.net/attachments/848669194508566629/1061769105423736852/image.png)
 
 Fleet settings edition (mobile screen):
 
-![Display of inputs to edit fleet name and max points](https://cdn.discordapp.com/attachments/848669194508566629/1038101854950793296/image.png)
+![Display of inputs to edit fleet name, max points and public visibility](https://media.discordapp.net/attachments/848669194508566629/1061769105721536583/image.png)
 
 Displaying ship crew count (tablet screen):
 
-![Same display as the first but on tablet screen and notification icon showing crew count of each ship](https://cdn.discordapp.com/attachments/848669194508566629/1038118815881515018/image.png)
+![Same display as the first but on tablet screen and notification icon showing crew count of each ship](https://media.discordapp.net/attachments/848669194508566629/1061769106065473716/image.png)
 
 Demo of the main features:
 
 [Showing features available in alpha version like searching, selecting, saving, resetting...](https://cdn.discordapp.com/attachments/812021803497029662/1037136213536161863/2022-11-01_23-38-26.mov)
 
-## [More to come][more]
+## More to come
 
-The alpha version of the Fleet Builder is online with limited access.<br />
-It is far from complete, especially concerning the link to PSMList account as the key feature to be added. That's why it is planned to bring the following ones:
- * Linking PSMList account to the Fleet Builder and what follows
-   * Saving your fleets within the website, public or private
-   * Managing yours (watch, update, delete)
-   * Search through everyone's public fleet 
- * Enhanced selection:
-   * Conditions when contrary to the Pirates' code rules
-   * Adding ships and crew links 
- * Advanced settings:
-   * Opting in or out for Pirates' code rules
-   * Adding custom rules (ex: only Pirates of the Carribean ships and crew, only worst "rank" ships, no submarines...) 
- * Creating and sharing predefined settings (ex: specific rules for an event) 
+The alpha version of the Fleet Builder is online with limited access.
+
+It is far from complete, but it aims, in the long run, to give the ability to:
+  * Enhanced selection rules:
+    * Conditions when contrary to the Pirates' code rules
+    * Taking ships and crew links, keywords and abilities modifiers
+  * Advanced settings:
+    * Opting in or out for Pirates' code rules
+    * Adding custom rules (ex: only Pirates of the Carribean ships and crew, only worst "rank" ships, no submarines...) 
+  * Creating and sharing predefined settings (ex: specific rules for an event) 
 
 ## Technical details
 
-The code base is developed with Preact, a lightweight version of React, using TypeScript. It is bundled with Vite.
+The code base is developed with SolidJS, a UI building library like React with fine-grained (true) reactivity, using TypeScript. It is bundled with Vite.
 The assets (images, fonts, some css) are taken from the [PSMList website](https://www.psmlist.com/public/).
 
 If you want to run it yourself locally, you will need to use the remote assets from the PSMList website.
 For that, you just have to add a &lt;base href="https://www.psmlist.com" />&gt; element in the &lt;head&gt; of the index.html file.
-There is no need for an API or database connection because ships, crew, factions and extensions data are pulled from files in data folder to get better performance.
+You can pull data from the PSMList database through the online API (see src/data/)
 
 ```
-For more information, please use the project Issues section.
+For more information or help to install your own environment, please use the project Issues section.
 ```
