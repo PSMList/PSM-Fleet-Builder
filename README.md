@@ -6,7 +6,7 @@
 
 [Pirates CSG wiki](https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game)
 
-The commercial edition stopped in 2008 but their still are a lot of players or collectors around the world, espacially in the USA. Projects on top of this boardgame are (or were) keeping the player base in love with it.
+The commercial edition was stopped in 2008 but there still are a lot of players and collectors around the world, espacially in the USA. Projects on top of this boardgame are (or were) keeping the player base in love with it.
 
 The most important one is the community keeping the fan base alive on social networks:
   * [Discord](https://discord.com/invite/qeY7e3Q) (main one)
