@@ -13,6 +13,10 @@ h1 {
     z-index: 1;
 }
 
+.indent {
+    margin-left: 1.8em;
+}
+
 input[type="text"],
 input[type="number"] {
     border: 2px solid rgba(0,0,0,0.08);

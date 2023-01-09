@@ -27,8 +27,7 @@ export function App() {
       <Toasts position='top-right' autoDeleteTime={ 8000 } />
       <ModalRoot />
       <Show when={ onlyDisplay && window.isOwn }>
-        &emsp;&emsp;You own this fleet. You can <a href={ `${baseUrl}/fleet/self/show/${hash}/${slug}` }>edit it</a>.
-        <br/><br/>
+        <p class="indent">You own this fleet. You can <a href={ `${baseUrl}/fleet/self/show/${hash}/${slug}` }>edit it</a>.</p>
       </Show>
       <Ship />
     </>
