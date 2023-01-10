@@ -319,8 +319,8 @@ const FleetDisplay = () => {
                                 name: "Fleet name",
                                 type: "text",
                                 value: fleetData.name,
-                                maxlength: 60,
-                                minlength: 5
+                                minlength: window.fleetNameMinlength,
+                                maxlength: window.fleetNameMaxlength
                             },
                             maxpoints: {
                                 name: "Max points",

@@ -14,6 +14,8 @@ declare global {
   interface Window {
     fleetMaxpointsMin: number
     fleetMaxpointsMax: number
+    fleetNameMinlength: number
+    fleetNameMaxlength: number
     baseUrl: string
   }
 }
