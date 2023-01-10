@@ -164,14 +164,12 @@ const FleetDisplay = () => {
     };
 
     const showCrew = (ship: ShipType) => {
-        console.log(ship);
-        
-        const oldState = JSON.stringify(ship);
+        const oldState = JSON.stringify(ship.crew);
         modalContext.showModal({
             id: 'add_crew_' + ship.uuid,
             title: 'Select crew for ' + ship.fullname,
             onClose: () => {
-                const newState = JSON.stringify(ship);
+                const newState = JSON.stringify(ship.crew);
                 if (!onlyDisplay && oldState !== newState) {
                     setSaved(() => false);
                 }

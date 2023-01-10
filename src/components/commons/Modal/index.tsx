@@ -64,6 +64,7 @@ export const ModalRoot = () => {
             const modal = _modals.find( modal => modal.id === properties.id);
             if (modal) {
                 modal.visible = true;
+                modal.onClose = properties.onClose;
             }
             else {
                 const newModal: ModalState = {
