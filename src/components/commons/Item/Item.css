@@ -3,6 +3,7 @@
     z-index: -1;
     background-size: cover;
     border-radius: 10px;
+    padding: 0.6em;
 }
 
 .item > .actions {
@@ -23,9 +24,9 @@
 
 .item > .info {
     padding: 0.6em;
-    margin: 0.6em;
     background-color: rgba(0,0,0,0.2);
     min-height: 5em;
+    height: 100%;
     border-radius: 3px;
 }
 

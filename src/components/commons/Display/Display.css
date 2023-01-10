@@ -60,5 +60,5 @@
     grid-area: items;
     align-content: flex-start;
     align-self: stretch;
-    align-items: flex-end;
+    align-items: stretch;
 }
