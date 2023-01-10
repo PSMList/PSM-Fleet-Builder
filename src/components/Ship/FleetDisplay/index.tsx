@@ -71,7 +71,6 @@ const FleetDisplay = () => {
     async function getSavedFleetData() {
         try {
             const response = await fetch(`${window.baseUrl}/fleet/get/${hash}/${slug}`);
-            // const response = await fetch(`http://psmlist/public/fleet/get/${hash}/${slug}`);
             const data = await response.json();
             if (!data) return;
 
@@ -274,7 +273,6 @@ const FleetDisplay = () => {
         const saveFleet = async () => {
             const fleetStr = fleetDataToString();
             fetch(`${window.baseUrl}/fleet/self/set/${hash}/${slug}`, {
-            // fetch(`http://psmlist/public/fleet/self/set/${hash}/${slug}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
