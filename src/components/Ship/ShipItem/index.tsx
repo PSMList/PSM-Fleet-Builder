@@ -1,7 +1,7 @@
 import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
 import { ShipType } from "@/data/ship";
-import { For, JSX } from "solid-js";
+import { For, JSX, Show } from "solid-js";
 import './ShipItem.css';
 
 type SearchItemProps = {
@@ -62,6 +62,21 @@ const ShipItem = (props: SearchItemProps) => {
                     <span class="aptitude">{ props.data.defaultaptitude }</span>
                 </div>
             </div>
+            <Show when={ props.data.crew.length > 0 }>
+                <ul class="crew">
+                    <For each={ props.data.crew }>
+                        {
+                            crew =>
+                                <li>
+                                    <span class="points">{ crew.points }</span>&nbsp;
+                                    <img class="faction" src={ `${window.baseUrl}/img/flag/search/${crew.faction.nameimg}.png` } alt={ crew.faction.defaultname } />&nbsp;
+                                    <span class="id">{ crew.numid }</span>&nbsp;
+                                    <span class="name">{ crew.name }</span>&nbsp;
+                                </li>
+                        }
+                    </For>
+                </ul>
+            </Show>
         </Item>
     );
 }

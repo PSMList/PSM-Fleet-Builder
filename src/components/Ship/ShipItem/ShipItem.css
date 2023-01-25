@@ -41,3 +41,52 @@
 .item > .info > .bottom > .aptitude {
     grid-area: aptitude;
 }
+
+.item > .crew {
+    margin-top: 0.5em;
+    padding: 0.6em;
+    background-color: rgba(0,0,0,0.2);
+    min-height: 5em;
+    border-radius: 3px;
+}
+
+.item > .crew {
+    list-style-type: none;
+    color: white;
+    font-family: Windlass;
+    font-weight: bold;
+    text-shadow: rgb(0,0,0) 0px 0px 4px, rgb(0,0,0) 0px 0px 2px, rgb(0,0,0) 1px 1px 0px;
+    flex-grow: 10000;
+}
+
+.item > .crew > li {
+    padding: 0.25em;
+}
+
+.item > .crew > li > * {
+    vertical-align: middle;
+}
+
+.item > .crew > li > .points {
+    font-size: 1em;
+    width: 1.75em;
+    height: 1.75em;
+    border: 2px solid #111;
+    border-radius: 2px;
+    background-color: #222;
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.item > .crew > li > .faction {
+    user-select: none;
+    height: auto;
+    width: 1.5em;
+}
+
+.item > .crew > li > .id {
+    font-size: 0.9em;
+    font-weight: normal;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
