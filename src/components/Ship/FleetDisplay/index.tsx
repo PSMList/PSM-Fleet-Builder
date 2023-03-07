@@ -390,8 +390,19 @@ const FleetDisplay = () => {
             });
         }
 
+        const scrollToDisplayBottom = () => {
+            if (displayContainer) {
+                window.scrollTo({ top: displayContainer.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
         fleetActions = (
             <>
+                <IconButton
+                    iconID="search-plus"
+                    onClick={scrollToDisplayBottom}
+                    class="scroll_to_search"
+                />
                 <IconButton
                     iconID="save"
                     onClick={saveFleet}
@@ -464,7 +475,7 @@ const FleetDisplay = () => {
 
     return (
         <Display
-            ref={ displayContainer }
+            ref={ (ref) => displayContainer = ref }
             title={fleetData.name}
             info={headerInfo}
             actions={fleetActions}

@@ -56,7 +56,8 @@ const CrewDisplay = (props: CrewDisplayProps) => {
             data.points.max = data.points.current + props.remainingFleetPoints;
         }));
     });
-    
+
+    let displayContainer: HTMLDivElement;
     let removeCrewAction: (crew: CrewType) => JSX.Element | undefined;
     let crewActions: JSX.Element | undefined;
     
@@ -123,13 +124,26 @@ const CrewDisplay = (props: CrewDisplayProps) => {
             }));
         }
 
+        const scrollToDisplayBottom = () => {
+            if (displayContainer) {
+                window.scrollTo({ top: displayContainer.scrollHeight, behavior: 'smooth' });
+            }
+        }
+
         crewActions = (
-            <IconButton
-                iconID="eraser"
-                class="clear"
-                onClick={clearCrew}
-                title="Clear all crew"
-            />
+            <>
+                <IconButton
+                    iconID="search-plus"
+                    onClick={scrollToDisplayBottom}
+                    class="scroll_to_search"
+                />
+                <IconButton
+                    iconID="eraser"
+                    class="clear"
+                    onClick={clearCrew}
+                    title="Clear all crew"
+                />
+            </>
         );
     
         removeCrewAction = (crew: CrewType) =>
@@ -167,6 +181,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
     return (
         <Display
+            ref={ (ref) => displayContainer = ref }
             info={
                 headerInfo
             }
