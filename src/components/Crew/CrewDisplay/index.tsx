@@ -68,24 +68,32 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
         const addCrew = (crew: CrewType) => {
             if ( props.ship.crew.length + 1 > props.ship.cargo ) toastContext.createToast({
+                id: 'warning-exceeding-cargo',
                 type: 'warning',
                 title: 'Add crew',
                 description: 'Exceeding cargo limit.'
             });
             if ( crew.faction.id !== props.ship.faction.id ) toastContext.createToast({
+                id: 'warning-different-faction',
                 type: 'warning',
                 title: 'Add crew',
-                description: 'You happen to have picked a crew with a different from its ship faction. Please check if this what you really want to do before saving.'
+                description: 'Different faction for crew and its ship.'
             });
             if ( props.ship.crew.some(_crew => _crew.name === crew.name)) toastContext.createToast({
+                id: 'warning-same-crew',
                 type: 'warning',
                 title: 'Add crew',
-                description: 'You happen to have picked two or more crew with an identical name. Please check if this what you really want to do before saving.'
+                description: 'Crew with the same name.'
             });
             if (crewData.points.current + crew.points > crewData.points.max) toastContext.createToast({
+                id: 'warning-exceeding-maxpoints',
                 type: 'warning',
                 title: 'Add crew',
-                description: 'Exceeding fleet max points. Please go to the settings if you want to increase the limit.'
+                description: <>
+                    Exceeding fleet max points.
+                    <br/>
+                    <small>You can increase it in settings.</small>
+                </>
             });
             setData(produce(data => {
                 data.crews.push({ ...crew });
@@ -105,6 +113,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         
         const clearCrew = () => {
             toastContext.createToast({
+                id: 'info-clearing',
                 type: 'info',
                 title: 'Clear crew',
                 description: 'Removed crew data (not saved).'

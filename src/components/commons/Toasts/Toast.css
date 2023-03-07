@@ -41,10 +41,10 @@
 	transition: .3s ease;
 	position: relative;
 	pointer-events: auto;
-	padding: 30px;
+	padding: 7px 5px 7px 10px;
 	border-radius: 0.25em;
 	box-shadow: 0 0 0.75em #999;
-	opacity: .98;
+	opacity: .95;
 	display: grid;
 	align-items: flex-end;
     grid-template-columns: auto 1fr auto;
@@ -53,11 +53,21 @@
 	"icon title close"
 	"icon message message";
     max-height: 10em;
-    width: 20em;
+    width: 18em;
 	max-width: 100%;
 	color: #fff;
-	padding: 1em;
-	pointer-events: all;
+	pointer-events: none;
+}
+
+.notification:hover,
+.notification:focus,
+.notification:focus-within {
+	box-shadow: 0 0 1.25em #999;
+	opacity: 1;
+}
+
+.notification * {
+	align-self: center;
 }
 
 .notification + hr {
@@ -77,40 +87,40 @@
 	transition: scale 0s ease 0.3s, margin 0s ease 0.3s;
 }
 
-.notification:hover,
-.notification:focus,
-.notification:focus-within {
-	box-shadow: 0 0 1.25em #999;
-	opacity: 1;
-}
-
 .notification-title {
 	font-weight: 700;
 	font-size: 16px;
 	text-align: left;
-	margin-top: 0;
-	margin-bottom: 0;
-	padding-bottom: 6px;
 	grid-area: title;
 }
 
 .notification-message {
 	margin: 0;
+	font-size: 13px;
+	line-height: 1.3;
 	text-align: left;
     margin-left: -1px;
 	grid-area: message;
 }
 
 .notification-image {
-	font-size: 1.5em;
-    margin-right: 0.7em;
+	font-size: 20px;
+    margin-right: 10px;
 	grid-area: icon;
-	align-self: center;
 }
 
-#notification-container button {
+.notification-close {
 	grid-area: close;
 	color: #fff;
+	pointer-events: all;
+}
+
+.notification-close .icon_button {
+	margin: 0;
+	padding: 3px 10px;
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
 }
 
 @keyframes toast-in-right {

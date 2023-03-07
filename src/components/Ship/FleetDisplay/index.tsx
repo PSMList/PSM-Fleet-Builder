@@ -10,6 +10,7 @@ import ShipItem from "@/components/Ship/ShipItem";
 import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
 import { StoreProvider, useStore } from "@/data/store";
+import { fetchWithTimeout } from "@/utils";
 import { createEffect, createSignal, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './FleetDisplay.css';
@@ -131,16 +132,18 @@ const FleetDisplay = () => {
         if (savedFleetData) {
             setNewData(savedFleetData);
             toastContext.createToast({
+                id: 'success-loading-data',
                 type: 'info',
                 title: 'Load saved fleet data',
-                description: `Successfully loaded fleet data from ${savedFleetData.name}.`
+                description: `${savedFleetData.name}.`
             });
         }
         else {
             toastContext.createToast({
+                id: 'error-loading-data',
                 type: 'error',
                 title: 'Load saved fleet data',
-                description: 'Failed to load fleet data. Please try again later.'
+                description: 'Verify your connection, reload the page and retry.'
             });
         }
     })();
@@ -148,18 +151,20 @@ const FleetDisplay = () => {
     const exportFleet = () => {
         const fleetStr = fleetDataToString();
         if (!fleetStr) return toastContext.createToast({
+            id: 'error-exporting-data',
             type: 'error',
             title: 'Export fleet data',
-            description: 'Fleet data not exported. Please try again later.'
+            description: 'Save your fleet, reload page and retry.'
         });
         const a = document.createElement('a');
         a.download = 'fleet_data.json';
         a.href = "data:text/json;charset=utf-8," + encodeURIComponent(fleetStr);
         a.click();
         toastContext.createToast({
+            id: 'success-loading-data',
             type: 'success',
             title: 'Export fleet data',
-            description: 'Fleet data exported in your download folder.'
+            description: 'Verify your download folder.'
         });
     };
 
@@ -182,6 +187,7 @@ const FleetDisplay = () => {
         });
     }
 
+    let displayContainer: HTMLDivElement;
     let removeShipAction: (ship: ShipType) => JSX.Element | undefined;
     let fleetActions: JSX.Element | undefined;
     let settingsAction: JSX.Element | undefined;
@@ -192,14 +198,20 @@ const FleetDisplay = () => {
 
         const addShip = (ship: ShipType) => {
             if (fleetData.ships.some(_ship => _ship.name === ship.name)) toastContext.createToast({
+                id: 'warning-adding-same-ships',
                 type: 'warning',
                 title: 'Add ship',
-                description: 'You happen to have picked two or more ships with an identical name. Please check if this what you really want to do before saving.'
+                description: 'Ships with the same name.'
             });
             if (fleetData.points.current + ship.points > fleetData.points.max) toastContext.createToast({
+                id: 'warning-exceeding-maxpoints',
                 type: 'warning',
                 title: 'Add ship',
-                description: 'Exceeding fleet max points. Please go to the settings if you want to increase the limit.'
+                description: <>
+                    Exceeding fleet max points.
+                    <br/>
+                    <small>You can increase it in settings.</small>
+                </>
             });
             setData(produce(data => {
                 data.ships.push({ ...ship, crew: [], uuid: Math.random().toString().substring(2) });
@@ -233,7 +245,8 @@ const FleetDisplay = () => {
             inputFile.addEventListener('change', async () => {
                 if (!inputFile.files || !inputFile.files.item(0)) {
                     return toastContext.createToast({
-                        type: 'warning',
+                        id: 'error-importing-no-file',
+                        type: 'error',
                         title: 'Import fleet data',
                         description: 'No file provided.'
                     });
@@ -241,9 +254,10 @@ const FleetDisplay = () => {
                 const file = inputFile.files.item(0);
                 if (file?.type !== 'application/json') {
                     return toastContext.createToast({
+                        id: 'error-import-wrong-file-format',
                         type: 'warning',
                         title: 'Import fleet data',
-                        description: 'Provided file is not a valid .json file. Please provide a valid one.'
+                        description: 'Please provide a valid file (.json)'
                     });
                 }
                 try {
@@ -252,25 +266,28 @@ const FleetDisplay = () => {
                         setNewData(fileFleetData);
                         setSaved(() => false);
                         return toastContext.createToast({
+                            id: 'success-importing-data',
                             type: 'success',
                             title: 'Import fleet data',
-                            description: `Successfully loaded fleet data from ${fleetData.name} (not saved).`
+                            description: `Loaded from ${fleetData.name} (not saved).`
                         });
                     }
                 }
-                catch { }
-                toastContext.createToast({
-                    type: 'error',
-                    title: 'Import fleet data',
-                    description: 'Fleet data not imported. Please try again later.'
-                });
+                catch {
+                    toastContext.createToast({
+                        id: 'error-importing-data',
+                        type: 'error',
+                        title: 'Import fleet data',
+                        description: 'Please verify the imported file and try again.'
+                    });
+                }
             });
             inputFile.click();
         }
 
         const saveFleet = async () => {
             const fleetStr = fleetDataToString();
-            fetch(`${window.baseUrl}/fleet/self/set/${hash}/${slug}`, {
+            fetchWithTimeout(`${window.baseUrl}/fleet/self/set/${hash}/${slug}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -278,25 +295,46 @@ const FleetDisplay = () => {
                 body: fleetStr
             })
                 .then((res) => {
-                    if (!res.ok) throw new Error(`HTTP error ${res.status}: ${res.statusText}`);
-                    setSaved(() => true);
-                    toastContext.createToast({
-                        type: 'success',
-                        title: 'Save fleet data',
-                        description: 'Fleet data successfully saved.'
-                    });
-                })
-                .catch(() => {
-                    toastContext.createToast({
-                        type: 'error',
-                        title: 'Save fleet data',
-                        description: 'Fleet data not saved. Please try again later.'
-                    });
+                    if (res.ok) {
+                        setSaved(() => true);
+                        toastContext.createToast({
+                            id: 'success-saving-data',
+                            type: 'success',
+                            title: 'Save fleet data',
+                            description: ''
+                        });
+                    }
+                    else {
+                        switch (res.status) {
+                            case 400:
+                                toastContext.createToast({
+                                    id: 'error-saving-data',
+                                    type: 'error',
+                                    title: 'Save fleet data',
+                                    description: 'Invalid fleet data.'
+                                });
+                            case 408:
+                                toastContext.createToast({
+                                    id: 'error-saving-data',
+                                    type: 'error',
+                                    title: 'Save fleet data',
+                                    description: 'Request timeout.'
+                                });
+                            default:
+                                toastContext.createToast({
+                                    id: 'error-saving-data',
+                                    type: 'error',
+                                    title: 'Save fleet data',
+                                    description: 'Internal error. Please contact administrators.'
+                                });
+                        }
+                    }
                 });
         }
 
         const clearFleet = () => {
             toastContext.createToast({
+                id: 'info-clearing',
                 type: 'info',
                 title: 'Clear ships',
                 description: 'Removed ships data (not saved).'
@@ -356,26 +394,22 @@ const FleetDisplay = () => {
             <>
                 <IconButton
                     iconID="save"
-                    class="save"
                     onClick={saveFleet}
                     title="Save"
                     style={{ color: saved() ? "green" : "red" }}
                 />
                 <IconButton
                     iconID="share-square"
-                    class="export"
                     onClick={exportFleet}
                     title="Export to file"
                 />
                 <IconButton
                     iconID="file-import"
-                    class="import"
                     onClick={importFleet}
                     title="Import from file"
                 />
                 <IconButton
                     iconID="eraser"
-                    class="clear"
                     onClick={clearFleet}
                     title="Clear fleet"
                 />
@@ -430,6 +464,7 @@ const FleetDisplay = () => {
 
     return (
         <Display
+            ref={ displayContainer }
             title={fleetData.name}
             info={headerInfo}
             actions={fleetActions}

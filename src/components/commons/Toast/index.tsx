@@ -1,5 +1,6 @@
 import IconButton from "@/components/commons/IconButton";
 import { capitalize } from "@/utils";
+import { Accessor, JSX, Show } from "solid-js";
 
 
 type ToastTypes = 'info' | 'success' | 'warning' | 'error';
@@ -14,15 +15,16 @@ const icons: { [K in ToastTypes]: string } = {
 export type ToastPosition = 'top-right' | 'bottom-right' | 'top-left' | 'bottom-left';
 
 export type ToastType = {
+    id: string
     type: ToastTypes
     title?: string
-    description: string
+    description: string | JSX.Element
 }
 
 export type ToastProps = ToastType & {
-    id: number
     position: ToastPosition
-    deleteToast: (id: number) => void
+    count: Accessor<number>
+    deleteToast: (id: ToastType['id']) => void
 }
 
 const Toast = (props: ToastProps) => {
@@ -48,21 +50,26 @@ const Toast = (props: ToastProps) => {
             class={`notification ${props.position}`}
             style={{ 'background-color': backgroundColor }}
         >
-            <IconButton
-                iconID="times"
-                onClick={() => props.deleteToast(props.id)}
-                title="Close"
-            />
+            <span class="notification-close">
+                <IconButton
+                    iconID="times"
+                    onClick={() => props.deleteToast(props.id)}
+                    title="Close"
+                />
+            </span>
             <i
                 class={ "notification-image fas fa-" + icons[props.type] }
                 title={ props.title }
             />
-            <p class="notification-title">
-                {props.title}
-            </p>
-            <p class="notification-message">
-                {props.description}
-            </p>
+            <span class="notification-title">
+                { props.title }
+                <Show when={props.count() > 1}>
+                    &nbsp;x{ props.count() }
+                </Show>
+            </span>
+            <span class="notification-message">
+                { props.description }
+            </span>
         </div>
     );
 }

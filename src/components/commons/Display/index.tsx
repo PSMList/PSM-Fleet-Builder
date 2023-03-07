@@ -1,8 +1,9 @@
 import Items from "@/components/commons/Items";
-import { JSX, Show } from "solid-js";
+import { JSX, Ref, Show } from "solid-js";
 import './Display.css';
 
 type DisplayProps = {
+    ref: Ref<HTMLDivElement>
     title?: string | JSX.Element
     info?: JSX.Element
     actions?: JSX.Element
@@ -12,7 +13,7 @@ type DisplayProps = {
 const Display = (props: DisplayProps) => {
 
     return (
-        <div class="display_container whitebox">
+        <div class="display_container whitebox" ref={ props.ref }>
             <div class="display_header">
                 <div class="title">{ props.title }</div>
                 <Show when={ props.info }>
