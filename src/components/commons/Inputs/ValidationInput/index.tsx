@@ -1,5 +1,5 @@
 import IconButton from "@/components/commons/IconButton";
-import { createEffect, createSignal, JSX, Show, splitProps } from "solid-js";
+import { createEffect, createSignal, JSX, Match, Show, splitProps, Switch } from "solid-js";
 import './ValidationInput.css';
 
 type ValidationInputProps<T extends string | boolean> = {
@@ -17,7 +17,7 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
     const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle', 'undo']);
 
     if (typeof inputProps.type === "string" || inputProps.type === undefined) {
-        inputProps.pattern = "[-\\w'\":\"À-ſ ]+";
+        inputProps.pattern = "[-\\w'\":À-ſ ]+";
     }
 
     createEffect(() => {
@@ -56,38 +56,51 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                 formRef = ref; 
             } }>
             <div class="validation_container">
-                <input
-                    ref={ (ref) => {
-                        if (!ref) return;
-                        inputRef = ref;
-                        if (localProps.focus) setTimeout(() => ref.focus(), 1);
-                    } }
-                    { ...inputProps }
-                    { ... {
-                        [typeof defaultValue() === 'boolean' ? 'value': 'checked']: defaultValue()
-                    }}
-                    onKeyPress={ (event) => {
-                        if (event.key === 'Enter') {
-                            event.preventDefault();
-                            validate();
-                        }
-                        if (localProps.onKeyPress) {
-                            localProps.onKeyPress(event);
-                        }
-                    } }
-                />
-                <Show when={ localProps.undo }>
-                    <IconButton
-                        onClick={ undo }
-                        iconID="undo"
-                        title="Undo"
-                    />
-                </Show>
-                <IconButton
-                    onClick={ validate }
-                    iconID={ localProps.validationIcon || "check" }
-                    title={ localProps.validationTitle || "Validate" }
-                />
+                <Switch>
+                    <Match when={inputProps.type !== 'textarea'}>
+                        <input
+                            ref={ (ref) => {
+                                if (!ref) return;
+                                inputRef = ref;
+                                if (localProps.focus) setTimeout(() => ref.focus(), 1);
+                            } }
+                            { ...inputProps }
+                            { ... {
+                                [typeof defaultValue() === 'boolean' ? 'value': 'checked']: defaultValue()
+                            }}
+                            onKeyPress={ (event) => {
+                                if (event.key === 'Enter') {
+                                    event.preventDefault();
+                                    validate();
+                                }
+                                if (localProps.onKeyPress) {
+                                    localProps.onKeyPress(event);
+                                }
+                            } }
+                        />
+                        <Show when={ localProps.undo }>
+                            <IconButton
+                                onClick={ undo }
+                                iconID="undo"
+                                title="Undo"
+                            />
+                        </Show>
+                        <IconButton
+                            onClick={ validate }
+                            iconID={ localProps.validationIcon || "check" }
+                            title={ localProps.validationTitle || "Validate" }
+                        />
+                    </Match>
+                    <Match when={true}>
+                        <textarea
+                            ref={ (ref) => inputRef = ref as unknown as HTMLInputElement }
+                            rows="5"
+                            cols="50"
+                        >
+                            { defaultValue() }
+                        </textarea>
+                    </Match>
+                </Switch>
             </div>
         </form>
     );
