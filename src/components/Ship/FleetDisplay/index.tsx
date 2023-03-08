@@ -23,6 +23,7 @@ type FleetSavedDataType = {
         crew: { id: number }[]
     }[]
     ispublic: boolean
+    description: string
 }
 
 export type FleetDataType = {
@@ -33,6 +34,7 @@ export type FleetDataType = {
     }
     ispublic: boolean
     ships: ShipType[]
+    description: string
 }
 
 const defaultFleetData: FleetDataType = {
@@ -42,7 +44,8 @@ const defaultFleetData: FleetDataType = {
         max: 40
     },
     ships: [],
-    ispublic: false
+    ispublic: false,
+    description: ''
 }
 
 const FleetDisplay = () => {
@@ -65,7 +68,8 @@ const FleetDisplay = () => {
                 ship.crew = crews.map((crew: { id: number }) => ({ ...database.crews.get(crew.id)! }));
                 return ship;
             }),
-            ispublic: savedData.ispublic
+            ispublic: savedData.ispublic,
+            description: savedData.description
         };
     }
 
@@ -116,7 +120,8 @@ const FleetDisplay = () => {
                         id: crew.id
                     }))
                 })),
-                ispublic: fleetData.ispublic
+                ispublic: fleetData.ispublic,
+                description: fleetData.description
             }
             return JSON.stringify(data);
         }
@@ -372,6 +377,11 @@ const FleetDisplay = () => {
                                 type: "checkbox",
                                 checked: fleetData.ispublic,
                             },
+                            description: {
+                                name: "Description",
+                                type: "textarea",
+                                value: fleetData.description,
+                            },
                         }}
                         onSave={data => {
                             setNewData({
@@ -381,7 +391,8 @@ const FleetDisplay = () => {
                                     max: data.maxpoints.value as number,
                                     current: fleetData.points.current
                                 },
-                                ships: fleetData.ships
+                                ships: fleetData.ships,
+                                description: fleetData.description
                             });
                             setSaved(() => false);
                             setTimeout(saveFleet, 500);
