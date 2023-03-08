@@ -11,10 +11,10 @@
 }
 
 .settings_container > .settings_inputs > div {
-    flex: 1 0 fit-content;
-    max-width: 35em;
+    flex: 1 1 fit-content;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1em;
+    min-width: 0;
 }
