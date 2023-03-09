@@ -41,27 +41,27 @@ const Settings = (props: SettingsProps) => {
                     const onChange = (event: Event) => {
                         const input = (event.target as HTMLInputElement);
                         switch (input.type) {
-                            case 'text':
-                                setSettings(name, "value", input.value);
-                                break;
                             case 'number':
                                 setSettings(name, "value", parseInt(input.value));
                                 break;
                             case 'checkbox':
                                 setSettings(name, "checked", input.checked);
                                 break;
+                            default:
+                                setSettings(name, "value", input.value);
+                                break;
                         }
                     };
                     const onValidate = (newValue: string | boolean) => {
                         switch (_input.type) {
-                            case 'text':
-                                setSettings(name, "value", newValue as string);
-                                break;
                             case 'number':
                                 setSettings(name, "value", parseInt(newValue as string));
                                 break;
                             case 'checkbox':
                                 setSettings(name, "checked", newValue as boolean);
+                                break;
+                            default:
+                                setSettings(name, "value", newValue as string);
                                 break;
                         }
                         save();
@@ -76,7 +76,7 @@ const Settings = (props: SettingsProps) => {
 
                     return (
                         <div class="whitebox">
-                            <label for={ name }>{ capitalize(_input.name!) }</label>
+                            <label for={ name }>{ _input.name }</label>
                             <ValidationInput { ...inputSettings } />
                         </div>
                     );

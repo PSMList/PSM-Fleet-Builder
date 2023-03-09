@@ -16,8 +16,8 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
 
     const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle', 'undo']);
 
-    if (typeof inputProps.type === "string" || inputProps.type === undefined) {
-        inputProps.pattern = "[-\\w'\":À-ſ ]+";
+    if (inputProps.type === "text" || inputProps.type === undefined) {
+        inputProps.pattern = "[-\\w'\":\u00C0-\u017F ]+";
     }
 
     createEffect(() => {
@@ -78,29 +78,30 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
                                 }
                             } }
                         />
-                        <Show when={ localProps.undo }>
-                            <IconButton
-                                onClick={ undo }
-                                iconID="undo"
-                                title="Undo"
-                            />
-                        </Show>
-                        <IconButton
-                            onClick={ validate }
-                            iconID={ localProps.validationIcon || "check" }
-                            title={ localProps.validationTitle || "Validate" }
-                        />
                     </Match>
                     <Match when={true}>
                         <textarea
                             ref={ (ref) => inputRef = ref as unknown as HTMLInputElement }
                             rows="5"
                             cols="50"
+                            
                         >
                             { defaultValue() }
                         </textarea>
                     </Match>
                 </Switch>
+                <Show when={ localProps.undo }>
+                    <IconButton
+                        onClick={ undo }
+                        iconID="undo"
+                        title="Undo"
+                    />
+                </Show>
+                <IconButton
+                    onClick={ validate }
+                    iconID={ localProps.validationIcon || "check" }
+                    title={ localProps.validationTitle || "Validate" }
+                />
             </div>
         </form>
     );
