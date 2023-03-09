@@ -325,6 +325,7 @@ const FleetDisplay = () => {
                                     title: 'Save fleet data',
                                     description
                                 });
+                                break;
                             case 408:
                                 toastContext.createToast({
                                     id: 'error-saving-data',
@@ -332,6 +333,7 @@ const FleetDisplay = () => {
                                     title: 'Save fleet data',
                                     description: 'Request timeout.'
                                 });
+                                break;
                             case 401:
                                 toastContext.createToast({
                                     id: 'error-saving-data',
@@ -339,6 +341,7 @@ const FleetDisplay = () => {
                                     title: 'Save fleet data',
                                     description: 'Verify that your are on PSMList.com.'
                                 });
+                                break;
                             default:
                                 toastContext.createToast({
                                     id: 'error-saving-data',
