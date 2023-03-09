@@ -126,7 +126,8 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
         const scrollToDisplayBottom = () => {
             if (displayContainer) {
-                window.scrollTo({ top: displayContainer.scrollHeight, behavior: 'smooth' });
+                const scrollElement = document.getElementById('modal-root')?.querySelector('.modal-content')!;
+                scrollElement.scrollTo({ top: scrollElement.scrollTop + displayContainer.getBoundingClientRect().top + displayContainer.scrollHeight, behavior: 'smooth' });
             }
         }
 

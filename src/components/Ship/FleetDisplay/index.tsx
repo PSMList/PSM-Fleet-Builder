@@ -417,7 +417,11 @@ const FleetDisplay = () => {
 
         const scrollToDisplayBottom = () => {
             if (displayContainer) {
-                window.scrollTo({ top: displayContainer.scrollHeight, behavior: 'smooth' });
+                const scrollElement = document.body.parentElement!;
+                scrollElement.scrollTo({
+                    top: scrollElement.scrollTop + displayContainer.getBoundingClientRect().top + displayContainer.scrollHeight,
+                    behavior: 'smooth'
+                });
             }
         }
 
