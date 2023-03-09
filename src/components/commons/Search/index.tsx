@@ -1,13 +1,14 @@
 import ValidationInput from "@/components/commons/Inputs/ValidationInput";
 import Items from "@/components/commons/Items";
 import { useStore } from "@/data/store";
-import { createMemo, createSignal, For, JSX } from "solid-js";
+import { createEffect, createMemo, createSignal, For, JSX } from "solid-js";
+import IconButton from "../IconButton";
 import Select from "../Inputs/Select";
 import { ItemType } from "../Item";
+import Sort, { NoSort, SortDown, SortUp } from "../Sort";
 import './Search.css';
 
 export type SearchItemType = {
-    search_field: string
     element: JSX.Element
     item: ItemType
 }
@@ -28,6 +29,8 @@ const Search = (props: SearchProps) => {
 
     const [ factionFilter, setFactionFilter ] = createSignal(-1);
     const [ extensionFilter, setExtensionFilter ] = createSignal(-1);
+
+    const [ costSort, setCostSort ] = createSignal(NoSort);
 
     const { database } = useStore().databaseService;
 
@@ -104,11 +107,11 @@ const Search = (props: SearchProps) => {
             </h3>
         }
 
-        const filteredItems: JSX.Element[] = [];
+        const filteredItems: SearchItemType[] = [];
 
-        for (const item of selectItems()) {
-            if ( _searchQuery.test( item.search_field ) ) {
-                filteredItems.push( item.element );
+        for (const searchItem of selectItems()) {
+            if ( _searchQuery.test( searchItem.item.fullname ) ) {
+                filteredItems.push( searchItem );
             }
         }
 
@@ -116,11 +119,29 @@ const Search = (props: SearchProps) => {
             return <h3 class="search_info">No matching item.</h3>
         }
 
+        let sortedItems: SearchItemType[];
+
+        switch (costSort()) {
+            case SortDown:
+                sortedItems = filteredItems.sort(
+                    (itemA, itemB) => itemA.item.points < itemB.item.points ? -1 : 1
+                );
+                break;
+            case SortUp:
+                sortedItems = filteredItems.sort(
+                    (itemA, itemB) => itemA.item.points < itemB.item.points ? 1 : -1
+                );
+                break;
+            default:
+                sortedItems = filteredItems;
+                break;
+        }
+
         return (
             <Items class="search_results">
-                <For each={ filteredItems }>
+                <For each={ sortedItems }>
                     {
-                        filteredItem => filteredItem
+                        filteredItem => filteredItem.element
                     }
                 </For>
             </Items>
@@ -155,6 +176,14 @@ const Search = (props: SearchProps) => {
                     }
                     defaultSelectOption={props.defaultExtensionID}
                 />
+                <div class="filters">
+                    <Sort
+                        class="cost"
+                        onClick={ setCostSort }
+                    >
+                        <IconButton iconID="coins" />
+                    </Sort>
+                </div>
                 { props.additionalInputs }
             </div>
             { content() }
