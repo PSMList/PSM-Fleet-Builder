@@ -1,5 +1,5 @@
 import Toast, { ToastPosition, ToastType } from "@/components/commons/Toast";
-import { createContext, createSignal, For, JSX, onCleanup, onMount, useContext } from "solid-js";
+import { createContext, createSignal, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './Toast.css';
 
@@ -16,8 +16,10 @@ type ToastInstanceType = {
     element: JSX.Element
 }
 
-export const ToastContext = createContext({
-    createToast(properties: ToastType) { },
+export const ToastContext = createContext<{
+    createToast: (properties: ToastType) => void
+}>({
+    createToast(){},
 });
 
 const Toasts = (props: ToastsProps) => {

@@ -1,6 +1,5 @@
 import IconButton from "@/components/commons/IconButton";
 import ValidationInput from "@/components/commons/Inputs/ValidationInput";
-import { capitalize } from "@/utils";
 import { For, JSX } from "solid-js";
 import { createStore } from "solid-js/store";
 import './Settings.css';

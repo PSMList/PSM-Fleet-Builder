@@ -1,7 +1,6 @@
 import { ModalRoot } from "@/components/commons/Modal";
 import Toasts from "@/components/commons/Toasts";
 import Ship from "@/components/Ship";
-import { Show } from "solid-js";
 import './App.css';
 
 export const [hash, slug] = window.location.pathname.split('/').splice(-2, 2);

@@ -1,7 +1,7 @@
 import ValidationInput from "@/components/commons/Inputs/ValidationInput";
 import Items from "@/components/commons/Items";
 import { useStore } from "@/data/store";
-import { createEffect, createMemo, createSignal, For, JSX } from "solid-js";
+import { createMemo, createSignal, For, JSX } from "solid-js";
 import IconButton from "../IconButton";
 import Select from "../Inputs/Select";
 import { ItemType } from "../Item";

@@ -9,7 +9,7 @@ import { ShipItemsContext } from "@/components/Ship";
 import ShipItem from "@/components/Ship/ShipItem";
 import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
-import { StoreProvider, useStore } from "@/data/store";
+import { useStore } from "@/data/store";
 import { fetchWithTimeout } from "@/utils";
 import { createEffect, createSignal, For, JSX, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";

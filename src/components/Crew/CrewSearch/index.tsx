@@ -4,18 +4,12 @@ import Search, { SearchItemType } from "@/components/commons/Search";
 import { CrewItemsContext } from "@/components/Crew";
 import CrewItem from "@/components/Crew/CrewItem";
 import { CrewType } from "@/data/crew";
-import { ShipType } from "@/data/ship";
 import { useStore } from "@/data/store";
-import { createEffect, createSignal, JSX, useContext } from "solid-js";
+import { createEffect, createSignal, useContext } from "solid-js";
 import './CrewSearch.css';
 
 type CrewSearchProps = {
     defaultFactionID: string
-}
-
-type OptionElement = {
-    value: string,
-    display: JSX.Element
 }
 
 const CrewSearch = (props: CrewSearchProps) => {

@@ -13,10 +13,12 @@ type ModalProperties = {
 
 type ModalState = ModalProperties & { visible: boolean };
 
-export const ModalContext = createContext({
-    // createModal(properties: ModalProperties) { },
-    showModal(properties: ModalProperties) { },
-    hideModal(id: string) { },
+export const ModalContext = createContext<{
+    showModal: (properties: ModalProperties) => void
+    hideModal: (id: string) => void
+}>({
+    showModal(){},
+    hideModal(){},
 });
 
 type ModalProps = {
