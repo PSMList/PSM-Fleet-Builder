@@ -14,6 +14,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
+    "allowUnreachableCode": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "removeComments": true,
+    "alwaysStrict": true,
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
     "paths": {

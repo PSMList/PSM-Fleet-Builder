@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite'
-import suidPlugin from '@suid/vite-plugin';
 import solidPlugin from 'vite-plugin-solid';
-import { resolve } from 'path';
+import { resolve } from 'node:path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,7 +8,6 @@ export default defineConfig({
     host: true
   },
   plugins: [
-    suidPlugin(),
     solidPlugin()
   ],
   resolve: {
