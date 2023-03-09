@@ -1,4 +1,5 @@
 import { JSX, splitProps } from "solid-js";
+import Icon from "../Icon";
 import './IconButton.css';
 
 type IconButtonProps = {
@@ -10,7 +11,7 @@ const IconButton = (props: IconButtonProps) => {
 
     return (
         <button { ...buttonProps } classList={{ "icon_button": true, [localProps.class || '']: true, ...localProps.classList }}>
-            <i class={ "fas fa-" + localProps.iconID } />
+            <Icon iconID={ localProps.iconID } />
         </button>
     );
 };
