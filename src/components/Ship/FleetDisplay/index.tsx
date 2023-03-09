@@ -299,7 +299,7 @@ const FleetDisplay = () => {
                 },
                 body: fleetStr
             })
-                .then((res) => {
+                .then(async res => {
                     if (res.ok) {
                         setSaved(() => true);
                         toastContext.createToast({
@@ -316,7 +316,7 @@ const FleetDisplay = () => {
                                     id: 'error-saving-data',
                                     type: 'error',
                                     title: 'Save fleet data',
-                                    description: 'Invalid fleet data.'
+                                    description: (await res.text()) ?? 'Invalid fleet data.'
                                 });
                             case 408:
                                 toastContext.createToast({
@@ -324,6 +324,13 @@ const FleetDisplay = () => {
                                     type: 'error',
                                     title: 'Save fleet data',
                                     description: 'Request timeout.'
+                                });
+                            case 401:
+                                toastContext.createToast({
+                                    id: 'error-saving-data',
+                                    type: 'error',
+                                    title: 'Save fleet data',
+                                    description: 'Verify that your are on PSMList.com.'
                                 });
                             default:
                                 toastContext.createToast({

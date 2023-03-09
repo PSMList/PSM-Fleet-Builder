@@ -14,17 +14,17 @@ export function capitalize(value: string) {
 }
 
 export async function fetchWithTimeout(url: RequestInfo | URL, options: (RequestInit & { timeout?: number }) = {}) {
-    const { timeout = 20_000 } = options;
+    const { timeout = 8000 } = options;
     let id = -1;
     const controller = new AbortController();
     return Promise.race([
         new Promise((resolve) => {
             id = setTimeout(() => {
+                controller.abort();
                 resolve({
                     ok: false,
                     status: 408
                 });
-                controller.abort();
             }, timeout);
         }),
         fetch(url, {
@@ -34,5 +34,12 @@ export async function fetchWithTimeout(url: RequestInfo | URL, options: (Request
             clearTimeout(id);
             return res;
         })
-    ]) as Promise<{ ok: boolean, status: number }>;
+        .catch( () => {
+            clearTimeout(id);
+            return {
+                ok: false,
+                status: 401
+            };
+        })
+    ]) as Promise<{ ok: boolean, status: number, text: () => Promise<string> }>;
   }
