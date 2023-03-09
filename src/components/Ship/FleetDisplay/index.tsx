@@ -312,11 +312,18 @@ const FleetDisplay = () => {
                     else {
                         switch (res.status) {
                             case 400:
+                                let description;
+                                try { description = JSON.parse(await res.text()); } catch { }
+
+                                if (typeof description !== 'string') {
+                                    description = 'Invalid fleet data.';
+                                }
+
                                 toastContext.createToast({
                                     id: 'error-saving-data',
                                     type: 'error',
                                     title: 'Save fleet data',
-                                    description: (await res.text()) ?? 'Invalid fleet data.'
+                                    description
                                 });
                             case 408:
                                 toastContext.createToast({
