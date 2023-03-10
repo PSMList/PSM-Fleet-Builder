@@ -14,7 +14,7 @@ export function capitalize(value: string) {
 }
 
 export async function fetchWithTimeout(url: RequestInfo | URL, options: (RequestInit & { timeout?: number }) = {}) {
-    const { timeout = 8000 } = options;
+    const { timeout = 10000 } = options;
     let id = -1;
     const controller = new AbortController();
     return Promise.race([
@@ -38,7 +38,7 @@ export async function fetchWithTimeout(url: RequestInfo | URL, options: (Request
             clearTimeout(id);
             return {
                 ok: false,
-                status: 401
+                status: 408
             };
         })
     ]) as Promise<{ ok: boolean, status: number, text: () => Promise<string> }>;

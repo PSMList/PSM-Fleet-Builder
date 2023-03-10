@@ -139,7 +139,7 @@ const FleetDisplay = () => {
             toastContext.createToast({
                 id: 'success-loading-data',
                 type: 'info',
-                title: 'Load saved fleet data',
+                title: 'Loading fleet data',
                 description: `${savedFleetData.name}.`
             });
         }
@@ -147,8 +147,8 @@ const FleetDisplay = () => {
             toastContext.createToast({
                 id: 'error-loading-data',
                 type: 'error',
-                title: 'Load saved fleet data',
-                description: 'Verify your connection, reload the page and retry.'
+                title: 'Loading fleet data',
+                description: 'Network error.'
             });
         }
     })();
@@ -334,18 +334,10 @@ const FleetDisplay = () => {
                                 break;
                             case 408:
                                 toastContext.createToast({
-                                    id: 'error-saving-data-timeout',
+                                    id: 'error-saving-data-network',
                                     type: 'error',
                                     title: 'Save fleet data',
-                                    description: 'Request timeout.'
-                                });
-                                break;
-                            case 401:
-                                toastContext.createToast({
-                                    id: 'error-saving-data-domain',
-                                    type: 'error',
-                                    title: 'Save fleet data',
-                                    description: 'Verify that your are on PSMList.com.'
+                                    description: 'Network error.'
                                 });
                                 break;
                             default:
