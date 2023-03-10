@@ -320,7 +320,9 @@ const FleetDisplay = () => {
                                 }
 
                                 toastContext.createToast({
-                                    id: 'error-saving-data',
+                                    id: 'error-saving-data-'
+                                        // trying to create different id for each error message
+                                        + description.split(' ').slice(0, 2).join('-').toLocaleLowerCase(),
                                     type: 'error',
                                     title: 'Save fleet data',
                                     description
@@ -328,7 +330,7 @@ const FleetDisplay = () => {
                                 break;
                             case 408:
                                 toastContext.createToast({
-                                    id: 'error-saving-data',
+                                    id: 'error-saving-data-timeout',
                                     type: 'error',
                                     title: 'Save fleet data',
                                     description: 'Request timeout.'
@@ -336,7 +338,7 @@ const FleetDisplay = () => {
                                 break;
                             case 401:
                                 toastContext.createToast({
-                                    id: 'error-saving-data',
+                                    id: 'error-saving-data-domain',
                                     type: 'error',
                                     title: 'Save fleet data',
                                     description: 'Verify that your are on PSMList.com.'
@@ -344,7 +346,7 @@ const FleetDisplay = () => {
                                 break;
                             default:
                                 toastContext.createToast({
-                                    id: 'error-saving-data',
+                                    id: 'error-saving-data-unknown',
                                     type: 'error',
                                     title: 'Save fleet data',
                                     description: 'Internal error. Please contact administrators.'
