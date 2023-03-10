@@ -312,21 +312,25 @@ const FleetDisplay = () => {
                     else {
                         switch (res.status) {
                             case 400:
-                                let description;
-                                try { description = JSON.parse(await res.text()); } catch { }
+                                let messages = [];
+                                try {
+                                    messages = JSON.parse(await res.text());
+                                } catch { }
 
-                                if (typeof description !== 'string') {
-                                    description = 'Invalid fleet data.';
+                                if (!Array.isArray(messages) || messages.length === 0) {
+                                    messages = ['Invalid fleet data.'];
                                 }
-
-                                toastContext.createToast({
-                                    id: 'error-saving-data-'
-                                        // trying to create different id for each error message
-                                        + description.split(' ').slice(0, 2).join('-').toLocaleLowerCase(),
-                                    type: 'error',
-                                    title: 'Save fleet data',
-                                    description
-                                });
+                                
+                                for (const message of messages) {
+                                    toastContext.createToast({
+                                        id: 'error-saving-data-'
+                                            // trying to create different id for each error message
+                                            + message.split(' ').slice(0, 2).join('-').toLocaleLowerCase(),
+                                        type: 'error',
+                                        title: 'Save fleet data',
+                                        description: message
+                                    });
+                                }
                                 break;
                             case 408:
                                 toastContext.createToast({
