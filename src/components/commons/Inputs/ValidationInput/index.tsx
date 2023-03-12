@@ -14,7 +14,7 @@ type ValidationInputProps<T extends string | boolean> = {
 const ValidationInput = <T extends string | boolean>(props: ValidationInputProps<T>) => {
     const [ defaultValue, setDefaultValue ] = createSignal<T>();
 
-    const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle', 'undo']);
+    const [ localProps, inputProps ] = splitProps(props, ['focus', 'onValidate', 'onKeyPress', 'validationIcon', 'validationTitle', 'undo', 'class', 'classList']);
 
     if (inputProps.type === "text" || inputProps.type === undefined) {
         inputProps.pattern = "[-\\w'\":\u00C0-\u017F ]+";
@@ -49,7 +49,7 @@ const ValidationInput = <T extends string | boolean>(props: ValidationInputProps
 
     return (
         <form
-            class="validation_input"
+            classList={{ validation_input: true, [localProps.class!]: true, ...localProps.classList }}
             onSubmit={ (event) => event.preventDefault() }
             ref={ (ref) => {
                 if (!ref) return;

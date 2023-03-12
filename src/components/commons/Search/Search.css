@@ -15,7 +15,8 @@
 .search_container > .search_inputs {
     margin-top: 0.5em;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 0.5em;
 }
 
@@ -32,4 +33,13 @@
     .display_container .scroll_to_search {
         display: none;
     }
+}
+
+.search_container > .search_inputs > .search_input {
+    flex-grow: 1;
+}
+
+.search_container > .search_inputs > .toggle_filters {
+    margin: 0;
+    padding: 0;
 }

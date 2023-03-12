@@ -73,21 +73,6 @@ const FleetDisplay = () => {
         };
     }
 
-    async function getSavedFleetData() {
-        try {
-            const response = await fetch(`${window.baseUrl}/fleet/get/${hash}/${slug}`);
-            const data = await response.json();
-            if (!data) return;
-
-            const fleetData = getFleetData(data);
-            if (!fleetData) return;
-            return fleetData;
-        }
-        catch (err) {
-            console.error(err);
-        }
-    }
-
     const [ saved, setSaved ] = createSignal(true);
 
     const setNewData = (newData: FleetDataType) => {
@@ -130,6 +115,21 @@ const FleetDisplay = () => {
 
     const modalContext = useContext(ModalContext);
     const toastContext = useContext(ToastContext);
+
+    async function getSavedFleetData() {
+        try {
+            const response = await fetch(`${window.baseUrl}/fleet/get/${hash}/${slug}`);
+            const data = await response.json();
+            if (!data) return;
+
+            const fleetData = getFleetData(data);
+            if (!fleetData) return;
+            return fleetData;
+        }
+        catch (err) {
+            console.error(err);
+        }
+    }
 
     (async () => {
         await loadingPromise;

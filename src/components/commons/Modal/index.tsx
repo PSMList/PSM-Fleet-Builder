@@ -84,7 +84,6 @@ export const ModalRoot = () => {
             if (modal) {
                 modal.visible = false;
             }
-            setModals(() => _modals);
         }));
     }
 

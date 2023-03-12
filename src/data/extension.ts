@@ -23,6 +23,8 @@ export type ExtensionType = {
     name: string
     short: string
     colorhex: string
+    custom: boolean
+    releasedate: Date
 }
 
 export const extensionDataPromise = fetch(`${apiUrl}/extension`)
@@ -34,7 +36,9 @@ export const extensionDataPromise = fetch(`${apiUrl}/extension`)
                 id: extension.id,
                 name: extension.name,
                 short: extension.short,
-                colorhex: extension.colorhex
+                colorhex: extension.colorhex,
+                custom: extension.custom,
+                releasedate: extension.releasedate
             })
         );
         return extensionData;

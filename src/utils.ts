@@ -41,5 +41,20 @@ export async function fetchWithTimeout(url: RequestInfo | URL, options: (Request
                 status: 408
             };
         })
-    ]) as Promise<{ ok: boolean, status: number, text: () => Promise<string> }>;
-  }
+    ]) as Promise<{ ok: boolean, status: number, text: () => Promise<string>, json: () => Promise<Object> }>;
+}
+
+export function nestedKey(obj: { [key: string]: any }, keys: string | string[]): any {
+    if (!Array.isArray(keys) && !keys.includes('.')) {
+        return obj[keys];
+    }
+
+    const keyList = Array.isArray(keys) ? keys : keys.split('.');
+    const nestedObj = obj[keyList.shift()!];
+
+    if (keyList.length) {
+      return nestedKey(nestedObj, keyList);
+    }
+
+    return nestedObj;
+}

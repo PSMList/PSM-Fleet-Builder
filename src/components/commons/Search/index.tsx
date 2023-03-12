@@ -1,7 +1,8 @@
 import ValidationInput from "@/components/commons/Inputs/ValidationInput";
 import Items from "@/components/commons/Items";
 import { useStore } from "@/data/store";
-import { createMemo, createSignal, For, JSX } from "solid-js";
+import { capitalize, nestedKey } from "@/utils";
+import { createMemo, createSignal, For, JSX, Show } from "solid-js";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
 import Select from "../Inputs/Select";
@@ -25,6 +26,8 @@ type SearchProps = {
 const defaultSearchQuery = new RegExp('', 'i');
 
 const Search = (props: SearchProps) => {
+
+    const [ showFilters, setShowFilters ] = createSignal(false);
     
     const [ searchQuery, setQuery ] = createSignal(defaultSearchQuery);
 
@@ -53,7 +56,7 @@ const Search = (props: SearchProps) => {
     });
 
     const extensionOptions = createMemo(() => {
-        const _extensions = Array.from(database.extensions.values());
+        const _extensions = Array.from(database.extensions.values()).filter( extension => extension.custom == true);
         const _extensionOptions = _extensions.map( extension => ({
             value: extension.id.toString(),
             display: <span>
@@ -71,22 +74,25 @@ const Search = (props: SearchProps) => {
     })
 
     const sortOptions = createMemo(() => {
-        const _sortOptions = [{id: 'cost', iconID: 'coins'}].map( sort => [{
-            value: sort.id.toString() + '-down',
+        const _sortOptions = [
+            { id: 'points', iconID: 'coins', title: 'Cost' },
+            { id: 'faction.name', iconID: 'folder', title: 'Faction' },
+        ].map( sort => [{
+            value: sort.id + '-up',
             display: <span>
-                <Icon iconID={ sort.iconID } /> { sort.id.toString() } <Icon iconID="sort-down" />
+                <Icon iconID={ sort.iconID } /> { capitalize(sort.title) } ascending
             </span>
         },
         {
-            value: sort.id.toString() + '-up',
+            value: sort.id + '-down',
             display: <span>
-            <Icon iconID={ sort.iconID } /> { sort.id.toString() } <Icon iconID="sort-up" />
+                <Icon iconID={ sort.iconID } /> { capitalize(sort.title) } descending
             </span>
         }]).flat();
         _sortOptions.unshift({
             value: '',
             display: <span>
-                No sort
+                <Icon iconID="times-circle" /> No sort
             </span>
         });
 
@@ -148,27 +154,31 @@ const Search = (props: SearchProps) => {
 
         let sortedItems: SearchItemType[];
 
-        switch (sortFilter()) {
-            case "cost-down":
+        const sortKey = sortFilter();
+
+        if (sortKey === '') {
+            sortedItems = filteredItems;
+        }
+        else {
+            const [ sortID, sortOrder ] = sortKey.split('-') as [keyof SearchItemType['item'], 'up' | 'down'];
+
+            if (sortOrder === 'down') {
                 sortedItems = filteredItems.sort(
-                    (itemA, itemB) => itemA.item.points < itemB.item.points ? -1 : 1
+                    (itemA, itemB) => nestedKey(itemA.item, sortID) > nestedKey(itemB.item, sortID) ? -1 : 1
                 );
-                break;
-            case "cost-up":
+            }
+            else {
                 sortedItems = filteredItems.sort(
-                    (itemA, itemB) => itemA.item.points < itemB.item.points ? 1 : -1
+                    (itemA, itemB) => nestedKey(itemA.item, sortID) > nestedKey(itemB.item, sortID) ? 1 : -1
                 );
-                break;
-            default:
-                sortedItems = filteredItems;
-                break;
+            }
         }
 
         return (
             <Items class="search_results">
                 <For each={ sortedItems }>
                     {
-                        filteredItem => filteredItem.element
+                        item => item.element
                     }
                 </For>
             </Items>
@@ -185,25 +195,26 @@ const Search = (props: SearchProps) => {
                     onValidate={ searchInItems }
                     validationIcon="search"
                 />
-                <Select
-                    defaultSelectText="Select faction"
-                    class="search_faction"
-                    onOptionSelect={ searchByFaction }
-                    optionsList={
-                        factionOptions()
-                    }
-                    defaultSelectOption={props.defaultFactionID}
-                />
-                <Select
-                    defaultSelectText="Select expansion"
-                    class="search_extension"
-                    onOptionSelect={ searchByExtension }
-                    optionsList={
-                        extensionOptions()
-                    }
-                    defaultSelectOption={props.defaultExtensionID}
-                />
-                <div class="filters">
+                <IconButton class="toggle_filters" iconID="filter" onClick={ () => setShowFilters((previous) => !previous) } />
+                <Show when={ showFilters() }>
+                    <Select
+                        defaultSelectText="Select faction"
+                        class="search_faction"
+                        onOptionSelect={ searchByFaction }
+                        optionsList={
+                            factionOptions()
+                        }
+                        defaultSelectOption={props.defaultFactionID}
+                    />
+                    <Select
+                        defaultSelectText="Select expansion"
+                        class="search_extension"
+                        onOptionSelect={ searchByExtension }
+                        optionsList={
+                            extensionOptions()
+                        }
+                        defaultSelectOption={props.defaultExtensionID}
+                        />
                     <Select
                         defaultSelectText="Select sorting"
                         class="sort_results"
@@ -213,7 +224,7 @@ const Search = (props: SearchProps) => {
                         }
                         defaultSelectOption={props.defaultSortID}
                         />
-                </div>
+                </Show>
                 { props.additionalInputs }
             </div>
             { content() }
