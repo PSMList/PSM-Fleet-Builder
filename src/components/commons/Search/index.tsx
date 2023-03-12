@@ -76,7 +76,7 @@ const Search = (props: SearchProps) => {
     const sortOptions = createMemo(() => {
         const _sortOptions = [
             { id: 'points', iconID: 'coins', title: 'Cost' },
-            { id: 'faction.name', iconID: 'folder', title: 'Faction' },
+            { id: 'faction.nameimg', iconID: 'folder', title: 'Faction' },
         ].map( sort => [{
             value: sort.id + '-up',
             display: <span>
