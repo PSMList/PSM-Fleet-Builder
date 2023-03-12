@@ -2,10 +2,10 @@ import ValidationInput from "@/components/commons/Inputs/ValidationInput";
 import Items from "@/components/commons/Items";
 import { useStore } from "@/data/store";
 import { createMemo, createSignal, For, JSX } from "solid-js";
+import Icon from "../Icon";
 import IconButton from "../IconButton";
 import Select from "../Inputs/Select";
 import { ItemType } from "../Item";
-import Sort, { NoSort, SortDown, SortUp } from "../Sort";
 import './Search.css';
 
 export type SearchItemType = {
@@ -19,6 +19,7 @@ type SearchProps = {
     items: SearchItemType[]
     defaultFactionID?: string
     defaultExtensionID?: string
+    defaultSortID?: string
 }
 
 const defaultSearchQuery = new RegExp('', 'i');
@@ -29,8 +30,7 @@ const Search = (props: SearchProps) => {
 
     const [ factionFilter, setFactionFilter ] = createSignal(-1);
     const [ extensionFilter, setExtensionFilter ] = createSignal(-1);
-
-    const [ costSort, setCostSort ] = createSignal(NoSort);
+    const [ sortFilter, setSortFilter ] = createSignal("");
 
     const { database } = useStore().databaseService;
 
@@ -70,12 +70,39 @@ const Search = (props: SearchProps) => {
         return _extensionOptions;
     })
 
+    const sortOptions = createMemo(() => {
+        const _sortOptions = [{id: 'cost', iconID: 'coins'}].map( sort => [{
+            value: sort.id.toString() + '-down',
+            display: <span>
+                <Icon iconID={ sort.iconID } /> { sort.id.toString() } <Icon iconID="sort-down" />
+            </span>
+        },
+        {
+            value: sort.id.toString() + '-up',
+            display: <span>
+            <Icon iconID={ sort.iconID } /> { sort.id.toString() } <Icon iconID="sort-up" />
+            </span>
+        }]).flat();
+        _sortOptions.unshift({
+            value: '',
+            display: <span>
+                No sort
+            </span>
+        });
+
+        return _sortOptions;
+    })
+
     const searchByFaction = (factionID: string) => {
         setFactionFilter(() => parseInt(factionID));
     }
 
     const searchByExtension = (extensionID: string) => {
         setExtensionFilter(() => parseInt(extensionID));
+    }
+
+    const sortBy = (sortID: string) => {
+        setSortFilter(() => sortID);
     }
 
     const selectItems = createMemo(() => {
@@ -121,13 +148,13 @@ const Search = (props: SearchProps) => {
 
         let sortedItems: SearchItemType[];
 
-        switch (costSort()) {
-            case SortDown:
+        switch (sortFilter()) {
+            case "cost-down":
                 sortedItems = filteredItems.sort(
                     (itemA, itemB) => itemA.item.points < itemB.item.points ? -1 : 1
                 );
                 break;
-            case SortUp:
+            case "cost-up":
                 sortedItems = filteredItems.sort(
                     (itemA, itemB) => itemA.item.points < itemB.item.points ? 1 : -1
                 );
@@ -177,12 +204,15 @@ const Search = (props: SearchProps) => {
                     defaultSelectOption={props.defaultExtensionID}
                 />
                 <div class="filters">
-                    <Sort
-                        class="cost"
-                        onClick={ setCostSort }
-                    >
-                        <IconButton iconID="coins" />
-                    </Sort>
+                    <Select
+                        defaultSelectText="Select sorting"
+                        class="sort_results"
+                        onOptionSelect={ sortBy }
+                        optionsList={
+                            sortOptions()
+                        }
+                        defaultSelectOption={props.defaultSortID}
+                        />
                 </div>
                 { props.additionalInputs }
             </div>
