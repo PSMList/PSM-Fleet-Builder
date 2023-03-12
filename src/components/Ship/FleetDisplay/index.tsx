@@ -11,7 +11,7 @@ import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
 import { useStore } from "@/data/store";
 import { fetchWithTimeout } from "@/utils";
-import { createEffect, createSignal, For, JSX, useContext } from "solid-js";
+import { createEffect, createSignal, For, JSX, Show, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import './FleetDisplay.css';
 
@@ -365,6 +365,41 @@ const FleetDisplay = () => {
             setSaved(() => false);
         }
 
+        const shareFleet = () => {
+            const url = location.href.replace('/self', '');
+
+            const timeout = setTimeout(() => {
+                toastContext.createToast({
+                    id: 'error-sharing',
+                    type: 'error',
+                    title: 'Share my fleet',
+                    description: 'Impossible to share, please copy the browser URL.'
+                });
+            }, 2000);
+
+            if (typeof navigator.share === 'function') {
+                clearTimeout(timeout);
+                return navigator.share({
+                    title: fleetData.name,
+                    text: 'Take a look at my awesome fleet!',
+                    url
+                })
+            }
+
+            if (typeof navigator.clipboard !== 'undefined') {
+                navigator.clipboard.writeText(url)
+                .then(() => {
+                    clearTimeout(timeout);
+                    toastContext.createToast({
+                        id: 'success-clearing',
+                        type: 'success',
+                        title: 'Share my fleet',
+                        description: 'Link copied to clipboard.'
+                    });
+                });
+            }
+        }
+
         const editFleetSettings = () => {
             modalContext.showModal({
                 id: 'edit_fleet_settings',
@@ -439,6 +474,13 @@ const FleetDisplay = () => {
                     title="Save"
                     style={{ color: saved() ? "green" : "red" }}
                 />
+                <Show when={navigator.clipboard || navigator.share}>
+                    <IconButton
+                        iconID="share-nodes"
+                        onClick={shareFleet}
+                        title="Share your fleet"
+                    />
+                </Show>
                 <IconButton
                     iconID="share-square"
                     onClick={exportFleet}
