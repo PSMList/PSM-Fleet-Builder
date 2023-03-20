@@ -16,10 +16,6 @@
         row-gap: 0;
         grid-template-columns: 1fr auto;
         grid-template-rows: max-content max-content 1fr;
-        grid-template-areas:
-          "header header"
-          ". actions"
-          "items items";
     }
 }
 
