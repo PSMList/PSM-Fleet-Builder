@@ -18,3 +18,14 @@
     background-color: red;
     color: white;
 }
+
+.description,
+.description textarea {
+    width: 100%;
+}
+
+.description textarea {
+    border: none;
+    resize: none;
+    max-height: 10em;
+}

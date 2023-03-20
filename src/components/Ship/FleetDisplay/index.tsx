@@ -54,8 +54,6 @@ const FleetDisplay = () => {
     const [fleetData, setData] = createStore<FleetDataType>(defaultFleetData);
 
     function getFleetData(savedData: FleetSavedDataType): FleetDataType | undefined {
-        // if ( !fleetDataSchema.test(stringData) ) return;
-
         return {
             name: savedData.name,
             points: {
@@ -81,6 +79,7 @@ const FleetDisplay = () => {
             data.name = newData.name;
             data.points = newData.points;
             data.ships = newData.ships;
+            data.description = newData.description;
         }));
     }
 
@@ -442,7 +441,7 @@ const FleetDisplay = () => {
                                     current: fleetData.points.current
                                 },
                                 ships: fleetData.ships,
-                                description: fleetData.description
+                                description: data.description.value as string
                             });
                             setSaved(() => false);
                             setTimeout(saveFleet, 500);
@@ -550,7 +549,20 @@ const FleetDisplay = () => {
             ref={ (ref) => displayContainer = ref }
             title={fleetData.name}
             info={headerInfo}
-            actions={fleetActions}
+            actions={
+                <>
+                    {fleetActions}
+                    <Show when={onlyDisplay && fleetData.description}>
+                        <div class="description whitebox">
+                            <textarea readonly ref={ ref => {
+                                setTimeout(() => {
+                                    ref.style.height = ref.scrollHeight + 'px';
+                                });
+                            } }>{ fleetData.description }</textarea>
+                        </div>
+                    </Show>
+                </>
+            }
             items={fleet}
         />
     );
