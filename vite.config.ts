@@ -10,6 +10,10 @@ export default defineConfig({
   plugins: [
     solidPlugin()
   ],
+  build: {
+    emptyOutDir: false,
+    copyPublicDir: false
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),
