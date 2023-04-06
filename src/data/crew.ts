@@ -35,6 +35,8 @@ export const crewDataPromise = fetch(`${apiUrl}/crew`)
         const crewData = new Map<number, CrewType>();
 
         data.forEach( item => {
+            if (!item.released) return;
+
             const faction = factionData.get(item.idfaction)!;
             const extension = extensionData.get(item.idextension)!;
             const rarity = rarityData.get(item.idrarity)!;

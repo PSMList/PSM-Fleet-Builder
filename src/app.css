@@ -1,12 +1,12 @@
 #content_container {
     display: flex;
     flex-direction: column;
-    height: max(99.5vh, 42em);
+    height: min(99.5vh, 65em);
 }
 
 @media only screen and (max-width : 62em) {
     #content_container {
-        height: max(199.5vh, 65em);
+        height: min(199.5vh, 80em);
         font-size: 0.9em;
     }
 }

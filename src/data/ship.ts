@@ -52,6 +52,8 @@ export const shipDataPromise = fetch(`${apiUrl}/ship`)
         const shipData = new Map<number, ShipType>();
 
         data.forEach( item => {
+            if (!item.released) return;
+
             const faction = factionData.get(item.idfaction)!;
             const extension = extensionData.get(item.idextension)!;
             const rarity = rarityData.get(item.idrarity)!;
