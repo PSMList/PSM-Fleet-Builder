@@ -79,11 +79,14 @@
   grid-area: id;
 }
 .item > .info > .top > .faction {
-  height: 2em;
+  height: 1.5em;
   grid-area: faction;
+  /* align alt text right */
+  display: inline-flex;
+  justify-content: flex-end;
 }
 .item > .info > .top > .extension {
-  width: 1em;
+  width: 1.5em;
   margin-right: 0.25em;
   grid-area: extension;
 }
