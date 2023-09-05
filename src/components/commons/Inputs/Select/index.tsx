@@ -39,7 +39,10 @@ const Select = (props: SelectProps) => {
       if (defaultOption) {
         setSelectedOption(() => ({
           value: defaultOption.value,
-          display: (defaultOption.display as Node).cloneNode(true),
+          display:
+            typeof defaultOption.display === "string"
+              ? defaultOption.display
+              : (defaultOption.display as Node).cloneNode(true),
         }));
         if (props.onOptionSelect) {
           props.onOptionSelect(defaultOption.value);
@@ -65,7 +68,7 @@ const Select = (props: SelectProps) => {
       if (!option) return;
       setSelectedOption(() => ({
         value: option.value,
-        display: (option.display as Node).cloneNode(true),
+        display: typeof option.display === "string" ? option.display : (option.display as Node).cloneNode(true),
       }));
       setShowOptionList(() => false);
     });

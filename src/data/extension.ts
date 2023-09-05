@@ -27,21 +27,19 @@ export type ExtensionType = {
   releasedate: Date;
 };
 
-export const extensionDataPromise = fetch(`${apiUrl}/extension`)
+export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
   .then((res) => res.json() as Promise<ExtensionDataItem[]>)
   .then((data) => {
     const extensionData = new Map<number, ExtensionType>();
-    data.forEach((extension) => {
-      if (extension.custom) return;
-
-      return extensionData.set(extension.id, {
+    data.forEach((extension) =>
+      extensionData.set(extension.id, {
         id: extension.id,
         name: extension.name,
         short: extension.short,
         colorhex: extension.colorhex,
         custom: extension.custom,
         releasedate: extension.releasedate,
-      });
-    });
+      })
+    );
     return extensionData;
   });

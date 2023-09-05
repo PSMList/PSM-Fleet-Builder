@@ -43,3 +43,7 @@
   margin: 0;
   padding: 0;
 }
+
+.search_container > .search_inputs > .sort_results i {
+  margin-right: 0.5em;
+}

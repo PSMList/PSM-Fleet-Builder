@@ -31,6 +31,7 @@ type ShipDataItem = {
   lookingforbetterpic: boolean;
   idtechnicalshape: number;
   idauthor: number;
+  custom: boolean;
 };
 
 export type ShipType = ItemType & {
@@ -42,7 +43,7 @@ export type ShipType = ItemType & {
   isfort: boolean;
 };
 
-export const shipDataPromise = fetch(`${apiUrl}/ship`)
+export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
   .then((res) => res.json() as Promise<ShipDataItem[]>)
   .then(async (data) => {
     const factionData = await factionDataPromise;
@@ -51,8 +52,6 @@ export const shipDataPromise = fetch(`${apiUrl}/ship`)
     const shipData = new Map<number, ShipType>();
 
     data.forEach((item) => {
-      if (!item.released) return;
-
       const faction = factionData.get(item.idfaction)!;
       const extension = extensionData.get(item.idextension)!;
       const rarity = rarityData.get(item.idrarity)!;
@@ -77,6 +76,7 @@ export const shipDataPromise = fetch(`${apiUrl}/ship`)
         defaultaptitude: item.defaultaptitude,
         isfort: item.isfort,
         crew: [],
+        custom: item.custom,
       });
     });
     return shipData;

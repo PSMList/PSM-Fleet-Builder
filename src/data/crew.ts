@@ -21,11 +21,12 @@ type CrewDataItem = {
   collectable: boolean;
   lookingforbetterpic: boolean;
   idauthor: number;
+  custom: boolean;
 };
 
 export type CrewType = ItemType & {};
 
-export const crewDataPromise = fetch(`${apiUrl}/crew`)
+export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
   .then((res) => res.json() as Promise<CrewDataItem[]>)
   .then(async (data) => {
     const factionData = await factionDataPromise;
@@ -52,6 +53,7 @@ export const crewDataPromise = fetch(`${apiUrl}/crew`)
         fullname: `${extension.short}${item.numid} ${item.name}`,
         points: item.points,
         defaultaptitude: item.defaultaptitude,
+        custom: item.custom,
       });
     });
     return crewData;

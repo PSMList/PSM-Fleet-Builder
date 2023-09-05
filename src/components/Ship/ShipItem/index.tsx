@@ -37,20 +37,20 @@ const ShipItem = (props: SearchItemProps) => {
     >
       <div
         class="info"
-        ref={(ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace("U", "")), 1)}
+        ref={(ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace(/U$/, "")), 1)}
       >
         <div class="top">
           <div class="points">{props.data.points}</div>
           <div class="name">{props.data.name}</div>
           <img
             class="extension"
-            src={`${window.baseUrl}/img/logos/logo_${props.data.extension.short.replace("U", "")}_o.png`}
+            src={`${window.baseUrl}/img/logos/logo_${props.data.extension.short.replace(/U$/, "")}_o.png`}
             alt={props.data.faction.defaultname}
           />
           <span class="id">{`${props.data.extension.short} ${props.data.numid}`}</span>
           <img
             class="faction"
-            src={`${window.baseUrl}/img/flag/${props.data.faction.nameimg}.png`}
+            src={`${window.baseUrl}/img/flag/flat/normal/${props.data.faction.nameimg}.png`}
             alt={props.data.faction.defaultname}
           />
         </div>
@@ -96,7 +96,7 @@ const ShipItem = (props: SearchItemProps) => {
                 <span class="points">{crew.points}</span>&nbsp;
                 <img
                   class="faction"
-                  src={`${window.baseUrl}/img/flag/${crew.faction.nameimg}.png`}
+                  src={`${window.baseUrl}/img/flag/flat/normal/${crew.faction.nameimg}.png`}
                   alt={crew.faction.defaultname}
                 />
                 &nbsp;
