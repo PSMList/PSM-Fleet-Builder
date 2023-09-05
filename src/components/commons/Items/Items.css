@@ -7,7 +7,6 @@
     z-index: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill,minmax(17.5em, 1fr));
-    overflow-y: auto;
     scroll-snap-type: y mandatory;
     gap: 1em;
 }

@@ -1,0 +1,74 @@
+#content_container {
+  display: flex;
+  flex-direction: column;
+  min-height: min(99.5vh, 65em);
+}
+
+@media only screen and (max-width: 62em) {
+  #content_container {
+    min-height: min(199.5vh, 80em);
+    font-size: 0.9em;
+  }
+}
+
+#content_container * {
+  box-sizing: border-box;
+}
+
+#content_container h2 {
+  font-family: Windlass, Roboto, sans-serif;
+  margin: 0;
+}
+
+#fleet_builder {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.actions {
+  text-align: right;
+}
+
+.fa-coins {
+  color: darkgoldenrod;
+}
+
+.main_container {
+  position: relative;
+  padding: 0 1em;
+  padding-bottom: 0.7em !important;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: stretch;
+  gap: 1em;
+}
+
+.main_container > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+@media only screen and (max-width: 62em) {
+  .main_container {
+    flex-direction: column-reverse;
+    align-items: normal;
+    min-height: 0;
+    justify-content: flex-end;
+  }
+
+  .main_container > * {
+    min-height: 49%;
+    flex-shrink: 0;
+    flex-grow: 1;
+  }
+}
+
+@media only screen and (max-width: 42em) {
+  .main_container {
+    padding: 0;
+  }
+}
