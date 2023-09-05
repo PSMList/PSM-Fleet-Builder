@@ -34,7 +34,7 @@ const Search = (props: SearchProps) => {
 
   const [searchQuery, setQuery] = createSignal(defaultSearchQuery);
 
-  const [factionFilter, setFactionFilter] = createSignal(-1);
+  const [factionFilter, setFactionFilter] = createSignal(parseInt(props.defaultFactionID ?? "-1")!);
   const [extensionFilter, setExtensionFilter] = createSignal(-1);
   const [sortFilter, setSortFilter] = createSignal("");
   const [customFilter, setCustomFilter] = createSignal(Custom.Include as string);
