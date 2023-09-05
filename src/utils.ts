@@ -59,3 +59,11 @@ export function nestedKey(obj: { [key: string]: any }, keys: string | string[]):
 
   return nestedObj;
 }
+
+const objectsIdMap = new WeakMap();
+let objectCount = 0;
+
+export function objectId(object: { [key: string]: unknown }) {
+  if (!objectsIdMap.has(object)) objectsIdMap.set(object, ++objectCount);
+  return objectsIdMap.get(object);
+}

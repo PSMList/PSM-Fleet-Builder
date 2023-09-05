@@ -5,7 +5,7 @@ import "./Modal.css";
 
 type ModalProperties = {
   id: string;
-  content: JSX.Element;
+  content: () => JSX.Element;
   title: string;
   onClose?: () => void;
 };
@@ -46,7 +46,7 @@ const Modal = (props: ModalProps) => {
             </Show>
           </div>
         </h2>
-        <div class="modal-content">{props.properties.content}</div>
+        <div class="modal-content">{props.properties.content()}</div>
       </div>
     </div>
   );

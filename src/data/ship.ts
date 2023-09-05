@@ -40,7 +40,6 @@ export type ShipType = ItemType & {
   masts: number;
   cargo: number;
   isfort: boolean;
-  uuid: string;
 };
 
 export const shipDataPromise = fetch(`${apiUrl}/ship`)
@@ -78,7 +77,6 @@ export const shipDataPromise = fetch(`${apiUrl}/ship`)
         defaultaptitude: item.defaultaptitude,
         isfort: item.isfort,
         crew: [],
-        uuid: "",
       });
     });
     return shipData;

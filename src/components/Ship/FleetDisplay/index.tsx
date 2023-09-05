@@ -62,7 +62,7 @@ const FleetDisplay = () => {
             },
             ships: savedData.data.map((item: any) => {
                 const { id: shipID, crew: crews } = item;
-                const ship = { ...database.ships.get(shipID)!, uuid: Math.random().toString().substring(2) };
+                const ship = { ...database.ships.get(shipID)! };
                 ship.crew = crews.map((crew: { id: number }) => ({ ...database.crews.get(crew.id)! }));
                 return ship;
             }),
@@ -175,7 +175,7 @@ const FleetDisplay = () => {
     const showCrew = (ship: ShipType) => {
         const oldState = JSON.stringify(ship.crew);
         modalContext.showModal({
-            id: 'add_crew_' + ship.uuid,
+            id: "add_crew_" + objectId(ship),
             title: 'Select crew for ' + ship.fullname,
             onClose: () => {
                 const newState = JSON.stringify(ship.crew);
