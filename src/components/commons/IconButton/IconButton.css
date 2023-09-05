@@ -1,23 +1,21 @@
-
-
 .icon_button {
-    background: none;
-    border: none;
-    color: rgba(0,0,0,0.5);
-    font-size: 1.25em;
+  background: none;
+  border: none;
+  color: rgba(0, 0, 0, 0.5);
+  font-size: 1.25em;
 }
 
 .icon_button:first-of-type {
-    margin-left: 0.25em;
+  margin-left: 0.25em;
 }
 
 .icon_button:last-of-type {
-    margin-right: 0.25em;
+  margin-right: 0.25em;
 }
 
-.icon_button:hover>*,
-.icon_button:focus>*,
-.icon_button:focus-within>* {
-    cursor: pointer;
-    color: #428BCA;
+.icon_button:hover > *,
+.icon_button:focus > *,
+.icon_button:focus-within > * {
+  cursor: pointer;
+  color: #428bca;
 }

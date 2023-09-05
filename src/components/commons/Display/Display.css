@@ -1,60 +1,60 @@
 .display_container {
-    flex-grow: 1;
-    display: grid;
-    gap: 0.5em;
-    align-items: center;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto auto 1fr;
-    grid-template-areas:
-      "header"
-      "actions"
-      "items";
+  flex-grow: 1;
+  display: grid;
+  gap: 0.5em;
+  align-items: center;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto 1fr;
+  grid-template-areas:
+    "header"
+    "actions"
+    "items";
 }
 
-@media only screen and (min-width : 62em) {
-    .display_container {
-        row-gap: 0;
-        grid-template-columns: 1fr auto;
-        grid-template-rows: max-content max-content 1fr;
-    }
+@media only screen and (min-width: 62em) {
+  .display_container {
+    row-gap: 0;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: max-content max-content 1fr;
+  }
 }
 
 .display_container > .display_header {
-    grid-area: header;
-    word-break: break-word;
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.5em;
-    justify-content: flex-end;
-    font-weight: bold;
+  grid-area: header;
+  word-break: break-word;
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5em;
+  justify-content: flex-end;
+  font-weight: bold;
 }
 
-@media only screen and (max-width : 62em) {
-    .display_container > .display_header {
-        flex-wrap: wrap;
-    }
+@media only screen and (max-width: 62em) {
+  .display_container > .display_header {
+    flex-wrap: wrap;
+  }
 }
 
 .display_container > .display_header > .title {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    word-break: break-all;
-    margin-right: auto;
-    font-family: Windlass;
-    font-size: 1.4em;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  margin-right: auto;
+  font-family: Windlass;
+  font-size: 1.4em;
 }
 
 .display_container > .actions {
-    grid-area: actions;
+  grid-area: actions;
 }
 
 .display_container > .display_grid {
-    margin-top: 0;
-    grid-area: items;
-    align-content: flex-start;
-    align-self: stretch;
-    align-items: stretch;
+  margin-top: 0;
+  grid-area: items;
+  align-content: flex-start;
+  align-self: stretch;
+  align-items: stretch;
 }

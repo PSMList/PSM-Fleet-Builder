@@ -1,22 +1,20 @@
-import { defineConfig } from 'vite'
-import solidPlugin from 'vite-plugin-solid';
-import { resolve } from 'node:path';
+import { defineConfig } from "vite";
+import solidPlugin from "vite-plugin-solid";
+import { resolve } from "node:path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
-    host: true
+    host: true,
   },
-  plugins: [
-    solidPlugin()
-  ],
+  plugins: [solidPlugin()],
   build: {
     emptyOutDir: false,
-    copyPublicDir: false
+    copyPublicDir: false,
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, './src'),
+      "@": resolve(__dirname, "./src"),
     },
   },
 });

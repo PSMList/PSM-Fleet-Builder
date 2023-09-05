@@ -1,63 +1,63 @@
 .select-container {
-    display: inline-block;
-    position: relative;
-    width: 100%;
+  display: inline-block;
+  position: relative;
+  width: 100%;
 }
 
 .select-container > .selected-text {
-    border: 2px solid rgba(0, 0, 0, 0.08);
-    border-radius: 5px;
-    padding: 5px 25px 5px 5px;
-    background-color: rgba(0, 0, 0, 0.02);
-    width: 100%;
-    font-size: 0.9em;
-    color:rgba(0, 0, 0, 0.45);
-    position: relative;
-    cursor: pointer;
+  border: 2px solid rgba(0, 0, 0, 0.08);
+  border-radius: 5px;
+  padding: 5px 25px 5px 5px;
+  background-color: rgba(0, 0, 0, 0.02);
+  width: 100%;
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.45);
+  position: relative;
+  cursor: pointer;
 }
 
 .select-container > .selected-text::after {
-    content: "";
-    position: absolute;
-    right: 5px;
-    top: 40%;
-    border: 7px solid transparent;
-    border-color: #000 transparent transparent transparent;
+  content: "";
+  position: absolute;
+  right: 5px;
+  top: 40%;
+  border: 7px solid transparent;
+  border-color: #000 transparent transparent transparent;
 }
 
 .select-container > .selected-text.active::after {
-    top: 12.5%;
-    border-color: transparent transparent #000 transparent;
+  top: 12.5%;
+  border-color: transparent transparent #000 transparent;
 }
 
 .select-container > .select-options {
-    margin: 0;
-    padding: 0;
-    position: absolute;
-    width: 100%;
-    overflow-y: auto;
-    max-height: 20vh;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    border-top: none;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
-    z-index: 1;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  width: 100%;
+  overflow-y: auto;
+  max-height: 22vh;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-top: none;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  z-index: 1;
 }
 
 .select-container > .select-options > .select-option {
-    list-style-type: none;
-    padding: 6px 20px;
-    background: #fff;
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-top: unset;
-    cursor: pointer;
+  list-style-type: none;
+  padding: 6px 20px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-top: unset;
+  cursor: pointer;
 }
 
 .select-container > .select-options > .select-option:hover,
 .select-container > .select-options > .select-option:focus,
 .select-container > .select-options > .select-option:focus-within {
-    background-color: lightgray;
+  background-color: lightgray;
 }
 
 .select-container > .select-options > .select-option > * {
-    pointer-events: none;
+  pointer-events: none;
 }

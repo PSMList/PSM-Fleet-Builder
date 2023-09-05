@@ -1,121 +1,121 @@
 .item {
-    position: relative;
-    z-index: -1;
-    background-size: cover;
-    border-radius: 10px;
-    padding: 0.6em;
-    display: flex;
-    flex-direction: column;
+  position: relative;
+  z-index: -1;
+  background-size: cover;
+  border-radius: 10px;
+  padding: 0.6em;
+  display: flex;
+  flex-direction: column;
 }
 
 .item > .actions {
-    position: absolute;
-    right: 1em;
-    top: 0;
-    transform: translateY(-50%);
-    display: flex;
-    padding: 0.25em;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 2px solid lightgray;
+  position: absolute;
+  right: 1em;
+  top: 0;
+  transform: translateY(-50%);
+  display: flex;
+  padding: 0.25em;
+  background-color: #fff;
+  border-radius: 5px;
+  border: 2px solid lightgray;
 }
 
 .item > .actions > * {
-    margin: 0;
+  margin: 0;
 }
 
 .item > .info {
-    padding: 0.6em;
-    background-color: rgba(0,0,0,0.2);
-    min-height: 5em;
-    border-radius: 3px;
-    flex-grow: 1;
+  padding: 0.6em;
+  background-color: rgba(0, 0, 0, 0.2);
+  min-height: 5em;
+  border-radius: 3px;
+  flex-grow: 1;
 }
 
 .item > .info * {
-    color: white;
-    max-width: 100%;
+  color: white;
+  max-width: 100%;
 }
 
 .item > .info *:not(i) {
-    font-family: Windlass;
-    font-weight: bold;
+  font-family: Windlass;
+  font-weight: bold;
 }
 
 .item > .info img {
-    user-select: none;
-    height: auto;
+  user-select: none;
+  height: auto;
 }
 
 .item > .info > .top {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    grid-template-areas:
-      "name name name"
-      "extension id faction";
-    position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  grid-template-areas:
+    "name name name"
+    "extension id faction";
+  position: relative;
 }
 .item > .info > .top > .points {
-    position: absolute;
-    font-size: 1.2em;
-    top: 0;
-    left: 0;
-    transform: translate(-75%, -100%);
-    width: 1.75em;
-    height: 1.75em;
-    border: 2px solid #111;
-    border-radius: 2px;
-    background-color: #222;
-    display: inline-flex;
-    justify-content: center;
-    align-items: flex-end;
+  position: absolute;
+  font-size: 1.2em;
+  top: 0;
+  left: 0;
+  transform: translate(-75%, -100%);
+  width: 1.75em;
+  height: 1.75em;
+  border: 2px solid #111;
+  border-radius: 2px;
+  background-color: #222;
+  display: inline-flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 .item > .info > .top > .name {
-    font-size: 1.1em;
-    grid-area: name;
+  font-size: 1.1em;
+  grid-area: name;
 }
 .item > .info > .top > .id {
-    grid-area: id;
+  grid-area: id;
 }
 .item > .info > .top > .faction {
-    width: 2em;
-    grid-area: faction;
+  height: 2em;
+  grid-area: faction;
 }
 .item > .info > .top > .extension {
-    width: 1em;
-    margin-right: 0.25em;
-    grid-area: extension;
+  width: 1em;
+  margin-right: 0.25em;
+  grid-area: extension;
 }
 
 .item > .info > .bottom {
-    margin-top: 0.5em;
-    display: grid;
-    grid-template-columns: minmax(1.75em, 3em) minmax(11.75em, 1fr);
-    gap: 0.2em;
+  margin-top: 0.5em;
+  display: grid;
+  grid-template-columns: minmax(1.75em, 3em) minmax(11.75em, 1fr);
+  gap: 0.2em;
 }
 .item > .info > .bottom > .preview {
-    width: 100%;
-    border-radius: 5px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    grid-area: preview;
-    align-self: center;
+  width: 100%;
+  border-radius: 5px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  grid-area: preview;
+  align-self: center;
 }
 .item > .info > .bottom > .aptitude {
-    border: 1.5px solid black;
-    text-align: center;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 4em;
-    padding: 0.2em;
-    margin-top: 0.4em;
-    font-size: 0.85em;
-    font-family: Roboto;
-    width: 100%;
-    font-weight: normal;
+  border: 1.5px solid black;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4em;
+  padding: 0.2em;
+  margin-top: 0.4em;
+  font-size: 0.85em;
+  font-family: Roboto;
+  width: 100%;
+  font-weight: normal;
 }
 .item > .info > .top,
 .item > .info > .bottom > .aptitude {
-    text-shadow: rgb(0,0,0) 0px 0px 4px, rgb(0,0,0) 0px 0px 2px, rgb(0,0,0) 1px 1px 0px;
+  text-shadow: rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 2px, rgb(0, 0, 0) 1px 1px 0px;
 }

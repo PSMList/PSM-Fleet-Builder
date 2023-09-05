@@ -1,299 +1,405 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" href="/public/img/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta property="og:site_name" content="PSMList.com">
-  <meta property="og:title" content="PSMList - Search for ships, crew and treasures from Pirates CSG">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="/public/img/logo.png">
-  <meta property="og:description" content="Build your fleet, share it with others and see others' fleet.">
-  <title>PSMList.com | Fleet Builder</title>
-  <link rel="stylesheet" type="text/css" href="http://psmlist/public/css/all.css">
-  <link rel="stylesheet" type="text/css" href="http://psmlist/public/css/blog.css">
-  <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/fontawesome.min.css">
-  <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/solid.min.css">
-  <script>
-    window.fleetMaxpointsMin = 30;
-    window.fleetMaxpointsMax = 200;
-    window.fleetNameMinlength = 5;
-    window.fleetNameMaxlength = 60;
-    window.baseUrl = "http://psmlist/public";
-  </script>
-  <!-- <script src="https://kit.fontawesome.com/0d6cb3ce49.js" crossorigin="anonymous"></script> -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-</head>
-<body>
-  <div id="bg_container"></div>
-  <div id="main_container">
-    <header>
-      <div id="header_title">
-        <a href="/public/">
-          <img src="/public/img/logo.png" alt="logo.png">
-          <div id="website_title_container">
-            <p id="website_title">PSM List</p>
-            <p id="slogan">The PSM collector's reference</p>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/public/img/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta property="og:site_name" content="PSMList.com" />
+    <meta property="og:title" content="PSMList - Search for ships, crew and treasures from Pirates CSG" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/public/img/logo.png" />
+    <meta property="og:description" content="Build your fleet, share it with others and see others' fleet." />
+    <title>PSMList.com | Fleet Builder</title>
+    <link rel="stylesheet" type="text/css" href="http://psmlist/public/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="http://psmlist/public/css/blog.css" />
+    <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/solid.min.css" />
+    <script>
+      window.fleetMaxpointsMin = 30;
+      window.fleetMaxpointsMax = 200;
+      window.fleetNameMinlength = 5;
+      window.fleetNameMaxlength = 60;
+      window.baseUrl = "http://psmlist/public";
+    </script>
+    <!-- <script src="https://kit.fontawesome.com/0d6cb3ce49.js" crossorigin="anonymous"></script> -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="bg_container"></div>
+    <div id="main_container">
+      <header>
+        <div id="header_title">
+          <a href="/public/">
+            <img src="/public/img/logo.png" alt="logo.png" />
+            <div id="website_title_container">
+              <p id="website_title">PSM List</p>
+              <p id="slogan">The PSM collector's reference</p>
+            </div>
+          </a>
+        </div>
+        <div id="header_account">
+          <a href="/public/login">Login</a>
+          <a href="/public/register">Register</a>
+        </div>
+      </header>
+      <ul id="navbar">
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fas fa-book"></i>
+            Encyclopedia
+          </p>
+          <div class="navbarExtended">
+            <table class="columnWrapTable">
+              <tr>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Game pieces</a>
+                    <ul>
+                      <li>
+                        <a href="/public/ship/search"><i class="fas fa-circle"></i>Ships</a>
+                      </li>
+                      <li>
+                        <a href="/public/crew/search"><i class="fas fa-circle"></i>Crew</a>
+                      </li>
+                      <li>
+                        <a href="/public/treasure/search"><i class="fas fa-circle"></i>Treasures</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Islands</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Stories</a>
+                      </li>
+                      <li>
+                        <a href="/public/keyword/search"><i class="fas fa-circle"></i>Keywords</a>
+                      </li>
+                      <li>
+                        <a href="/public/technicalshapes"><i class="fas fa-circle"></i>Shapes</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Custom game pieces</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Ships</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Crew</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Rulesets</a>
+                    <ul>
+                      <li>
+                        <a
+                          href="https://pirateswithben.com/wp-content/uploads/2018/05/The-Pirate-Code-FAQ-Dec-2016.pdf"
+                          target="_blank"
+                          ><i class="fas fa-circle"></i>Pirates' Code</a
+                        >
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>All</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Points Calculator</a>
+                    <ul>
+                      <li>
+                        <a href="/public/simcost_calculator"><i class="fas fa-circle"></i>SimCost</a>
+                      </li>
+                      <li>
+                        <a href="/public/udc_calculator"><i class="fas fa-circle"></i>UDC</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Dev</a>
+                    <ul>
+                      <li>
+                        <a href="/public/reports/database-issue" target="_blank"
+                          ><i class="fas fa-circle"></i>Report a data mistake/error</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Scan project</a>
+                    <ul>
+                      <li>
+                        <a
+                          href="https://drive.google.com/drive/folders/1GZmP66qkMpC9diMaXj-Net-_rZ0vQY9S"
+                          target="_blank"
+                          ><i class="fas fa-circle"></i>Thunderbros99's google drive folder</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </table>
           </div>
-        </a>
-      </div>
-      <div id="header_account">
-        <a href="/public/login">Login</a>
-        <a href="/public/register">Register</a>
-      </div>
-    </header>
-    <ul id="navbar">
-      <li class="navbarItem">
-        <p class="navbarTitle">
-          <i class="fas fa-book"></i>
-          Encyclopedia
-        </p>
-        <div class="navbarExtended">
-          <table class="columnWrapTable">
-            <tr>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Game pieces</a>
-                  <ul>
-                    <li><a href="/public/ship/search"><i class="fas fa-circle"></i>Ships</a></li>
-                    <li><a href="/public/crew/search"><i class="fas fa-circle"></i>Crew</a></li>
-                    <li><a href="/public/treasure/search"><i class="fas fa-circle"></i>Treasures</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Islands</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Stories</a></li>
-                    <li><a href="/public/keyword/search"><i class="fas fa-circle"></i>Keywords</a></li>
-                    <li><a href="/public/technicalshapes"><i class="fas fa-circle"></i>Shapes</a></li>
-                  </ul>
+        </li>
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fas fa-window-restore"></i>
+            Collection
+          </p>
+          <div class="navbarExtended">
+            <table class="columnWrapTable">
+              <tr>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Collections</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>My collection</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Add a new card</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Other players</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Hoards</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Manage</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Log a new hoard</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Unboxing</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>See all</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>New unboxing</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+        </li>
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fas fa-anchor"></i>
+            Fleets
+          </p>
+          <div class="navbarExtended">Coming in a future update !</div>
+        </li>
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fas fa-balance-scale"></i>
+            Trading
+          </p>
+          <div class="navbarExtended">Coming in a future update !</div>
+        </li>
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fas fa-cube"></i>
+            Others
+          </p>
+          <div class="navbarExtended">
+            <table class="columnWrapTable">
+              <tr>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Online ressources</a>
+                    <ul>
+                      <li>
+                        <a href="https://boardgamegeek.com/boardgame/10653/pirates-spanish-main" target="_blank"
+                          ><i class="fas fa-circle"></i>BoardGamesGeek</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=wizkids+pirates&_sacat=0"
+                          target="_blank"
+                          ><i class="fas fa-circle"></i>Ebay</a
+                        >
+                      </li>
+                      <li>
+                        <a href="https://pirateswithben.com/" target="_blank"
+                          ><i class="fas fa-circle"></i>Pirates with Ben</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="https://www.raintyger.com/index.php?main_page=product_info&cPath=39_43&products_id=1544"
+                          target="_blank"
+                          ><i class="fas fa-circle"></i>RainTyger</a
+                        >
+                      </li>
+                      <li>
+                        <a href="https://tilorfire27.github.io/PiratesCSGDB/" target="_blank"
+                          ><i class="fas fa-circle"></i>Tilorfire27's DB</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Additional ressources</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Arshellan's files</a>
+                      </li>
+                      <li>
+                        <a href="https://discord.com/invite/qeY7e3Q" target="_blank"
+                          ><i class="fas fa-circle"></i>Discord invite</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Donate</a>
+                    <ul>
+                      <li>
+                        <a href="https://www.buymeacoffee.com/psmlist" target="_blank"
+                          ><i class="fas fa-circle"></i>Via "Buy me a coffee®"</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Wiki</a>
+                    <ul>
+                      <li>
+                        <a href="https://de.wikipedia.org/wiki/Pirates_of_the_Spanish_Main" target="_blank"
+                          ><i class="fas fa-circle"></i>Deutsch</a
+                        >
+                      </li>
+                      <li>
+                        <a href="https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game" target="_blank"
+                          ><i class="fas fa-circle"></i>English</a
+                        >
+                      </li>
+                      <li>
+                        <a href="https://fr.wikipedia.org/wiki/Pirates_of_the_Spanish_Main" target="_blank"
+                          ><i class="fas fa-circle"></i>Français</a
+                        >
+                      </li>
+                      <li>
+                        <a href="https://fi.wikipedia.org/wiki/Pirates_CSG" target="_blank"
+                          ><i class="fas fa-circle"></i>Suomi</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Users</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Search for a user</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Contact</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>information</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Additional info</a>
+                    <ul>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>FAQ</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Personal data usage</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+                <td>
+                  <div class="groupNav">
+                    <a class="title" href="">Dev</a>
+                    <ul>
+                      <li>
+                        <a href="/public/reports/database-issue?s=" target="_blank"
+                          ><i class="fas fa-circle"></i>Report a database mistake</a
+                        >
+                      </li>
+                      <li>
+                        <a href="/public/userhelp/images"><i class="fas fa-circle"></i>Help fixing images</a>
+                      </li>
+                      <li>
+                        <a class="disabled" href=""><i class="fas fa-circle"></i>Suggestions</a>
+                      </li>
+                      <li>
+                        <a href="https://psmlist.com/compressor/v2/" target="_blank"
+                          ><i class="fas fa-circle"></i>File Compressor</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="groupNav">
+                    <a class="title" href="">Blog</a>
+                    <ul>
+                      <li>
+                        <a href="/public/blog"><i class="fas fa-circle"></i>Articles</a>
+                      </li>
+                    </ul>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </li>
+      </ul>
+      <div id="general_container">
+        <div id="content_container">
+          <a id="code" class="icon_button" href="https://github.com/PSMList/PSM-Fleet-Builder" target="_blank">
+            <i class="fas fa-code"></i>
+          </a>
+          <h1>Fleet Builder</h1>
+          <div id="fleet_builder"></div>
+          <div id="donation_container">
+            <div class="whitebox">
+              If you like PSMList, please consider donating. This means a lot to us. Raised money will directly help
+              improving existing and future PSMList features.
+              <div class="blog_donation_container">
+                <div class="blog_donation">
+                  <i class="fas fa-star"></i>
+                  <a href="https://www.buymeacoffee.com/psmlist" target="_blank">Support PSMList now</a>
                 </div>
-                <div class="groupNav">
-                  <a class="title" href="">Custom game pieces</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Ships</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Crew</a></li>
-                  </ul>
-                </div>
-              </td>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Rulesets</a>
-                  <ul>
-                    <li><a href="https://pirateswithben.com/wp-content/uploads/2018/05/The-Pirate-Code-FAQ-Dec-2016.pdf"
-                        target="_blank"><i class="fas fa-circle"></i>Pirates' Code</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>All</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Points Calculator</a>
-                  <ul>
-                    <li><a href="/public/simcost_calculator"><i class="fas fa-circle"></i>SimCost</a></li>
-                    <li><a href="/public/udc_calculator"><i class="fas fa-circle"></i>UDC</a></li>
-                  </ul>
-                </div>
-              </td>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Dev</a>
-                  <ul>
-                    <li><a href="/public/reports/database-issue" target="_blank"><i class="fas fa-circle"></i>Report a
-                        data mistake/error</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Scan project</a>
-                  <ul>
-                    <li><a href="https://drive.google.com/drive/folders/1GZmP66qkMpC9diMaXj-Net-_rZ0vQY9S"
-                        target="_blank"><i class="fas fa-circle"></i>Thunderbros99's google drive folder</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </li>
-      <li class="navbarItem">
-        <p class="navbarTitle">
-          <i class="fas fa-window-restore"></i>
-          Collection
-        </p>
-        <div class="navbarExtended">
-          <table class="columnWrapTable">
-            <tr>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Collections</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>My collection</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Add a new card</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Other players</a></li>
-                  </ul>
-                </div>
-              </td>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Hoards</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Manage</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Log a new hoard</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Unboxing</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>See all</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>New unboxing</a></li>
-                  </ul>
-                </div>
-              </td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-      </li>
-      <li class="navbarItem">
-        <p class="navbarTitle">
-          <i class="fas fa-anchor"></i>
-          Fleets
-        </p>
-        <div class="navbarExtended">
-          Coming in a future update !
-        </div>
-      </li>
-      <li class="navbarItem">
-        <p class="navbarTitle">
-          <i class="fas fa-balance-scale"></i>
-          Trading
-        </p>
-        <div class="navbarExtended">
-          Coming in a future update !
-        </div>
-      </li>
-      <li class="navbarItem">
-        <p class="navbarTitle">
-          <i class="fas fa-cube"></i>
-          Others
-        </p>
-        <div class="navbarExtended">
-          <table class="columnWrapTable">
-            <tr>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Online ressources</a>
-                  <ul>
-                    <li><a href="https://boardgamegeek.com/boardgame/10653/pirates-spanish-main" target="_blank"><i
-                          class="fas fa-circle"></i>BoardGamesGeek</a></li>
-                    <li><a
-                        href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=wizkids+pirates&_sacat=0"
-                        target="_blank"><i class="fas fa-circle"></i>Ebay</a></li>
-                    <li><a href="https://pirateswithben.com/" target="_blank"><i class="fas fa-circle"></i>Pirates with
-                        Ben</a></li>
-                    <li><a
-                        href="https://www.raintyger.com/index.php?main_page=product_info&cPath=39_43&products_id=1544"
-                        target="_blank"><i class="fas fa-circle"></i>RainTyger</a></li>
-                    <li><a href="https://tilorfire27.github.io/PiratesCSGDB/" target="_blank"><i
-                          class="fas fa-circle"></i>Tilorfire27's DB</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Additional ressources</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Arshellan's files</a></li>
-                    <li><a href="https://discord.com/invite/qeY7e3Q" target="_blank"><i
-                          class="fas fa-circle"></i>Discord invite</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Donate</a>
-                  <ul>
-                    <li><a href="https://www.buymeacoffee.com/psmlist" target="_blank"><i class="fas fa-circle"></i>Via
-                        "Buy me a coffee®"</a></li>
-                  </ul>
-                </div>
-              </td>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Wiki</a>
-                  <ul>
-                    <li><a href="https://de.wikipedia.org/wiki/Pirates_of_the_Spanish_Main" target="_blank"><i
-                          class="fas fa-circle"></i>Deutsch</a></li>
-                    <li><a href="https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game" target="_blank"><i
-                          class="fas fa-circle"></i>English</a></li>
-                    <li><a href="https://fr.wikipedia.org/wiki/Pirates_of_the_Spanish_Main" target="_blank"><i
-                          class="fas fa-circle"></i>Français</a></li>
-                    <li><a href="https://fi.wikipedia.org/wiki/Pirates_CSG" target="_blank"><i
-                          class="fas fa-circle"></i>Suomi</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Users</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Search for a user</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Contact</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>information</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Additional info</a>
-                  <ul>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>FAQ</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Personal data usage</a></li>
-                  </ul>
-                </div>
-              </td>
-              <td>
-                <div class="groupNav">
-                  <a class="title" href="">Dev</a>
-                  <ul>
-                    <li><a href="/public/reports/database-issue?s=" target="_blank"><i class="fas fa-circle"></i>Report
-                        a database mistake</a></li>
-                    <li><a href="/public/userhelp/images"><i class="fas fa-circle"></i>Help fixing images</a></li>
-                    <li><a class="disabled" href=""><i class="fas fa-circle"></i>Suggestions</a></li>
-                    <li><a href="https://psmlist.com/compressor/v2/" target="_blank"><i class="fas fa-circle"></i>File
-                        Compressor</a></li>
-                  </ul>
-                </div>
-                <div class="groupNav">
-                  <a class="title" href="">Blog</a>
-                  <ul>
-                    <li><a href="/public/blog"><i class="fas fa-circle"></i>Articles</a></li>
-                  </ul>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </li>
-    </ul>
-    <div id="general_container">
-      <div id="content_container">
-        <a id="code" class="icon_button" href="https://github.com/PSMList/PSM-Fleet-Builder" target="_blank">
-          <i class="fas fa-code"></i>
-        </a>
-        <h1>Fleet Builder</h1>
-        <div id="fleet_builder"></div>
-        <div id="donation_container">
-          <div class="whitebox">
-            If you like PSMList, please consider donating. This means a lot to us. Raised money will directly help improving
-            existing and future PSMList features.
-            <div class="blog_donation_container">
-              <div class="blog_donation">
-                <i class="fas fa-star"></i>
-                <a href="https://www.buymeacoffee.com/psmlist" target="_blank">Support PSMList now</a>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <footer>
+        <p>&copy;2022 PSMList.com</p>
+        <p>
+          All credits for the images and texts recreated or directly sourced from this game material belong to their
+          respective owners.
+        </p>
+      </footer>
+      <script type="module" src="/src/main.tsx"></script>
     </div>
-    <footer>
-      <p>&copy;2022 PSMList.com</p>
-      <p>All credits for the images and texts recreated or directly sourced from this game material belong to their
-        respective owners.</p>
-    </footer>
-    <script type="module" src="/src/main.tsx"></script>
-  </div>
-</body>
+  </body>
 </html>

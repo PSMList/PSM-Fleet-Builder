@@ -1,12 +1,11 @@
-
 .items {
-    padding: 1.5em 0.5em 0.5em;
-    margin-bottom: 0;
-    list-style-type: none;
-    position: relative;
-    z-index: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(17.5em, 1fr));
-    scroll-snap-type: y mandatory;
-    gap: 1em;
+  padding: 1.5em 0.5em 0.5em;
+  margin-bottom: 0;
+  list-style-type: none;
+  position: relative;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17.5em, 1fr));
+  scroll-snap-type: y mandatory;
+  gap: 1em;
 }
