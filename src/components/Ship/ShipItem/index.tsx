@@ -100,8 +100,7 @@ const ShipItem = (props: SearchItemProps) => {
                   alt={crew.faction.defaultname}
                 />
                 &nbsp;
-                <span class="id">{crew.numid}</span>&nbsp;
-                <span class="name">{crew.name}</span>&nbsp;
+                <span class="name">{crew.fullname}</span>
               </li>
             )}
           </For>
