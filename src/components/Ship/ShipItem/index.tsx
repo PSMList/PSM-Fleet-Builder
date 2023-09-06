@@ -7,6 +7,7 @@ import "./ShipItem.css";
 type SearchItemProps = {
   data: ShipType;
   actions?: JSX.Element;
+  collapse?: boolean;
 };
 
 function onError(this: any, target: HTMLImageElement, url: string) {
@@ -54,56 +55,67 @@ const ShipItem = (props: SearchItemProps) => {
             alt={props.data.faction.defaultname}
           />
         </div>
-        <div class="bottom">
-          <img
-            class="preview"
-            loading="lazy"
-            src={props.data.img}
-            alt={props.data.fullname}
-            width="80"
-            height="80"
-            onerror={({ target }) => onError(target as HTMLImageElement, props.data.altimg)}
-          />
-          <span class="stats">
-            <span class="masts">
-              <img src={`${window.baseUrl}/img/svg/masts_nobg.svg`} />
-              {props.data.masts}
+        <Show when={!props.collapse}>
+          <div class="bottom">
+            <img
+              class="preview"
+              loading="lazy"
+              src={props.data.img}
+              alt={props.data.fullname}
+              width="80"
+              height="80"
+              onerror={({ target }) => onError(target as HTMLImageElement, props.data.altimg)}
+            />
+            <span class="stats">
+              <span class="masts">
+                <img src={`${window.baseUrl}/img/svg/masts_nobg.svg`} />
+                {props.data.masts}
+              </span>
+              <span class="cargo">
+                <img src={`${window.baseUrl}/img/svg/cargo_nobg.svg`} />
+                {props.data.cargo}
+              </span>
+              {/* add color by changing L to <span class="L">L</span> */}
+              <span class="basemove">
+                <img src={`${window.baseUrl}/img/svg/basemove_nobg.svg`} />
+                {props.data.basemove.match(/./g)?.map((move) => (move === "L" ? <span class="L">L</span> : move))}
+              </span>
             </span>
-            <span class="cargo">
-              <img src={`${window.baseUrl}/img/svg/cargo_nobg.svg`} />
-              {props.data.cargo}
+            <span class="cannons">
+              <img src={`${window.baseUrl}/img/svg/cannons.svg`} />
+              <For each={props.data.cannons.match(/.{2}/g)}>
+                {(cannon) => <img src={`${window.baseUrl}/img/svg/dice/${cannon}.svg`} alt="■" />}
+              </For>
             </span>
-            {/* add color by changing L to <span class="L">L</span> */}
-            <span class="basemove">
-              <img src={`${window.baseUrl}/img/svg/basemove_nobg.svg`} />
-              {props.data.basemove.match(/./g)?.map((move) => (move === "L" ? <span class="L">L</span> : move))}
-            </span>
-          </span>
-          <span class="cannons">
-            <img src={`${window.baseUrl}/img/svg/cannons.svg`} />
-            <For each={props.data.cannons.match(/.{2}/g)}>
-              {(cannon) => <img src={`${window.baseUrl}/img/svg/dice/${cannon}.svg`} alt="■" />}
-            </For>
-          </span>
-          <span class="aptitude">{props.data.defaultaptitude}</span>
-        </div>
+            <span class="aptitude">{props.data.defaultaptitude}</span>
+          </div>
+        </Show>
       </div>
       <Show when={props.data.crew.length > 0}>
         <ul class="crew">
-          <For each={props.data.crew}>
-            {(crew) => (
+          <Show
+            when={!props.collapse}
+            fallback={
               <li>
-                <span class="points">{crew.points}</span>&nbsp;
-                <img
-                  class="faction"
-                  src={`${window.baseUrl}/img/flag/flat/normal/${crew.faction.nameimg}.png`}
-                  alt={crew.faction.defaultname}
-                />
-                &nbsp;
-                <span class="name">{crew.fullname}</span>
+                <span>{props.data.crew.length} crew</span>
               </li>
-            )}
-          </For>
+            }
+          >
+            <For each={props.data.crew}>
+              {(crew) => (
+                <li>
+                  <span class="points">{crew.points}</span>&nbsp;
+                  <img
+                    class="faction"
+                    src={`${window.baseUrl}/img/flag/flat/normal/${crew.faction.nameimg}.png`}
+                    alt={crew.faction.defaultname}
+                  />
+                  &nbsp;
+                  <span class="name">{crew.fullname}</span>
+                </li>
+              )}
+            </For>
+          </Show>
         </ul>
       </Show>
     </Item>

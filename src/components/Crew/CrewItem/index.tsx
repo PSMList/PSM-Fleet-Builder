@@ -1,12 +1,13 @@
 import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
 import { CrewType } from "@/data/crew";
-import { JSX } from "solid-js";
+import { JSX, Show } from "solid-js";
 import "./CrewItem.css";
 
 type SearchItemProps = {
   data: CrewType;
   actions?: JSX.Element;
+  collapse?: boolean;
 };
 
 function onError(this: any, target: HTMLImageElement, url: string) {
@@ -20,7 +21,7 @@ function setBackground(element: HTMLDivElement, short: string) {
   }
 }
 
-const CrewItem = (props: SearchItemProps) => () => {
+const CrewItem = (props: SearchItemProps) => {
   return (
     <Item
       actions={
@@ -54,18 +55,20 @@ const CrewItem = (props: SearchItemProps) => () => {
             alt={props.data.faction.defaultname}
           />
         </div>
-        <div class="bottom">
-          <img
-            class="preview"
-            loading="lazy"
-            src={props.data.img}
-            alt={props.data.fullname}
-            width="80"
-            height="80"
-            onerror={({ target }) => onError(target as HTMLImageElement, props.data.altimg)}
-          />
-          <span class="aptitude">{props.data.defaultaptitude}</span>
-        </div>
+        <Show when={!props.collapse}>
+          <div class="bottom">
+            <img
+              class="preview"
+              loading="lazy"
+              src={props.data.img}
+              alt={props.data.fullname}
+              width="80"
+              height="80"
+              onerror={({ target }) => onError(target as HTMLImageElement, props.data.altimg)}
+            />
+            <span class="aptitude">{props.data.defaultaptitude}</span>
+          </div>
+        </Show>
       </div>
     </Item>
   );

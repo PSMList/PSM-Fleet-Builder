@@ -1,4 +1,4 @@
-import { onlyDisplay } from "@/App";
+import { CardCollapseContext, onlyDisplay } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ToastContext } from "@/components/commons/Toasts";
@@ -58,9 +58,23 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     );
   });
 
+  const cardsCollapseContext = useContext(CardCollapseContext);
+
+  const toggleCardsCollapse = () => {
+    cardsCollapseContext.toggle();
+  };
+
+  const toggleIcon = (
+    <IconButton
+      iconID={cardsCollapseContext.collapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
+      title={cardsCollapseContext.collapse() ? "Expand cards" : "Compress cards"}
+      onClick={toggleCardsCollapse}
+    />
+  );
+
   let displayContainer: HTMLDivElement;
   let removeCrewAction: (crew: CrewType) => JSX.Element | undefined;
-  let crewActions: JSX.Element | undefined;
+  const crewActions: JSX.Element[] = [];
 
   if (!onlyDisplay) {
     const toastContext = useContext(ToastContext);
@@ -146,16 +160,17 @@ const CrewDisplay = (props: CrewDisplayProps) => {
       }
     };
 
-    crewActions = (
-      <>
-        <IconButton iconID="search-plus" onClick={scrollToDisplayBottom} class="scroll_to_search" />
-        <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear all crew" />
-      </>
+    crewActions.push(
+      toggleIcon,
+      <IconButton iconID="search-plus" onClick={scrollToDisplayBottom} class="scroll_to_search" title="Search crew" />,
+      <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear all crew" />
     );
 
     removeCrewAction = (crew: CrewType) => (
-      <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} title="Remove crew" />
+      <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} title="Clear crew" />
     );
+  } else {
+    crewActions.push(toggleIcon);
   }
 
   const headerInfo = (
@@ -174,7 +189,13 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
   const shipCrew = (
     <For each={crewData.crews}>
-      {(crew) => <CrewItem data={crew} actions={removeCrewAction && removeCrewAction(crew)} />}
+      {(crew) => (
+        <CrewItem
+          data={crew}
+          actions={removeCrewAction && removeCrewAction(crew)}
+          collapse={cardsCollapseContext.collapse()}
+        />
+      )}
     </For>
   );
 

@@ -1,4 +1,4 @@
-import { hash, onlyDisplay, slug } from "@/App";
+import { CardCollapseContext, hash, onlyDisplay, slug } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -174,6 +174,20 @@ const FleetDisplay = () => {
     });
   };
 
+  const cardsCollapseContext = useContext(CardCollapseContext);
+
+  const toggleCardsCollapse = () => {
+    cardsCollapseContext.toggle();
+  };
+
+  const toggleIcon = (
+    <IconButton
+      iconID={cardsCollapseContext.collapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
+      title={cardsCollapseContext.collapse() ? "Expand cards" : "Compress cards"}
+      onClick={toggleCardsCollapse}
+    />
+  );
+
   const showCrew = (ship: ShipType) => {
     const oldState = JSON.stringify(ship.crew);
     modalContext.showModal({
@@ -191,8 +205,8 @@ const FleetDisplay = () => {
 
   let displayContainer: HTMLDivElement;
   let removeShipAction: (ship: ShipType) => JSX.Element | undefined;
-  let fleetActions: JSX.Element | undefined;
-  let settingsAction: JSX.Element | undefined;
+  const fleetActions: JSX.Element[] = [];
+  const settingsActions: JSX.Element = [];
 
   if (!onlyDisplay) {
     const shipItemsContext = useContext(ShipItemsContext);
@@ -498,21 +512,25 @@ const FleetDisplay = () => {
       });
     };
 
-    fleetActions = (
-      <>
-        <IconButton iconID="search-plus" onClick={scrollToDisplayBottom} class="scroll_to_search" />
-        <IconButton iconID="copy" onClick={copyFleet} />
-        <IconButton iconID="save" onClick={saveFleet} title="Save" style={{ color: saved() ? "green" : "red" }} />
-        <Show when={navigator.clipboard || navigator.share}>
-          <IconButton iconID="share-nodes" onClick={shareFleet} title="Share your fleet" />
-        </Show>
-        <IconButton iconID="share-square" onClick={exportFleet} title="Export to file" />
-        <IconButton iconID="file-import" onClick={importFleet} title="Import from file" />
-        <IconButton iconID="eraser" onClick={clearFleet} title="Clear fleet" />
-      </>
+    fleetActions.push(
+      <IconButton iconID="search-plus" onClick={scrollToDisplayBottom} class="scroll_to_search" title="Search ships" />,
+      toggleIcon,
+      <IconButton iconID="copy" onClick={copyFleet} title="Copy as text" />,
+      <IconButton iconID="save" onClick={saveFleet} title="Save" style={{ color: saved() ? "green" : "red" }} />,
+      <Show when={navigator.clipboard || navigator.share}>
+        <IconButton iconID="share-nodes" onClick={shareFleet} title="Share your fleet" />
+      </Show>,
+      <IconButton iconID="share-square" onClick={exportFleet} title="Export to file" />,
+      <IconButton iconID="file-import" onClick={importFleet} title="Import from file" />,
+      <IconButton iconID="eraser" onClick={clearFleet} title="Clear fleet" />
     );
-    settingsAction = (
+    settingsActions.push(
       <IconButton iconID="cog" class="settings" onClick={editFleetSettings} title="Edit fleet settings" />
+    );
+  } else {
+    fleetActions.push(
+      toggleIcon,
+      <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
     );
   }
 
@@ -522,18 +540,15 @@ const FleetDisplay = () => {
         <i class="fas fa-coins" />
         &nbsp;&nbsp;{fleetData.points.current}&nbsp;/&nbsp;{fleetData.points.max}
       </span>
-      {settingsAction}
+      {settingsActions}
     </>
   );
-
-  if (!fleetActions) {
-    fleetActions = <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />;
-  }
 
   const fleet = (
     <For each={fleetData.ships}>
       {(ship) => (
         <ShipItem
+          collapse={cardsCollapseContext.collapse()}
           data={ship}
           actions={
             <>
