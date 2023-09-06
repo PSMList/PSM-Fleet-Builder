@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   min-height: min(99.5vh, 65em);
+  line-height: 1.3;
 }
 
 @media only screen and (max-width: 62em) {

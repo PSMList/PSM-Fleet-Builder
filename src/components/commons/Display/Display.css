@@ -43,7 +43,7 @@
   text-overflow: ellipsis;
   word-break: break-all;
   margin-right: auto;
-  font-family: Windlass;
+  font-family: Windlass, sans-serif;
   font-size: 1.4em;
 }
 

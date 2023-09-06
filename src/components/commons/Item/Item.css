@@ -37,7 +37,7 @@
 }
 
 .item > .info *:not(i) {
-  font-family: Windlass;
+  font-family: Windlass, sans-serif;
   font-weight: bold;
 }
 
@@ -113,7 +113,7 @@
   padding: 0.2em;
   margin-top: 0.4em;
   font-size: 0.85em;
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   width: 100%;
   font-weight: normal;
 }
