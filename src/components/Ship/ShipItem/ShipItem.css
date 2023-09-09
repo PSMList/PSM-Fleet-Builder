@@ -11,12 +11,15 @@
 .item > .info > .bottom > .stats > .basemove > .L {
   color: red;
 }
+.item > .info > .bottom > .stats .item > .info > .bottom > .cannons {
+  display: flex;
+  align-items: center;
+}
 .item > .info > .bottom > .stats img,
 .item > .info > .bottom > .cannons img:first-child {
   height: 0.8em;
   margin-left: 0.4em;
   margin-right: 0.2em;
-  vertical-align: middle;
 }
 
 .item > .info > .bottom > .cannons {
@@ -26,7 +29,6 @@
 .item > .info > .bottom > .cannons img {
   height: 0.8em;
   margin-left: 0.15em;
-  vertical-align: middle;
 }
 
 .item > .info > .bottom > .stats,
@@ -59,10 +61,8 @@
 
 .item > .crew > li {
   padding: 0.25em;
-}
-
-.item > .crew > li > * {
-  vertical-align: middle;
+  display: flex;
+  align-items: center;
 }
 
 .item > .crew > li > .points {

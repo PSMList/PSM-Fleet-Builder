@@ -1,4 +1,9 @@
-export function removeItemFromArray<T>(array: Array<T>, func: (value: T, index: number, obj: Array<T>) => boolean) {
+/* */
+
+export function removeItemFromArray<T>(
+  array: T[],
+  func: (value: T, index: number, obj: T[]) => boolean
+) {
   const index = array.findIndex(func);
   if (index !== -1) {
     return array.splice(index, 1);
@@ -13,7 +18,10 @@ export function capitalize(value: string) {
   return value.charAt(0).toLocaleUpperCase() + value.slice(1);
 }
 
-export async function fetchWithTimeout(url: RequestInfo | URL, options: RequestInit & { timeout?: number } = {}) {
+export async function fetchWithTimeout(
+  url: RequestInfo | URL,
+  options: RequestInit & { timeout?: number } = {}
+) {
   const { timeout = 10000 } = options;
   let id = -1;
   const controller = new AbortController();
@@ -42,15 +50,23 @@ export async function fetchWithTimeout(url: RequestInfo | URL, options: RequestI
           status: 408,
         };
       }),
-  ]) as Promise<{ ok: boolean; status: number; text: () => Promise<string>; json: () => Promise<Object> }>;
+  ]) as Promise<{
+    ok: boolean;
+    status: number;
+    text: () => Promise<string>;
+    json: () => Promise<Object>;
+  }>;
 }
 
-export function nestedKey(obj: { [key: string]: any }, keys: string | string[]): any {
-  if (!Array.isArray(keys) && !keys.includes(".")) {
+export function nestedKey(
+  obj: Record<string, any>,
+  keys: string | string[]
+): any {
+  if (!Array.isArray(keys) && !keys.includes('.')) {
     return obj[keys];
   }
 
-  const keyList = Array.isArray(keys) ? keys : keys.split(".");
+  const keyList = Array.isArray(keys) ? keys : keys.split('.');
   const nestedObj = obj[keyList.shift()!];
 
   if (keyList.length) {
@@ -63,7 +79,18 @@ export function nestedKey(obj: { [key: string]: any }, keys: string | string[]):
 const objectsIdMap = new WeakMap();
 let objectCount = 0;
 
-export function objectId(object: { [key: string]: unknown }) {
+export function objectId(object: Record<string, unknown>) {
   if (!objectsIdMap.has(object)) objectsIdMap.set(object, ++objectCount);
   return objectsIdMap.get(object);
+}
+
+export function onError(this: any, target: HTMLImageElement, url: string) {
+  target.src = url;
+  target.onerror = null;
+}
+
+export function setBackground(element: HTMLDivElement, url: string) {
+  if (element.parentElement) {
+    element.parentElement.style.backgroundImage = `url(${window.baseUrl}/${url})`;
+  }
 }

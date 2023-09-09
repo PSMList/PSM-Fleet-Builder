@@ -1,6 +1,6 @@
-import { apiUrl } from "./api";
+import { apiUrl } from './api';
 
-type ExtensionDataItem = {
+interface ExtensionDataItem {
   id: number;
   name: string;
   short: string;
@@ -16,16 +16,19 @@ type ExtensionDataItem = {
   custom: boolean;
   searchsort: number;
   colorhex: string;
-};
+  imagebackground?: string;
+  exticon?: string;
+}
 
-export type ExtensionType = {
+export interface ExtensionType {
   id: number;
   name: string;
   short: string;
   colorhex: string;
   custom: boolean;
-  releasedate: Date;
-};
+  bg: string;
+  icon: string;
+}
 
 export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
   .then((res) => res.json() as Promise<ExtensionDataItem[]>)
@@ -38,7 +41,12 @@ export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
         short: extension.short,
         colorhex: extension.colorhex,
         custom: extension.custom,
-        releasedate: extension.releasedate,
+        bg: extension.custom
+          ? `img/custom/expansion/background/${extension.imagebackground}`
+          : `img/bg_card/m/bg_${extension.short.replace(/U$/, '')}.png`,
+        icon: extension.custom
+          ? `img/custom/expansion/icon/${extension.exticon}`
+          : `img/logos/logo_${extension.short.replace(/U$/, '')}_o.png`,
       })
     );
     return extensionData;

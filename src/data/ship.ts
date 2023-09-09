@@ -1,11 +1,12 @@
-import { ItemType } from "@/components/commons/Item";
-import { apiUrl } from "./api";
-import { CrewType } from "./crew";
-import { extensionDataPromise } from "./extension";
-import { factionDataPromise } from "./faction";
-import { rarityDataPromise } from "./rarity";
+import { ItemType } from '@/components/commons/Item';
+import { apiUrl } from './api';
+import { CrewType } from './crew';
+import { extensionDataPromise } from './extension';
+import { factionDataPromise } from './faction';
+import { rarityDataPromise } from './rarity';
+import { technicalshapeDataPromise } from './technicalshape';
 
-type ShipDataItem = {
+interface ShipDataItem {
   id: number;
   idfaction: number;
   idrarity: number;
@@ -32,7 +33,7 @@ type ShipDataItem = {
   idtechnicalshape: number;
   idauthor: number;
   custom: boolean;
-};
+}
 
 export type ShipType = ItemType & {
   basemove: string;
@@ -49,19 +50,19 @@ export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
     const factionData = await factionDataPromise;
     const extensionData = await extensionDataPromise;
     const rarityData = await rarityDataPromise;
+    const technicalshapeData = await technicalshapeDataPromise;
     const shipData = new Map<number, ShipType>();
 
     data.forEach((item) => {
       const faction = factionData.get(item.idfaction)!;
       const extension = extensionData.get(item.idextension)!;
       const rarity = rarityData.get(item.idrarity)!;
+      const technicalshape = technicalshapeData.get(item.idtechnicalshape)!;
 
       shipData.set(item.id, {
         id: item.id,
-        img: !item.lookingforbetterpic
-          ? `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`
-          : "/public/img/logos/ship.png",
-        altimg: `${window.baseUrl}/img/logos/ship.png`,
+        img: `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
+        altimg: `${window.baseUrl}/img/technicalshape/icon/${technicalshape.name}.jpg`,
         faction,
         rarity,
         extension,

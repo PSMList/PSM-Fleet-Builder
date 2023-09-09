@@ -1,6 +1,6 @@
-import { apiUrl } from "./api";
+import { apiUrl } from './api';
 
-type FactionDataItem = {
+interface FactionDataItem {
   id: number;
   namelocale: string;
   nameimg: string;
@@ -9,14 +9,16 @@ type FactionDataItem = {
   defaultname: string;
   idauthor: number;
   custom: boolean;
-};
+  extIcon?: string;
+}
 
-export type FactionType = {
+export interface FactionType {
   id: number;
   defaultname: string;
   nameimg: string;
   custom: boolean;
-};
+  icon: string;
+}
 
 export const factionDataPromise = fetch(`${apiUrl}/faction?custom=include`)
   .then((res) => res.json() as Promise<FactionDataItem[]>)
@@ -28,6 +30,7 @@ export const factionDataPromise = fetch(`${apiUrl}/faction?custom=include`)
         defaultname: faction.defaultname,
         nameimg: faction.nameimg,
         custom: faction.custom,
+        icon: `/img/flag/flat/normal/${faction.nameimg}.png`,
       })
     );
     return factionData;

@@ -1,24 +1,14 @@
+import { For, JSX, Show } from "solid-js";
 import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
 import { ShipType } from "@/data/ship";
-import { For, JSX, Show } from "solid-js";
 import "./ShipItem.css";
+import { onError, setBackground } from "@/utils";
 
-type SearchItemProps = {
+interface SearchItemProps {
   data: ShipType;
   actions?: JSX.Element;
   collapse?: boolean;
-};
-
-function onError(this: any, target: HTMLImageElement, url: string) {
-  target.src = url;
-  target.onerror = null;
-}
-
-function setBackground(element: HTMLDivElement, short: string) {
-  if (element.parentElement) {
-    element.parentElement.style.backgroundImage = `url(${window.baseUrl}/img/bg_card/m/bg_${short}.png)`;
-  }
 }
 
 const ShipItem = (props: SearchItemProps) => {
@@ -29,7 +19,12 @@ const ShipItem = (props: SearchItemProps) => {
           {props.actions}
           <IconButton
             iconID="book-open"
-            onClick={() => open(`${window.baseUrl}/ship/${props.data.extension.short}${props.data.numid}`, "_blank")}
+            onClick={() =>
+              window.open(
+                `${window.baseUrl}/ship/${props.data.extension.short}${props.data.numid}`,
+                "_blank"
+              )
+            }
             title="More info"
           />
         </>
@@ -38,20 +33,22 @@ const ShipItem = (props: SearchItemProps) => {
     >
       <div
         class="info"
-        ref={(ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace(/U$/, "")), 1)}
+        ref={(ref) =>
+          setTimeout(() => setBackground(ref, props.data.extension.bg), 1)
+        }
       >
         <div class="top">
           <div class="points">{props.data.points}</div>
           <div class="name">{props.data.name}</div>
           <img
             class="extension"
-            src={`${window.baseUrl}/img/logos/logo_${props.data.extension.short.replace(/U$/, "")}_o.png`}
+            src={`${window.baseUrl}/${props.data.extension.icon}`}
             alt={props.data.faction.defaultname}
           />
           <span class="id">{`${props.data.extension.short} ${props.data.numid}`}</span>
           <img
             class="faction"
-            src={`${window.baseUrl}/img/flag/flat/normal/${props.data.faction.nameimg}.png`}
+            src={`${window.baseUrl}/${props.data.faction.icon}`}
             alt={props.data.faction.defaultname}
           />
         </div>
@@ -64,7 +61,9 @@ const ShipItem = (props: SearchItemProps) => {
               alt={props.data.fullname}
               width="80"
               height="80"
-              onerror={({ target }) => onError(target as HTMLImageElement, props.data.altimg)}
+              onError={({ target }) =>
+                onError(target as HTMLImageElement, props.data.altimg)
+              }
             />
             <span class="stats">
               <span class="masts">
@@ -78,13 +77,22 @@ const ShipItem = (props: SearchItemProps) => {
               {/* add color by changing L to <span class="L">L</span> */}
               <span class="basemove">
                 <img src={`${window.baseUrl}/img/svg/basemove_nobg.svg`} />
-                {props.data.basemove.match(/./g)?.map((move) => (move === "L" ? <span class="L">L</span> : move))}
+                {props.data.basemove
+                  .match(/./g)
+                  ?.map((move) =>
+                    move === "L" ? <span class="L">L</span> : move
+                  )}
               </span>
             </span>
             <span class="cannons">
               <img src={`${window.baseUrl}/img/svg/cannons.svg`} />
               <For each={props.data.cannons.match(/.{2}/g)}>
-                {(cannon) => <img src={`${window.baseUrl}/img/svg/dice/${cannon}.svg`} alt="■" />}
+                {(cannon) => (
+                  <img
+                    src={`${window.baseUrl}/img/svg/dice/${cannon}.svg`}
+                    alt="■"
+                  />
+                )}
               </For>
             </span>
             <span class="aptitude">{props.data.defaultaptitude}</span>
@@ -107,7 +115,7 @@ const ShipItem = (props: SearchItemProps) => {
                   <span class="points">{crew.points}</span>&nbsp;
                   <img
                     class="faction"
-                    src={`${window.baseUrl}/img/flag/flat/normal/${crew.faction.nameimg}.png`}
+                    src={`${window.baseUrl}/${crew.faction.icon}`}
                     alt={crew.faction.defaultname}
                   />
                   &nbsp;

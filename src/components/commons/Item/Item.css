@@ -85,9 +85,12 @@
   justify-content: flex-end;
 }
 .item > .info > .top > .extension {
+  height: 1.5em;
   width: 1.5em;
   margin-right: 0.25em;
   grid-area: extension;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .item > .info > .bottom {

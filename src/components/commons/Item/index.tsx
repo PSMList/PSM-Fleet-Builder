@@ -31,7 +31,7 @@ export type ItemProps = {
 
 export const Item = (props: ItemProps) => {
   return (
-    <li class="item">
+    <li class="item" style={{ "background-color": `#${props.color}` }}>
       <div class="actions" style={{ "border-color": `#${props.color}` }}>
         {props.actions}
       </div>

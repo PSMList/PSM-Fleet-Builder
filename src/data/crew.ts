@@ -1,10 +1,10 @@
-import { ItemType } from "@/components/commons/Item";
-import { apiUrl } from "./api";
-import { extensionDataPromise } from "./extension";
-import { factionDataPromise } from "./faction";
-import { rarityDataPromise } from "./rarity";
+import { ItemType } from '@/components/commons/Item';
+import { apiUrl } from './api';
+import { extensionDataPromise } from './extension';
+import { factionDataPromise } from './faction';
+import { rarityDataPromise } from './rarity';
 
-type CrewDataItem = {
+interface CrewDataItem {
   id: number;
   idfaction: number;
   idrarity: number;
@@ -22,9 +22,9 @@ type CrewDataItem = {
   lookingforbetterpic: boolean;
   idauthor: number;
   custom: boolean;
-};
+}
 
-export type CrewType = ItemType & {};
+export type CrewType = ItemType;
 
 export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
   .then((res) => res.json() as Promise<CrewDataItem[]>)
@@ -41,9 +41,7 @@ export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
 
       crewData.set(item.id, {
         id: item.id,
-        img: !item.lookingforbetterpic
-          ? `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`
-          : "/public/img/logos/crew.png",
+        img: `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
         altimg: `${window.baseUrl}/img/logos/crew.png`,
         faction,
         rarity,

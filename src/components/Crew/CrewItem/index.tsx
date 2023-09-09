@@ -1,24 +1,14 @@
+import { JSX, Show } from "solid-js";
 import IconButton from "@/components/commons/IconButton";
 import Item from "@/components/commons/Item";
 import { CrewType } from "@/data/crew";
-import { JSX, Show } from "solid-js";
 import "./CrewItem.css";
+import { onError, setBackground } from "@/utils";
 
-type SearchItemProps = {
+interface SearchItemProps {
   data: CrewType;
   actions?: JSX.Element;
   collapse?: boolean;
-};
-
-function onError(this: any, target: HTMLImageElement, url: string) {
-  target.src = url;
-  target.onerror = null;
-}
-
-function setBackground(element: HTMLDivElement, short: string) {
-  if (element.parentElement) {
-    element.parentElement.style.backgroundImage = `url(${window.baseUrl}/img/bg_card/m/bg_${short}.png)`;
-  }
 }
 
 const CrewItem = (props: SearchItemProps) => {
@@ -29,7 +19,12 @@ const CrewItem = (props: SearchItemProps) => {
           {props.actions}
           <IconButton
             iconID="book-open"
-            onClick={() => open(`${window.baseUrl}/crew/${props.data.extension.short}${props.data.numid}`, "_blank")}
+            onClick={() =>
+              open(
+                `${window.baseUrl}/crew/${props.data.extension.short}${props.data.numid}`,
+                "_blank"
+              )
+            }
             title="More info"
           />
         </>
@@ -38,20 +33,22 @@ const CrewItem = (props: SearchItemProps) => {
     >
       <div
         class="info"
-        ref={(ref) => setTimeout(() => setBackground(ref, props.data.extension.short.replace(/U$/, "")), 1)}
+        ref={(ref) =>
+          setTimeout(() => setBackground(ref, props.data.extension.bg), 1)
+        }
       >
         <div class="top">
           <div class="points">{props.data.points}</div>
           <div class="name">{props.data.name}</div>
           <img
             class="extension"
-            src={`${window.baseUrl}/img/logos/logo_${props.data.extension.short.replace(/U$/, "")}_o.png`}
-            alt={props.data.faction.defaultname}
+            src={`${window.baseUrl}/${props.data.extension.icon}`}
+            alt={props.data.extension.short}
           />
           <span class="id">{`${props.data.extension.short} ${props.data.numid}`}</span>
           <img
             class="faction"
-            src={`${window.baseUrl}/img/flag/flat/normal/${props.data.faction.nameimg}.png`}
+            src={`${window.baseUrl}/${props.data.faction.icon}`}
             alt={props.data.faction.defaultname}
           />
         </div>
@@ -64,7 +61,9 @@ const CrewItem = (props: SearchItemProps) => {
               alt={props.data.fullname}
               width="80"
               height="80"
-              onerror={({ target }) => onError(target as HTMLImageElement, props.data.altimg)}
+              onError={({ target }) =>
+                onError(target as HTMLImageElement, props.data.altimg)
+              }
             />
             <span class="aptitude">{props.data.defaultaptitude}</span>
           </div>
