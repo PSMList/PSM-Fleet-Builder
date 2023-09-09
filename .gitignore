@@ -6,3 +6,4 @@
 !src/
 !src/**/
 !src/**/*
+.vscode/settings.json

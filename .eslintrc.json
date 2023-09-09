@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "env": { "browser": true },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/strict",
+    "plugin:solid/typescript",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["import"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "rules": {
+    "import/extensions": ["error", "ignorePackages", { "": "never" }],
+    "prettier/prettier": ["error", { "endOfLine": "auto" }]
+  }
+}
