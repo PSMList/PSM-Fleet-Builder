@@ -34,7 +34,9 @@
   margin: 0;
   padding: 0;
   position: absolute;
-  width: 100%;
+  top: 100%;
+  left: 0;
+  right: 0;
   overflow-y: auto;
   max-height: 22vh;
   border: 1px solid rgba(0, 0, 0, 0.2);
