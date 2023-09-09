@@ -1,4 +1,6 @@
-import { CardCollapseContext, onlyDisplay } from "@/App";
+import { createEffect, For, JSX, useContext } from "solid-js";
+import { createStore, produce } from "solid-js/store";
+import { onlyDisplay, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ToastContext } from "@/components/commons/Toasts";
@@ -6,15 +8,13 @@ import { CrewItemsContext } from "@/components/Crew";
 import CrewItem from "@/components/Crew/CrewItem";
 import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
-import { createEffect, For, JSX, useContext } from "solid-js";
-import { createStore, produce } from "solid-js/store";
 import "./CrewDisplay.css";
 
-export type CrewSavedDataType = {
+export interface CrewSavedDataType {
   id: number;
-};
+}
 
-export type CrewDataType = {
+export interface CrewDataType {
   points: {
     current: number;
     max: number;
@@ -24,12 +24,12 @@ export type CrewDataType = {
     max: number;
   };
   crews: CrewType[];
-};
+}
 
-type CrewDisplayProps = {
+interface CrewDisplayProps {
   ship: ShipType;
   remainingFleetPoints: number;
-};
+}
 
 const CrewDisplay = (props: CrewDisplayProps) => {
   const [crewData, setData] = createStore<CrewDataType>({
@@ -52,28 +52,27 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     setData(
       produce((data) => {
         data.crews = props.ship.crew;
-        data.points.current = data.crews.reduce((total: number, crew: CrewType) => total + crew.points, 0);
+        data.points.current = data.crews.reduce(
+          (total: number, crew: CrewType) => total + crew.points,
+          0
+        );
         data.points.max = data.points.current + props.remainingFleetPoints;
       })
     );
   });
 
-  const cardsCollapseContext = useContext(CardCollapseContext);
-
-  const toggleCardsCollapse = () => {
-    cardsCollapseContext.toggle();
-  };
+  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
 
   const toggleIcon = (
     <IconButton
-      iconID={cardsCollapseContext.collapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
-      title={cardsCollapseContext.collapse() ? "Expand cards" : "Compress cards"}
+      iconID={cardsCollapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
+      title={cardsCollapse() ? "Expand cards" : "Compress cards"}
       onClick={toggleCardsCollapse}
     />
   );
 
-  let displayContainer: HTMLDivElement;
-  let removeCrewAction: (crew: CrewType) => JSX.Element | undefined;
+  let displayContainer: HTMLDivElement | null;
+  let removeCrewAction: (crew: CrewType) => JSX.Element = () => <></>;
   const crewActions: JSX.Element[] = [];
 
   if (!onlyDisplay) {
@@ -152,22 +151,43 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
     const scrollToDisplayBottom = () => {
       if (displayContainer) {
-        const scrollElement = document.querySelector("#modal-root .modal-shadow:not(.hidden) .modal-content")!;
-        scrollElement.scrollTo({
-          top: scrollElement.scrollTop + displayContainer.getBoundingClientRect().top + displayContainer.scrollHeight,
-          behavior: "smooth",
-        });
+        const searchContainer = displayContainer.previousElementSibling;
+        if (searchContainer) {
+          searchContainer.scrollIntoView({
+            behavior: "smooth",
+          });
+          const input =
+            searchContainer.querySelector<HTMLInputElement>("input[type=text]");
+          if (input) {
+            input.focus();
+            input.select();
+          }
+        }
       }
     };
 
     crewActions.push(
       toggleIcon,
-      <IconButton iconID="search-plus" onClick={scrollToDisplayBottom} class="scroll_to_search" title="Search crew" />,
-      <IconButton iconID="eraser" class="clear" onClick={clearCrew} title="Clear all crew" />
+      <IconButton
+        iconID="search-plus"
+        onClick={scrollToDisplayBottom}
+        class="scroll_to_search"
+        title="Search crew"
+      />,
+      <IconButton
+        iconID="eraser"
+        class="clear"
+        onClick={clearCrew}
+        title="Clear all crew"
+      />
     );
 
     removeCrewAction = (crew: CrewType) => (
-      <IconButton iconID="minus-square" onClick={() => removeCrew(crew)} title="Clear crew" />
+      <IconButton
+        iconID="minus-square"
+        onClick={() => removeCrew(crew)}
+        title="Clear crew"
+      />
     );
   } else {
     crewActions.push(toggleIcon);
@@ -192,14 +212,23 @@ const CrewDisplay = (props: CrewDisplayProps) => {
       {(crew) => (
         <CrewItem
           data={crew}
-          actions={removeCrewAction && removeCrewAction(crew)}
-          collapse={cardsCollapseContext.collapse()}
+          actions={removeCrewAction(crew)}
+          collapse={cardsCollapse()}
         />
       )}
     </For>
   );
 
-  return <Display ref={(ref) => (displayContainer = ref)} info={headerInfo} actions={crewActions} items={shipCrew} />;
+  return (
+    <Display
+      ref={(ref) => {
+        displayContainer = ref;
+      }}
+      info={headerInfo}
+      actions={crewActions}
+      items={shipCrew}
+    />
+  );
 };
 
 export default CrewDisplay;

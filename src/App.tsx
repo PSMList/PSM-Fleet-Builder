@@ -1,11 +1,14 @@
 import { ModalRoot } from "@/components/commons/Modal";
 import Toasts from "@/components/commons/Toasts";
 import Ship from "@/components/Ship";
-import "./App.css";
-import { ParentComponent, createContext, createSignal, useContext } from "solid-js";
+import "@/App.css";
+import { JSX, createContext, createSignal, useContext } from "solid-js";
+import { StoreProvider } from "@/data/store";
 
 export const [hash, slug] = window.location.pathname.split("/").splice(-2, 2);
-export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(window.location.pathname);
+export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(
+  window.location.pathname
+);
 export const fleetMaxpointsMin = window.fleetMaxpointsMin;
 export const fleetMaxpointsMax = window.fleetMaxpointsMax;
 export const baseUrl = window.baseUrl;
@@ -20,28 +23,44 @@ declare global {
   }
 }
 
-const [collapse, setCollapse] = createSignal(false);
+interface CardCollapseContextProps {
+  children?: JSX.Element;
+  collapse?: boolean;
+}
 
-export const CardCollapseContext = createContext({
-  collapse,
-  toggle: function () {
-    setCollapse(() => !collapse());
-  },
-});
+function setDefaultCardsCollapseContext(_collapse?: boolean) {
+  const [collapse, setCollapse] = createSignal(_collapse || false);
+  return [
+    collapse,
+    {
+      toggle: () => {
+        setCollapse((_collapse) => !_collapse);
+      },
+    },
+  ] as const;
+}
 
-const CardsCollapseProvider: ParentComponent = (props) => {
-  const state = useContext(CardCollapseContext);
-  return <CardCollapseContext.Provider value={state}>{props.children}</CardCollapseContext.Provider>;
+export const CardCollapseContext = createContext(
+  setDefaultCardsCollapseContext()
+);
+
+export const CardsCollapseProvider = (props: CardCollapseContextProps) => {
+  const value = setDefaultCardsCollapseContext(props.collapse);
+  return (
+    <CardCollapseContext.Provider value={value}>
+      {props.children}
+    </CardCollapseContext.Provider>
+  );
 };
+
+export const useCardsCollapse = () => useContext(CardCollapseContext);
 
 export function App() {
   return (
-    <>
-      <CardsCollapseProvider>
-        <Toasts position="top-right" autoDeleteTime={8000} />
-        <ModalRoot />
-        <Ship />
-      </CardsCollapseProvider>
-    </>
+    <StoreProvider>
+      <Toasts position="top-right" autoDeleteTime={8000} />
+      <ModalRoot />
+      <Ship />
+    </StoreProvider>
   );
 }

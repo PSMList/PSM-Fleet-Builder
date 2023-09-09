@@ -39,11 +39,27 @@
   flex-grow: 1;
 }
 
+.search_container > .search_inputs > .search_input .icon_button:last-of-type {
+  margin-right: -0.25em;
+}
+
 .search_container > .search_inputs > .toggle_filters {
   margin: 0;
   padding: 0;
 }
 
 .search_container > .search_inputs > .sort_results i {
+  margin-right: 0.5em;
+}
+
+.search_faction,
+.search_extension {
+  display: flex;
+  align-items: center;
+}
+
+.search_faction img,
+.search_extension img {
+  width: 1.5em;
   margin-right: 0.5em;
 }

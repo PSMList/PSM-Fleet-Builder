@@ -1,4 +1,4 @@
-import { CardCollapseContext, hash, onlyDisplay, slug } from "@/App";
+import { hash, onlyDisplay, slug, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -11,11 +11,18 @@ import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
 import { useStore } from "@/data/store";
 import { fetchWithTimeout, objectId } from "@/utils";
-import { createEffect, createSignal, For, JSX, Show, useContext } from "solid-js";
+import {
+  createEffect,
+  createSignal,
+  For,
+  JSX,
+  Show,
+  useContext,
+} from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import "./FleetDisplay.css";
 
-type FleetSavedDataType = {
+interface FleetSavedDataType {
   name: string;
   maxpoints: number;
   data: {
@@ -24,9 +31,9 @@ type FleetSavedDataType = {
   }[];
   ispublic: boolean;
   description: string;
-};
+}
 
-export type FleetDataType = {
+export interface FleetDataType {
   name: string;
   points: {
     current: number;
@@ -35,7 +42,7 @@ export type FleetDataType = {
   ispublic: boolean;
   ships: ShipType[];
   description: string;
-};
+}
 
 const defaultFleetData: FleetDataType = {
   name: "",
@@ -53,7 +60,9 @@ const FleetDisplay = () => {
 
   const [fleetData, setData] = createStore<FleetDataType>(defaultFleetData);
 
-  function getFleetData(savedData: FleetSavedDataType): FleetDataType | undefined {
+  function getFleetData(
+    savedData: FleetSavedDataType
+  ): FleetDataType | undefined {
     return {
       name: savedData.name,
       points: {
@@ -63,7 +72,9 @@ const FleetDisplay = () => {
       ships: savedData.data.map((item: any) => {
         const { id: shipID, crew: crews } = item;
         const ship = { ...database.ships.get(shipID)! };
-        ship.crew = crews.map((crew: { id: number }) => ({ ...database.crews.get(crew.id)! }));
+        ship.crew = crews.map((crew: { id: number }) => ({
+          ...database.crews.get(crew.id)!,
+        }));
         return ship;
       }),
       ispublic: savedData.ispublic,
@@ -91,7 +102,11 @@ const FleetDisplay = () => {
       "current",
       fleetData.ships.reduce(
         (shipTotal: number, ship: ShipType) =>
-          shipTotal + ship.crew.reduce((crewTotal: number, crew: CrewType) => crewTotal + crew.points, ship.points),
+          shipTotal +
+          ship.crew.reduce(
+            (crewTotal: number, crew: CrewType) => crewTotal + crew.points,
+            ship.points
+          ),
         0
       )
     );
@@ -120,7 +135,9 @@ const FleetDisplay = () => {
 
   async function getSavedFleetData() {
     try {
-      const response = await fetch(`${window.baseUrl}/fleet/get/${hash}/${slug}`);
+      const response = await fetch(
+        `${window.baseUrl}/fleet/get/${hash}/${slug}`
+      );
       const data = await response.json();
       if (!data) return;
 
@@ -174,16 +191,12 @@ const FleetDisplay = () => {
     });
   };
 
-  const cardsCollapseContext = useContext(CardCollapseContext);
-
-  const toggleCardsCollapse = () => {
-    cardsCollapseContext.toggle();
-  };
+  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
 
   const toggleIcon = (
     <IconButton
-      iconID={cardsCollapseContext.collapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
-      title={cardsCollapseContext.collapse() ? "Expand cards" : "Compress cards"}
+      iconID={cardsCollapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
+      title={cardsCollapse() ? "Expand cards" : "Compress cards"}
       onClick={toggleCardsCollapse}
     />
   );
@@ -199,7 +212,12 @@ const FleetDisplay = () => {
           setSaved(() => false);
         }
       },
-      content: () => <Crew ship={ship} remainingFleetPoints={fleetData.points.max - fleetData.points.current} />,
+      content: () => (
+        <Crew
+          ship={ship}
+          remainingFleetPoints={fleetData.points.max - fleetData.points.current}
+        />
+      ),
     });
   };
 
@@ -241,7 +259,9 @@ const FleetDisplay = () => {
     };
 
     const removeShip = (ship: ShipType) => {
-      const shipIndex = fleetData.ships.reverse().findIndex((_ship) => ship === _ship);
+      const shipIndex = fleetData.ships
+        .reverse()
+        .findIndex((_ship) => ship === _ship);
       if (shipIndex >= 0) {
         setData(
           produce((data) => {
@@ -253,7 +273,11 @@ const FleetDisplay = () => {
     };
 
     removeShipAction = (ship: ShipType) => (
-      <IconButton iconID="minus-square" onClick={() => removeShip(ship)} title="Remove ship" />
+      <IconButton
+        iconID="minus-square"
+        onClick={() => removeShip(ship)}
+        title="Remove ship"
+      />
     );
 
     shipItemsContext.add = addShip;
@@ -338,7 +362,11 @@ const FleetDisplay = () => {
                   id:
                     "error-saving-data-" +
                     // trying to create different id for each error message
-                    message.split(" ").slice(0, 2).join("-").toLocaleLowerCase(),
+                    message
+                      .split(" ")
+                      .slice(0, 2)
+                      .join("-")
+                      .toLocaleLowerCase(),
                   type: "error",
                   title: "Save fleet data",
                   description: message,
@@ -450,7 +478,7 @@ const FleetDisplay = () => {
             onSave={(data) => {
               setNewData({
                 name: data.name.value as string,
-                ispublic: data.ispublic.checked as boolean,
+                ispublic: data.ispublic.checked!,
                 points: {
                   max: data.maxpoints.value as number,
                   current: fleetData.points.current,
@@ -468,11 +496,18 @@ const FleetDisplay = () => {
 
     const scrollToDisplayBottom = () => {
       if (displayContainer) {
-        const scrollElement = document.body.parentElement!;
-        scrollElement.scrollTo({
-          top: scrollElement.scrollTop + displayContainer.getBoundingClientRect().top + displayContainer.scrollHeight,
-          behavior: "smooth",
-        });
+        const searchContainer = displayContainer.previousElementSibling;
+        if (searchContainer) {
+          searchContainer.scrollIntoView({
+            behavior: "smooth",
+          });
+          const input =
+            searchContainer.querySelector<HTMLInputElement>("input[type=text]");
+          if (input) {
+            input.focus();
+            input.select();
+          }
+        }
       }
     };
 
@@ -487,7 +522,7 @@ const FleetDisplay = () => {
               setTimeout(async () => {
                 ref.focus();
                 ref.select();
-                await navigator.clipboard?.writeText(ref.innerHTML);
+                await navigator.clipboard.writeText(ref.innerHTML);
                 toastContext.createToast({
                   id: "success-write-clipboard",
                   title: "Copied fleet data",
@@ -505,7 +540,9 @@ const FleetDisplay = () => {
                     `${output}  (${crew.points}) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}\n`,
                   ""
                 )}\n`,
-              `${fleetData.name} (${window.location})\n${fleetData.description ? `\n${fleetData.description}\n` : ""}\n`
+              `${fleetData.name} (${window.location})\n${
+                fleetData.description ? `\n${fleetData.description}\n` : ""
+              }\n`
             )}
           </textarea>
         ),
@@ -513,24 +550,60 @@ const FleetDisplay = () => {
     };
 
     fleetActions.push(
-      <IconButton iconID="search-plus" onClick={scrollToDisplayBottom} class="scroll_to_search" title="Search ships" />,
+      <IconButton
+        iconID="search-plus"
+        onClick={scrollToDisplayBottom}
+        class="scroll_to_search"
+        title="Search ships"
+      />,
       toggleIcon,
-      <IconButton iconID="copy" onClick={copyFleet} title="Copy as text" />,
-      <IconButton iconID="save" onClick={saveFleet} title="Save" style={{ color: saved() ? "green" : "red" }} />,
+      <IconButton
+        iconID="clipboard"
+        onClick={copyFleet}
+        title="Copy as text"
+      />,
+      <IconButton
+        iconID="save"
+        onClick={saveFleet}
+        title="Save"
+        style={{ color: saved() ? "green" : "red" }}
+      />,
       <Show when={navigator.clipboard || navigator.share}>
-        <IconButton iconID="share-nodes" onClick={shareFleet} title="Share your fleet" />
+        <IconButton
+          iconID="share-nodes"
+          onClick={shareFleet}
+          title="Share your fleet"
+        />
       </Show>,
-      <IconButton iconID="share-square" onClick={exportFleet} title="Export to file" />,
-      <IconButton iconID="file-import" onClick={importFleet} title="Import from file" />,
+      <IconButton
+        iconID="share-square"
+        onClick={exportFleet}
+        title="Export to file"
+      />,
+      <IconButton
+        iconID="file-import"
+        onClick={importFleet}
+        title="Import from file"
+      />,
       <IconButton iconID="eraser" onClick={clearFleet} title="Clear fleet" />
     );
     settingsActions.push(
-      <IconButton iconID="cog" class="settings" onClick={editFleetSettings} title="Edit fleet settings" />
+      <IconButton
+        iconID="cog"
+        class="settings"
+        onClick={editFleetSettings}
+        title="Edit fleet settings"
+      />
     );
   } else {
     fleetActions.push(
       toggleIcon,
-      <IconButton iconID="share-square" class="export" onClick={exportFleet} title="Export to file" />
+      <IconButton
+        iconID="share-square"
+        class="export"
+        onClick={exportFleet}
+        title="Export to file"
+      />
     );
   }
 
@@ -538,7 +611,8 @@ const FleetDisplay = () => {
     <>
       <span class="points">
         <i class="fas fa-coins" />
-        &nbsp;&nbsp;{fleetData.points.current}&nbsp;/&nbsp;{fleetData.points.max}
+        &nbsp;&nbsp;{fleetData.points.current}&nbsp;/&nbsp;
+        {fleetData.points.max}
       </span>
       {settingsActions}
     </>
@@ -548,7 +622,7 @@ const FleetDisplay = () => {
     <For each={fleetData.ships}>
       {(ship) => (
         <ShipItem
-          collapse={cardsCollapseContext.collapse()}
+          collapse={cardsCollapse()}
           data={ship}
           actions={
             <>

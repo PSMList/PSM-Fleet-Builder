@@ -1,4 +1,4 @@
-import { onlyDisplay } from "@/App";
+import { onlyDisplay, useCardsCollapse } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { CrewItemsContext } from "@/components/Crew";
@@ -8,14 +8,15 @@ import { useStore } from "@/data/store";
 import { createEffect, createSignal, useContext } from "solid-js";
 import "./CrewSearch.css";
 
-type CrewSearchProps = {
+interface CrewSearchProps {
   defaultFactionID: string;
-};
+}
 
 const CrewSearch = (props: CrewSearchProps) => {
   if (onlyDisplay) return <></>;
 
   const crewItemsContext = useContext(CrewItemsContext);
+  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 
@@ -35,7 +36,14 @@ const CrewSearch = (props: CrewSearchProps) => {
             element: (
               <CrewItem
                 data={crew}
-                actions={<IconButton iconID="plus-square" onClick={() => selectItem(crew)} title="Add crew" />}
+                actions={
+                  <IconButton
+                    iconID="plus-square"
+                    onClick={() => selectItem(crew)}
+                    title="Add crew"
+                  />
+                }
+                collapse={cardsCollapse()}
               />
             ),
           } as SearchItemType)
@@ -44,7 +52,11 @@ const CrewSearch = (props: CrewSearchProps) => {
   });
 
   return (
-    <Search placeholder="Search by crew name or ID" defaultFactionID={props.defaultFactionID} items={elements()} />
+    <Search
+      placeholder="Search by crew name or ID"
+      defaultFactionID={props.defaultFactionID}
+      items={elements()}
+    />
   );
 };
 

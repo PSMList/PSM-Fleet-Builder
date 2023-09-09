@@ -1,4 +1,4 @@
-import { onlyDisplay } from "@/App";
+import { onlyDisplay, useCardsCollapse } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { ShipItemsContext } from "@/components/Ship";
@@ -12,6 +12,7 @@ const ShipSearch = () => {
   if (onlyDisplay) return <></>;
 
   const shipItemsContext = useContext(ShipItemsContext);
+  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 
@@ -31,7 +32,14 @@ const ShipSearch = () => {
             element: (
               <ShipItem
                 data={ship}
-                actions={<IconButton iconID="plus-square" onClick={() => selectItem(ship)} title="Add ship" />}
+                actions={
+                  <IconButton
+                    iconID="plus-square"
+                    onClick={() => selectItem(ship)}
+                    title="Add ship"
+                  />
+                }
+                collapse={cardsCollapse()}
               />
             ),
           } as SearchItemType)

@@ -8,18 +8,19 @@ import IconButton from "../IconButton";
 import Select from "../Inputs/Select";
 import { ItemType } from "../Item";
 import "./Search.css";
+import { useCardsCollapse } from "@/App";
 
-export type SearchItemType = {
+export interface SearchItemType {
   element: JSX.Element;
   item: ItemType;
-};
+}
 
-type SearchProps = {
+interface SearchProps {
   additionalInputs?: JSX.Element;
   placeholder: string;
   items: SearchItemType[];
   defaultFactionID?: string;
-};
+}
 
 const defaultSearchQuery = new RegExp("", "i");
 
@@ -34,12 +35,16 @@ const Search = (props: SearchProps) => {
 
   const [searchQuery, setQuery] = createSignal(defaultSearchQuery);
 
-  const [factionFilter, setFactionFilter] = createSignal(parseInt(props.defaultFactionID ?? "-1")!);
+  const [factionFilter, setFactionFilter] = createSignal(
+    parseInt(props.defaultFactionID ?? "-1")
+  );
   const [extensionFilter, setExtensionFilter] = createSignal(-1);
   const [sortFilter, setSortFilter] = createSignal("");
-  const [customFilter, setCustomFilter] = createSignal(Custom.Include as string);
+  const [customFilter, setCustomFilter] = createSignal(Custom.Include);
 
   const { database } = useStore().databaseService;
+
+  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
 
   const factionOptions = createMemo(() => {
     const _factions = Array.from(database.factions.values());
@@ -48,7 +53,7 @@ const Search = (props: SearchProps) => {
       display: (
         <span>
           <img
-            src={`${window.baseUrl}/img/flag/flat/normal/${faction.nameimg}.png`}
+            src={`${window.baseUrl}/${faction.icon}.png`}
             onError={({ target: ref }) => {
               (ref as HTMLImageElement).style.height = "0";
             }}
@@ -77,7 +82,10 @@ const Search = (props: SearchProps) => {
       display: (
         <span>
           <img
-            src={`${window.baseUrl}/img/logos/logo_${extension.short.replace(/U$/, "")}.png`}
+            src={`${window.baseUrl}/img/logos/logo_${extension.short.replace(
+              /U$/,
+              ""
+            )}.png`}
             onError={({ target: ref }) => {
               (ref as HTMLImageElement).style.height = "0";
             }}
@@ -173,15 +181,21 @@ const Search = (props: SearchProps) => {
     const _extensionFilter = extensionFilter();
     const _customFilter = customFilter();
 
-    if (_factionFilter === -1 && _extensionFilter === -1 && _customFilter === Custom.Include) {
+    if (
+      _factionFilter === -1 &&
+      _extensionFilter === -1 &&
+      _customFilter === Custom.Include
+    ) {
       return props.items;
     }
 
     return props.items.filter(
       (element) =>
         (_factionFilter === -1 || element.item.faction.id === _factionFilter) &&
-        (_extensionFilter === -1 || element.item.extension.id === _extensionFilter) &&
-        (_customFilter === Custom.Include || !!parseInt(_customFilter) == element.item.custom)
+        (_extensionFilter === -1 ||
+          element.item.extension.id === _extensionFilter) &&
+        (_customFilter === Custom.Include ||
+          !!parseInt(_customFilter) == element.item.custom)
     );
   });
 
@@ -192,6 +206,7 @@ const Search = (props: SearchProps) => {
   const content = () => {
     const _searchQuery = searchQuery();
     if (_searchQuery === defaultSearchQuery) {
+      // eslint-disable-next-line solid/components-return-once
       return (
         <h3 class="search_info">
           Enter any text in the search bar to show items.
@@ -220,7 +235,10 @@ const Search = (props: SearchProps) => {
     if (sortKey === "") {
       sortedItems = filteredItems;
     } else {
-      const [sortID, sortOrder] = sortKey.split("-") as [keyof SearchItemType["item"], "up" | "down"];
+      const [sortID, sortOrder] = sortKey.split("-") as [
+        keyof SearchItemType["item"],
+        "up" | "down"
+      ];
 
       if (sortOrder === "down") {
         sortedItems = filteredItems.sort((itemA, itemB) =>
@@ -250,7 +268,16 @@ const Search = (props: SearchProps) => {
           onValidate={searchInItems}
           validationIcon="search"
         />
-        <IconButton class="toggle_filters" iconID="filter" onClick={() => setShowFilters((previous) => !previous)} />
+        <IconButton
+          iconID={cardsCollapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
+          title={cardsCollapse() ? "Expand cards" : "Compress cards"}
+          onClick={toggleCardsCollapse}
+        />
+        <IconButton
+          class="toggle_filters"
+          iconID="filter"
+          onClick={() => setShowFilters((previous) => !previous)}
+        />
         <Show when={showFilters()}>
           <Select
             defaultSelectText="Select faction"
