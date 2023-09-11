@@ -105,6 +105,13 @@ const ShipItem = (props: SearchItemProps) => {
             when={!props.collapse}
             fallback={
               <li>
+                <span class="points">
+                  {props.data.crew.reduce(
+                    (total, crew) => total + crew.points,
+                    0
+                  )}
+                </span>
+                &nbsp;
                 <span>{props.data.crew.length} crew</span>
               </li>
             }
