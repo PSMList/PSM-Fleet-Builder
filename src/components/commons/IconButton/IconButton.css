@@ -3,6 +3,8 @@
   border: none;
   color: rgba(0, 0, 0, 0.5);
   font-size: 1.25em;
+  display: inline-flex;
+  align-items: center;
 }
 
 .icon_button:first-of-type {
@@ -13,9 +15,14 @@
   margin-right: 0.25em;
 }
 
-.icon_button:hover > *,
-.icon_button:focus > *,
-.icon_button:focus-within > * {
+.icon_button:hover,
+.icon_button:focus,
+.icon_button:focus-within {
   cursor: pointer;
   color: #428bca;
+}
+
+.icon_button .title {
+  margin-left: 0.25em;
+  font-size: 0.8em;
 }
