@@ -39,6 +39,25 @@
   flex-grow: 1;
 }
 
+.search_container > .search_inputs > .search_input .icon_button {
+  margin-left: 0.5em;
+  border-radius: 5px;
+  padding: 3px 8px 3px 7px;
+  background-color: #428BCA;
+  color: #FFFFFF;
+  border: none;
+  text-decoration: none;
+  transition: 0.1s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.search_container > .search_inputs > .search_input .icon_button:hover,
+.search_container > .search_inputs > .search_input .icon_button:focus-within {
+    color: #FFFFFF;
+    background-color: #2E6390;
+}
+
 .search_container > .search_inputs > .search_input .icon_button:last-of-type {
   margin-right: -0.25em;
 }

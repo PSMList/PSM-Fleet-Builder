@@ -24,11 +24,13 @@ interface SearchProps {
 
 const defaultSearchQuery = new RegExp("", "i");
 
-enum Custom {
-  None = "0",
-  Include = "1",
-  Only = "2",
-}
+const Custom = {
+  Official: "0",
+  Custom: "1",
+  Both: "2",
+} as const;
+
+type CustomKeys = (typeof Custom)[keyof typeof Custom];
 
 const Search = (props: SearchProps) => {
   const [showFilters, setShowFilters] = createSignal(false);
@@ -40,7 +42,7 @@ const Search = (props: SearchProps) => {
   );
   const [extensionFilter, setExtensionFilter] = createSignal(-1);
   const [sortFilter, setSortFilter] = createSignal("");
-  const [customFilter, setCustomFilter] = createSignal(Custom.Include);
+  const [customFilter, setCustomFilter] = createSignal<CustomKeys>(Custom.Both);
 
   const { database } = useStore().databaseService;
 
@@ -53,7 +55,7 @@ const Search = (props: SearchProps) => {
       display: (
         <span>
           <img
-            src={`${window.baseUrl}/${faction.icon}.png`}
+            src={`${window.baseUrl}/${faction.icon}`}
             onError={({ target: ref }) => {
               (ref as HTMLImageElement).style.height = "0";
             }}
@@ -76,16 +78,24 @@ const Search = (props: SearchProps) => {
   });
 
   const extensionOptions = createMemo(() => {
-    const _extensions = Array.from(database.extensions.values());
+    const _extensions = Array.from(database.extensions.values()).sort(
+      (a, b) => {
+        if (a.searchsort > b.searchsort) {
+          return 1;
+        }
+        if (a.name > b.name) {
+          return 1;
+        }
+        return 0;
+      }
+    );
+
     const _extensionOptions = _extensions.map((extension) => ({
       value: extension.id.toString(),
       display: (
         <span>
           <img
-            src={`${window.baseUrl}/img/logos/logo_${extension.short.replace(
-              /U$/,
-              ""
-            )}.png`}
+            src={`${window.baseUrl}/${extension.icon}`}
             onError={({ target: ref }) => {
               (ref as HTMLImageElement).style.height = "0";
             }}
@@ -146,16 +156,16 @@ const Search = (props: SearchProps) => {
   const customOptions = createMemo(() => {
     return [
       {
-        value: Custom.None,
-        display: "None",
+        value: Custom.Official,
+        display: "Official",
       },
       {
-        value: Custom.Include,
-        display: "Include",
+        value: Custom.Custom,
+        display: "Custom",
       },
       {
-        value: Custom.Only,
-        display: "Only",
+        value: Custom.Both,
+        display: "Both",
       },
     ];
   });
@@ -173,7 +183,7 @@ const Search = (props: SearchProps) => {
   };
 
   const searchByCustom = (customChoice: string) => {
-    setCustomFilter(() => customChoice);
+    setCustomFilter(() => customChoice as CustomKeys);
   };
 
   const selectItems = createMemo(() => {
@@ -184,7 +194,7 @@ const Search = (props: SearchProps) => {
     if (
       _factionFilter === -1 &&
       _extensionFilter === -1 &&
-      _customFilter === Custom.Include
+      _customFilter === Custom.Both
     ) {
       return props.items;
     }
@@ -194,7 +204,7 @@ const Search = (props: SearchProps) => {
         (_factionFilter === -1 || element.item.faction.id === _factionFilter) &&
         (_extensionFilter === -1 ||
           element.item.extension.id === _extensionFilter) &&
-        (_customFilter === Custom.Include ||
+        (_customFilter === Custom.Both ||
           !!parseInt(_customFilter) == element.item.custom)
     );
   });
@@ -287,6 +297,12 @@ const Search = (props: SearchProps) => {
             defaultSelectOption={props.defaultFactionID}
           />
           <Select
+            defaultSelectText="Select custom"
+            class="search_custom"
+            onOptionSelect={searchByCustom}
+            optionsList={customOptions()}
+          />
+          <Select
             defaultSelectText="Select expansion"
             class="search_extension"
             onOptionSelect={searchByExtension}
@@ -297,12 +313,6 @@ const Search = (props: SearchProps) => {
             class="sort_results"
             onOptionSelect={sortBy}
             optionsList={sortOptions()}
-          />
-          <Select
-            defaultSelectText="Select custom"
-            class="search_custom"
-            onOptionSelect={searchByCustom}
-            optionsList={customOptions()}
           />
         </Show>
         {props.additionalInputs}

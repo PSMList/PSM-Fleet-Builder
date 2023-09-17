@@ -26,6 +26,7 @@ export interface ExtensionType {
   short: string;
   colorhex: string;
   custom: boolean;
+  searchsort: number;
   bg: string;
   icon: string;
 }
@@ -41,6 +42,7 @@ export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
         short: extension.short,
         colorhex: extension.colorhex,
         custom: extension.custom,
+        searchsort: extension.searchsort,
         bg: extension.custom
           ? `img/custom/expansion/background/${extension.imagebackground}`
           : `img/bg_card/m/bg_${extension.short.replace(/U$/, '')}.png`,
