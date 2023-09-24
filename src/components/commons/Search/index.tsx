@@ -1,7 +1,7 @@
-import ValidationInput from "@/components/commons/Inputs/ValidationInput";
+import Input from "@/components/commons/Inputs/Input";
 import Items from "@/components/commons/Items";
 import { useStore } from "@/data/store";
-import { capitalize, nestedKey } from "@/utils";
+import { capitalize } from "@/utils";
 import { createMemo, createSignal, For, JSX, Show } from "solid-js";
 import Icon from "../Icon";
 import IconButton from "../IconButton";
@@ -40,24 +40,26 @@ const Search = (props: SearchProps) => {
   const [factionFilter, setFactionFilter] = createSignal(
     parseInt(props.defaultFactionID ?? "-1")
   );
-  const [extensionFilter, setExtensionFilter] = createSignal(-1);
-  const [sortFilter, setSortFilter] = createSignal("");
+  const [extensionFilter, setExtensionFilter] = createSignal<number>(-1);
+  const [sortFilter, setSortFilter] = createSignal("no-order");
   const [customFilter, setCustomFilter] = createSignal<CustomKeys>(Custom.Both);
 
   const { database } = useStore().databaseService;
+  const extensions = () => Array.from(database.extensions.values());
 
   const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
 
   const factionOptions = createMemo(() => {
     const _factions = Array.from(database.factions.values());
     const _factionOptions = _factions.map((faction) => ({
-      value: faction.id.toString(),
+      id: faction.id.toString(),
       display: (
         <span>
           <img
-            src={`${window.baseUrl}/${faction.icon}`}
-            onError={({ target: ref }) => {
-              (ref as HTMLImageElement).style.height = "0";
+            src={faction.icon ? `${window.baseUrl}/${faction.icon}` : undefined}
+            onError={(event) => {
+              event.currentTarget.style.height = "0";
+              event.currentTarget.removeAttribute("src");
             }}
           />
           {faction.defaultname}
@@ -65,7 +67,7 @@ const Search = (props: SearchProps) => {
       ),
     }));
     _factionOptions.unshift({
-      value: "-1",
+      id: "-1",
       display: (
         <span>
           <img />
@@ -78,26 +80,36 @@ const Search = (props: SearchProps) => {
   });
 
   const extensionOptions = createMemo(() => {
-    const _extensions = Array.from(database.extensions.values()).sort(
-      (a, b) => {
-        if (a.searchsort > b.searchsort) {
-          return 1;
-        }
-        if (a.name > b.name) {
-          return 1;
-        }
-        return 0;
+    const _custom = !!+customFilter();
+    const _extensions = (
+      customFilter() === Custom.Both
+        ? extensions()
+        : extensions().filter((extension) => extension.custom === _custom)
+    ).sort((a, b) => {
+      if (a.searchsort != b.searchsort) {
+        return a.searchsort - b.searchsort;
       }
-    );
+      return a.name.localeCompare(b.name);
+    });
+
+    if (
+      customFilter() !== Custom.Both &&
+      !_extensions.some((extension) => extension.id === extensionFilter())
+    ) {
+      setExtensionFilter(() => -1);
+    }
 
     const _extensionOptions = _extensions.map((extension) => ({
-      value: extension.id.toString(),
+      id: extension.id.toString(),
       display: (
         <span>
           <img
-            src={`${window.baseUrl}/${extension.icon}`}
-            onError={({ target: ref }) => {
-              (ref as HTMLImageElement).style.height = "0";
+            src={
+              extension.icon ? `${window.baseUrl}/${extension.icon}` : undefined
+            }
+            onError={(event) => {
+              event.currentTarget.style.height = "0";
+              event.currentTarget.removeAttribute("src");
             }}
           />
           {extension.name}
@@ -105,7 +117,7 @@ const Search = (props: SearchProps) => {
       ),
     }));
     _extensionOptions.unshift({
-      value: "-1",
+      id: "-1",
       display: (
         <span>
           <img />
@@ -118,13 +130,19 @@ const Search = (props: SearchProps) => {
   });
 
   const sortOptions = createMemo(() => {
-    const _sortOptions = [
-      { id: "points", iconID: "coins", title: "Cost" },
-      { id: "faction.nameimg", iconID: "folder", title: "Faction" },
-    ]
+    const _filters = [{ id: "points", iconID: "coins", title: "Cost" }];
+    if (!props.hideFactionFilter) {
+      _filters.push({
+        id: "faction.nameimg",
+        iconID: "folder",
+        title: "Faction",
+      });
+    }
+
+    const _sortOptions = _filters
       .map((sort) => [
         {
-          value: sort.id + "-up",
+          id: sort.id + "-up",
           display: (
             <span>
               <Icon iconID={sort.iconID} /> {capitalize(sort.title)} ascending
@@ -132,7 +150,7 @@ const Search = (props: SearchProps) => {
           ),
         },
         {
-          value: sort.id + "-down",
+          id: sort.id + "-down",
           display: (
             <span>
               <Icon iconID={sort.iconID} /> {capitalize(sort.title)} descending
@@ -142,10 +160,10 @@ const Search = (props: SearchProps) => {
       ])
       .flat();
     _sortOptions.unshift({
-      value: "",
+      id: "no-order",
       display: (
         <span>
-          <Icon iconID="times-circle" /> No sort
+          <Icon iconID="times-circle" /> No order
         </span>
       ),
     });
@@ -156,15 +174,15 @@ const Search = (props: SearchProps) => {
   const customOptions = createMemo(() => {
     return [
       {
-        value: Custom.Official,
+        id: Custom.Official,
         display: "Official",
       },
       {
-        value: Custom.Custom,
+        id: Custom.Custom,
         display: "Custom",
       },
       {
-        value: Custom.Both,
+        id: Custom.Both,
         display: "Both",
       },
     ];
@@ -189,13 +207,10 @@ const Search = (props: SearchProps) => {
   const selectItems = createMemo(() => {
     const _factionFilter = factionFilter();
     const _extensionFilter = extensionFilter();
-    const _customFilter = customFilter();
+    const _custom = !!+customFilter();
+    const _customBoth = customFilter() === Custom.Both;
 
-    if (
-      _factionFilter === -1 &&
-      _extensionFilter === -1 &&
-      _customFilter === Custom.Both
-    ) {
+    if (_factionFilter === -1 && _extensionFilter === -1 && _customBoth) {
       return props.items;
     }
 
@@ -204,13 +219,14 @@ const Search = (props: SearchProps) => {
         (_factionFilter === -1 || element.item.faction.id === _factionFilter) &&
         (_extensionFilter === -1 ||
           element.item.extension.id === _extensionFilter) &&
-        (_customFilter === Custom.Both ||
-          !!parseInt(_customFilter) == element.item.custom)
+        (_customBoth || _custom === element.item.custom)
     );
   });
 
-  const searchInItems = (value: string) => {
-    setQuery(() => new RegExp(value, "i"));
+  let inputRef: HTMLInputElement | HTMLTextAreaElement | undefined;
+
+  const searchInItems = () => {
+    setQuery(() => new RegExp(inputRef?.value ?? "", "i"));
   };
 
   const content = () => {
@@ -235,6 +251,7 @@ const Search = (props: SearchProps) => {
     }
 
     if (!filteredItems.length) {
+      // eslint-disable-next-line solid/components-return-once
       return <h3 class="search_info">No matching item.</h3>;
     }
 
@@ -242,7 +259,7 @@ const Search = (props: SearchProps) => {
 
     const sortKey = sortFilter();
 
-    if (sortKey === "") {
+    if (sortKey === "no-order") {
       sortedItems = filteredItems;
     } else {
       const [sortID, sortOrder] = sortKey.split("-") as [
@@ -250,15 +267,13 @@ const Search = (props: SearchProps) => {
         "up" | "down"
       ];
 
-      if (sortOrder === "down") {
-        sortedItems = filteredItems.sort((itemA, itemB) =>
-          nestedKey(itemA.item, sortID) > nestedKey(itemB.item, sortID) ? -1 : 1
-        );
-      } else {
-        sortedItems = filteredItems.sort((itemA, itemB) =>
-          nestedKey(itemA.item, sortID) > nestedKey(itemB.item, sortID) ? 1 : -1
-        );
-      }
+      const ordering = sortOrder === "up" ? 1 : -1;
+
+      sortedItems = filteredItems.sort(
+        (itemA, itemB) =>
+          ((itemA.item[sortID] ?? "") > (itemB.item[sortID] ?? "") ? 1 : -1) *
+          ordering
+      );
     }
 
     return (
@@ -271,12 +286,19 @@ const Search = (props: SearchProps) => {
   return (
     <div class="search_container whitebox">
       <div class="search_inputs">
-        <ValidationInput
+        <Input
+          // @ts-expect-error ref should have the right type
+          ref={inputRef}
           type="text"
           class="search_input"
           placeholder={props.placeholder}
           onValidate={searchInItems}
-          validationIcon="search"
+        />
+        <IconButton
+          iconID="search"
+          title="Search"
+          onClick={() => searchInItems()}
+          primary={true}
         />
         <IconButton
           iconID={cardsCollapse() ? "expand-arrows-alt" : "compress-arrows-alt"}
@@ -307,6 +329,13 @@ const Search = (props: SearchProps) => {
             class="search_extension"
             onOptionSelect={searchByExtension}
             optionsList={extensionOptions()}
+            value={
+              customFilter() === Custom.Both ||
+              !!+customFilter() ===
+                database.extensions.get(extensionFilter())?.custom
+                ? ""
+                : extensionFilter().toString()
+            }
           />
           <Select
             defaultSelectText="Select sorting"
@@ -314,8 +343,8 @@ const Search = (props: SearchProps) => {
             onOptionSelect={sortBy}
             optionsList={sortOptions()}
           />
+          {props.additionalInputs}
         </Show>
-        {props.additionalInputs}
       </div>
       {content()}
     </div>

@@ -9,10 +9,11 @@ import { createEffect, createSignal, useContext } from "solid-js";
 import "./ShipSearch.css";
 
 const ShipSearch = () => {
+  // eslint-disable-next-line solid/components-return-once
   if (onlyDisplay) return <></>;
 
   const shipItemsContext = useContext(ShipItemsContext);
-  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
+  const [cardsCollapse] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 

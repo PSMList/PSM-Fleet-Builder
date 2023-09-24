@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ItemType } from '@/components/commons/Item';
 import { apiUrl } from './api';
 import { extensionDataPromise } from './extension';
@@ -21,7 +22,7 @@ interface CrewDataItem {
   collectable: boolean;
   lookingforbetterpic: boolean;
   idauthor: number;
-  custom: boolean;
+  custom: 0 | 1;
 }
 
 export type CrewType = ItemType;
@@ -29,8 +30,8 @@ export type CrewType = ItemType;
 export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
   .then((res) => res.json() as Promise<CrewDataItem[]>)
   .then(async (data) => {
-    const factionData = await factionDataPromise;
     const extensionData = await extensionDataPromise;
+    const factionData = await factionDataPromise;
     const rarityData = await rarityDataPromise;
     const crewData = new Map<number, CrewType>();
 
@@ -51,7 +52,7 @@ export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
         fullname: `${extension.short}${item.numid} ${item.name}`,
         points: item.points,
         defaultaptitude: item.defaultaptitude,
-        custom: item.custom,
+        custom: !!item.custom,
       });
     });
     return crewData;

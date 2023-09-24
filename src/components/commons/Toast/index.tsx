@@ -11,14 +11,18 @@ const icons: { [K in ToastTypes]: string } = {
   error: "exclamation-circle",
 };
 
-export type ToastPosition = "top-right" | "bottom-right" | "top-left" | "bottom-left";
+export type ToastPosition =
+  | "top-right"
+  | "bottom-right"
+  | "top-left"
+  | "bottom-left";
 
-export type ToastType = {
+export interface ToastType {
   id: string;
   type: ToastTypes;
   title?: string;
   description: string | JSX.Element;
-};
+}
 
 export type ToastProps = ToastType & {
   position: ToastPosition;
@@ -27,7 +31,7 @@ export type ToastProps = ToastType & {
 };
 
 const Toast = (props: ToastProps) => {
-  const backgroundColor = (() => {
+  const backgroundColor = () => {
     switch (props.type) {
       case "info":
         return "#5bc0de";
@@ -38,18 +42,26 @@ const Toast = (props: ToastProps) => {
       case "error":
         return "#d9534f";
     }
-  })();
+  };
 
-  if (!props.title) {
-    props.title = capitalize(props.type);
-  }
+  const title = () => props.title ?? capitalize(props.type);
 
   return (
-    <div class={`notification ${props.position}`} style={{ "background-color": backgroundColor }}>
+    <div
+      class={`notification ${props.position}`}
+      style={{ "background-color": backgroundColor() }}
+    >
       <span class="notification-close">
-        <IconButton iconID="times" onClick={() => props.deleteToast(props.id)} title="Close" />
+        <IconButton
+          iconID="times"
+          onClick={() => props.deleteToast(props.id)}
+          title="Close"
+        />
       </span>
-      <i class={"notification-image fas fa-" + icons[props.type]} title={props.title} />
+      <i
+        class={"notification-image fas fa-" + icons[props.type]}
+        title={title()}
+      />
       <span class="notification-title">
         {props.title}
         <Show when={props.count() > 1}>&nbsp;x{props.count()}</Show>

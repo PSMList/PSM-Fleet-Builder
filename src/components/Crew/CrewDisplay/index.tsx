@@ -1,4 +1,4 @@
-import { createEffect, For, JSX, useContext } from "solid-js";
+import { createEffect, For, JSX, Show, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import { onlyDisplay, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
@@ -32,6 +32,8 @@ interface CrewDisplayProps {
 }
 
 const CrewDisplay = (props: CrewDisplayProps) => {
+  const ship = () => props.ship;
+
   const [crewData, setData] = createStore<CrewDataType>({
     points: {
       current: 0,
@@ -39,7 +41,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     },
     room: {
       current: 0,
-      max: props.ship.cargo,
+      max: ship().cargo,
     },
     crews: [],
   });
@@ -71,7 +73,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     />
   );
 
-  let displayContainer: HTMLDivElement | null;
+  let displayContainer: HTMLDivElement | undefined;
   let removeCrewAction: (crew: CrewType) => JSX.Element = () => <></>;
   const crewActions: JSX.Element[] = [];
 
@@ -81,27 +83,31 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     const crewItemsContext = useContext(CrewItemsContext);
 
     const addCrew = (crew: CrewType) => {
-      if (props.ship.crew.length + 1 > props.ship.cargo)
+      const _ship = ship();
+      if (_ship.crew.length + 1 > _ship.cargo)
         toastContext.createToast({
           id: "warning-exceeding-cargo",
           type: "warning",
           title: "Add crew",
           description: "Exceeding cargo limit.",
         });
-      if (crew.faction.id !== props.ship.faction.id)
+      // eslint-disable-next-line solid/reactivity
+      if (crew.faction.id !== _ship.faction.id)
         toastContext.createToast({
           id: "warning-different-faction",
           type: "warning",
           title: "Add crew",
           description: "Different faction for crew and its ship.",
         });
-      if (props.ship.crew.some((_crew) => _crew.name === crew.name))
+      // eslint-disable-next-line solid/reactivity
+      if (_ship.crew.some((_crew) => _crew.name === crew.name))
         toastContext.createToast({
           id: "warning-same-crew",
           type: "warning",
           title: "Add crew",
           description: "Crew with the same name.",
         });
+      // eslint-disable-next-line solid/reactivity
       if (crewData.points.current + crew.points > crewData.points.max)
         toastContext.createToast({
           id: "warning-exceeding-maxpoints",
@@ -156,6 +162,11 @@ const CrewDisplay = (props: CrewDisplayProps) => {
           searchContainer.scrollIntoView({
             behavior: "smooth",
           });
+          setTimeout(() => {
+            searchContainer.scrollIntoView({
+              behavior: "smooth",
+            });
+          }, 500);
           const input =
             searchContainer.querySelector<HTMLInputElement>("input[type=text]");
           if (input) {
@@ -167,13 +178,15 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     };
 
     crewActions.push(
-      toggleIcon,
       <IconButton
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
-        title="Search crew"
-      />,
+        primary={true}
+      >
+        Search/add crew
+      </IconButton>,
+      toggleIcon,
       <IconButton
         iconID="eraser"
         class="clear"
@@ -184,7 +197,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
 
     removeCrewAction = (crew: CrewType) => (
       <IconButton
-        iconID="minus-square"
+        iconID="trash-can"
         onClick={() => removeCrew(crew)}
         title="Clear crew"
       />
@@ -208,15 +221,20 @@ const CrewDisplay = (props: CrewDisplayProps) => {
   );
 
   const shipCrew = (
-    <For each={crewData.crews}>
-      {(crew) => (
-        <CrewItem
-          data={crew}
-          actions={removeCrewAction(crew)}
-          collapse={cardsCollapse()}
-        />
-      )}
-    </For>
+    <Show
+      when={crewData.crews.length}
+      fallback={<h3 class="items_info">Empty crew</h3>}
+    >
+      <For each={crewData.crews}>
+        {(crew) => (
+          <CrewItem
+            data={crew}
+            actions={removeCrewAction(crew)}
+            collapse={cardsCollapse()}
+          />
+        )}
+      </For>
+    </Show>
   );
 
   return (

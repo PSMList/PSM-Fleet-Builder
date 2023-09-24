@@ -46,3 +46,7 @@
   width: 100%;
   height: 99%;
 }
+
+[data-unsaved]::after {
+  content: "✱";
+}

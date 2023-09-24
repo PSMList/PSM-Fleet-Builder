@@ -6,7 +6,7 @@
   z-index: 0;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17.5em, min(23em, 100%)));
+  grid-template-rows: inherit;
   justify-content: center;
-  scroll-snap-type: y mandatory;
   gap: 1em;
 }

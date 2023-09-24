@@ -13,7 +13,7 @@ interface ExtensionDataItem {
   datemodif: Date;
   isfromwizkids: boolean;
   idauthor: number;
-  custom: boolean;
+  custom: 0 | 1;
   searchsort: number;
   colorhex: string;
   imagebackground?: string;
@@ -41,7 +41,7 @@ export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
         name: extension.name,
         short: extension.short,
         colorhex: extension.colorhex,
-        custom: extension.custom,
+        custom: !!extension.custom,
         searchsort: extension.searchsort,
         bg: extension.custom
           ? `img/custom/expansion/background/${extension.imagebackground}`

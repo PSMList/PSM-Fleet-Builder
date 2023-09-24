@@ -1,11 +1,11 @@
-import Input from "@/components/commons/Inputs/TextInput";
+import Input from "@/components/commons/Inputs/Input";
 import { createSignal, Show } from "solid-js";
 import "./EditableText.css";
 
-type EditableTextProps = {
+interface EditableTextProps {
   onEdit: (newValue: string) => boolean;
   value: string;
-};
+}
 
 const EditableText = (props: EditableTextProps) => {
   const [isEditing, setIsEditing] = createSignal(false);
@@ -21,13 +21,17 @@ const EditableText = (props: EditableTextProps) => {
   };
 
   return (
-    <Show when={isEditing()} fallback={<span onDblClick={() => setIsEditing(() => true)}>{props.value}</span>}>
+    <Show
+      when={isEditing()}
+      fallback={
+        <span onDblClick={() => setIsEditing(() => true)}>{props.value}</span>
+      }
+    >
       <Input
         type="text"
         onKeyPress={(event) => handleTyping(event as KeyboardEvent)}
         onfocusout={() => setIsEditing(() => false)}
-        defaultValue={props.value}
-        focus={true}
+        value={props.value}
       />
     </Show>
   );

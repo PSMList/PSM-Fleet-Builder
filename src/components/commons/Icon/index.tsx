@@ -1,9 +1,9 @@
-type IconProps = {
+interface IconProps {
   iconID: string;
-};
+}
 
 const Icon = (props: IconProps) => {
-  return <i class={"fas fa-" + props.iconID} />;
+  return <i class={"fas fa-fw fa-" + props.iconID} />;
 };
 
 export default Icon;

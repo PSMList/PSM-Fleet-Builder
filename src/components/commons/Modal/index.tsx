@@ -1,52 +1,74 @@
 import IconButton from "@/components/commons/IconButton";
-import { createContext, createEffect, For, JSX, Show, useContext } from "solid-js";
+import {
+  createContext,
+  createEffect,
+  For,
+  JSX,
+  Show,
+  useContext,
+} from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import "./Modal.css";
 
-type ModalProperties = {
+export interface ModalProperties {
   id: string;
-  content: () => JSX.Element;
+  content?: JSX.Element;
   title: string;
-  onClose?: () => void;
-};
+  onClose?: (() => void) | false;
+}
 
 type ModalState = ModalProperties & { visible: boolean };
 
 export const ModalContext = createContext<{
   showModal: (properties: ModalProperties) => void;
-  hideModal: (id: string) => void;
+  closeModal: (id: string) => void;
 }>({
-  showModal() {},
-  hideModal() {},
+  showModal() {
+    //
+  },
+  closeModal() {
+    //
+  },
 });
 
-type ModalProps = {
+interface ModalProps {
   properties: ModalState;
-};
+}
 
 const Modal = (props: ModalProps) => {
   const modalContext = useContext(ModalContext);
 
   return (
-    <div classList={{ "modal-shadow": true, hidden: !props.properties.visible }} id={props.properties.id}>
+    <div
+      classList={{ "modal-shadow": true, hidden: !props.properties.visible }}
+      id={props.properties.id}
+    >
       <div class="modal-container">
-        <h2 class="modal-header">
-          <span class="modal-title">{props.properties.title}</span>
-          <div class="modal-actions">
-            <Show when={props.properties.onClose}>
-              <IconButton
-                class="modal-close"
-                onClick={() => {
-                  props.properties.onClose!();
-                  modalContext.hideModal(props.properties.id);
-                }}
-                iconID="window-close"
-                title="Close"
-              />
+        <Show
+          when={props.properties.title || props.properties.onClose !== false}
+        >
+          <div class="modal-header">
+            <h2 class="modal-title">{props.properties.title}</h2>
+            <Show when={props.properties.onClose !== false}>
+              <div class="modal-actions">
+                <IconButton
+                  class="modal-close"
+                  onClick={() => {
+                    if (typeof props.properties.onClose === "function") {
+                      props.properties.onClose();
+                    }
+                    modalContext.closeModal(props.properties.id);
+                  }}
+                  iconID="window-close"
+                  title="Close"
+                />
+              </div>
             </Show>
           </div>
-        </h2>
-        <div class="modal-content">{props.properties.content()}</div>
+        </Show>
+        <Show when={props.properties.content}>
+          <div class="modal-content">{props.properties.content}</div>
+        </Show>
       </div>
     </div>
   );
@@ -63,6 +85,7 @@ export const ModalRoot = () => {
         if (modal) {
           modal.visible = true;
           modal.onClose = properties.onClose;
+          modal.title = properties.title;
         } else {
           const newModal: ModalState = {
             ...properties,
@@ -74,7 +97,7 @@ export const ModalRoot = () => {
     );
   };
 
-  modalContext.hideModal = (id: string) => {
+  modalContext.closeModal = (id: string) => {
     setModals(
       produce((_modals) => {
         const modal = _modals.find((modal) => modal.id === id);
@@ -95,8 +118,10 @@ export const ModalRoot = () => {
   });
 
   return (
-    <div id="modal-root">
-      <For each={modals}>{(modal) => <Modal properties={modal} />}</For>
-    </div>
+    <ModalContext.Provider value={modalContext}>
+      <div id="modal-root">
+        <For each={modals}>{(modal) => <Modal properties={modal} />}</For>
+      </div>
+    </ModalContext.Provider>
   );
 };

@@ -8,7 +8,7 @@ interface FactionDataItem {
   datemodif: Date;
   defaultname: string;
   idauthor: number;
-  custom: boolean;
+  custom: 0 | 1;
   extIcon?: string;
 }
 
@@ -29,7 +29,7 @@ export const factionDataPromise = fetch(`${apiUrl}/faction?custom=include`)
         id: faction.id,
         defaultname: faction.defaultname,
         nameimg: faction.nameimg,
-        custom: faction.custom,
+        custom: !!faction.custom,
         icon: `/img/flag/flat/normal/${faction.nameimg}.png`,
       })
     );

@@ -69,6 +69,7 @@
   display: inline-flex;
   justify-content: center;
   align-items: flex-end;
+  line-height: 1.4;
 }
 .item > .info > .top > .name {
   font-size: 1.1em;

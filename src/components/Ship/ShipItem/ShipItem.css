@@ -60,14 +60,16 @@
 }
 
 .item > .crew > li {
+  margin: 0;
   padding: 0.25em;
   display: flex;
   align-items: center;
 }
 
 .item > .crew > li > .points {
+  line-height: 1.4;
   font-size: 1em;
-  width: 1.75em;
+  min-width: 1.75em;
   height: 1.75em;
   border: 2px solid #111;
   border-radius: 2px;

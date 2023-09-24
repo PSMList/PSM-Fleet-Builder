@@ -58,3 +58,12 @@
   align-self: stretch;
   align-items: stretch;
 }
+
+.items > .items_info {
+  grid-area: 1 / 1 / -1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8em;
+  opacity: 0.6;
+}

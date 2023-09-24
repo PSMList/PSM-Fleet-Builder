@@ -2,9 +2,28 @@
   background: none;
   border: none;
   color: rgba(0, 0, 0, 0.5);
-  font-size: 1.25em;
+  font-size: 1.6em;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.icon_button::after {
+  position: absolute;
+  font-size: 0.5em;
+  font-weight: bold;
+  top: -0.5em;
+  right: -0.25em;
+  width: 1.4em;
+  height: 1.4em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
 }
 
 .icon_button:first-of-type {
@@ -15,14 +34,32 @@
   margin-right: 0.25em;
 }
 
-.icon_button:hover,
-.icon_button:focus,
-.icon_button:focus-within {
-  cursor: pointer;
+.icon_button:hover i,
+.icon_button:focus i,
+.icon_button:focus-within i {
   color: #428bca;
 }
 
 .icon_button .title {
   margin-left: 0.25em;
   font-size: 0.8em;
+}
+
+.icon_button.primary i {
+  width: max-content;
+  border-radius: 5px;
+  padding: 0.3em 0.4em;
+  background-color: #428bca;
+  color: #fff;
+  border: none;
+  text-decoration: none;
+  transition: 0.1s;
+  font-size: 0.8em;
+}
+
+.icon_button.primary:hover i,
+.icon_button.primary:focus i,
+.icon_button.primary:focus-within i {
+    background-color: #2E6390;
+    color: #fff;
 }

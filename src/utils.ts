@@ -54,38 +54,24 @@ export async function fetchWithTimeout(
     ok: boolean;
     status: number;
     text: () => Promise<string>;
-    json: () => Promise<Object>;
+    json: () => Promise<object>;
   }>;
-}
-
-export function nestedKey(
-  obj: Record<string, any>,
-  keys: string | string[]
-): any {
-  if (!Array.isArray(keys) && !keys.includes('.')) {
-    return obj[keys];
-  }
-
-  const keyList = Array.isArray(keys) ? keys : keys.split('.');
-  const nestedObj = obj[keyList.shift()!];
-
-  if (keyList.length) {
-    return nestedKey(nestedObj, keyList);
-  }
-
-  return nestedObj;
 }
 
 const objectsIdMap = new WeakMap();
 let objectCount = 0;
 
-export function objectId(object: Record<string, unknown>) {
+export function objectId(object: object) {
   if (!objectsIdMap.has(object)) objectsIdMap.set(object, ++objectCount);
   return objectsIdMap.get(object);
 }
 
-export function onError(this: any, target: HTMLImageElement, url: string) {
-  target.src = url;
+export function onError(target: HTMLImageElement, url?: string) {
+  if (url) {
+    target.src = url;
+  } else {
+    target.removeAttribute('src');
+  }
   target.onerror = null;
 }
 

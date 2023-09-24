@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { ItemType } from '@/components/commons/Item';
 import { apiUrl } from './api';
 import { CrewType } from './crew';
@@ -25,14 +26,8 @@ interface ShipDataItem {
   defaultlore: string;
   temporarylinktxt: string;
   isfort: boolean;
-  datecrea: Date;
-  datemodif: Date;
-  released: boolean;
-  collectable: boolean;
-  lookingforbetterpic: boolean;
   idtechnicalshape: number;
-  idauthor: number;
-  custom: boolean;
+  custom: 0 | 1;
 }
 
 export type ShipType = ItemType & {
@@ -47,8 +42,8 @@ export type ShipType = ItemType & {
 export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
   .then((res) => res.json() as Promise<ShipDataItem[]>)
   .then(async (data) => {
-    const factionData = await factionDataPromise;
     const extensionData = await extensionDataPromise;
+    const factionData = await factionDataPromise;
     const rarityData = await rarityDataPromise;
     const technicalshapeData = await technicalshapeDataPromise;
     const shipData = new Map<number, ShipType>();
@@ -77,7 +72,7 @@ export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
         defaultaptitude: item.defaultaptitude,
         isfort: item.isfort,
         crew: [],
-        custom: item.custom,
+        custom: !!item.custom,
       });
     });
     return shipData;

@@ -1,25 +1,30 @@
-import Toast, { ToastPosition, ToastType } from "@/components/commons/Toast";
-import { createContext, createSignal, For, JSX, useContext } from "solid-js";
+import Toast, {
+  ToastPosition,
+  ToastProps,
+  ToastType,
+} from "@/components/commons/Toast";
+import { createContext, createSignal, For, useContext } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import "./Toast.css";
 
 // source: https://github.com/uzoeddie/react-toast/blob/master/src/components/toast/Toast.js
 
-type ToastsProps = {
+interface ToastsProps {
   position: ToastPosition;
   autoDeleteTime?: number;
-};
+}
 
-type ToastInstanceType = {
-  id: string;
+interface ToastInstanceType {
+  properties: ToastProps;
   addCount: () => void;
-  element: JSX.Element;
-};
+}
 
 export const ToastContext = createContext<{
   createToast: (properties: ToastType) => void;
 }>({
-  createToast() {},
+  createToast() {
+    //
+  },
 });
 
 const Toasts = (props: ToastsProps) => {
@@ -30,11 +35,15 @@ const Toasts = (props: ToastsProps) => {
   const deleteToast = (id: string) => {
     setToastList(
       produce((toastList) => {
-        const toastIndex = toastList.findIndex((toast) => toast.id === id);
+        const toastIndex = toastList.findIndex(
+          (toast) => toast.properties.id === id
+        );
         if (toastIndex >= 0) {
           toastList.splice(toastIndex, 1);
           const container = document.getElementById("notification-container");
-          const toastElement = container?.querySelector(`.notification:nth-child(${toastIndex * 2 + 1})`);
+          const toastElement = container?.querySelector(
+            `.notification:nth-child(${toastIndex * 2 + 1})`
+          );
           if (toastElement) {
             toastElement.classList.add("hide");
           }
@@ -44,27 +53,22 @@ const Toasts = (props: ToastsProps) => {
   };
 
   const createToast = (properties: ToastType) => {
-    const currentToast = toastList.find((toast) => toast.id === properties.id);
+    const _properties = () => properties;
+    const currentToast = toastList.find(
+      (toast) => toast.properties.id === _properties().id
+    );
     if (currentToast) {
       currentToast.addCount();
     } else {
       const [count, setCount] = createSignal(1);
       const newToast: ToastInstanceType = {
-        id: properties.id,
+        properties: {
+          ..._properties(),
+          position: props.position,
+          deleteToast,
+          count,
+        },
         addCount: () => setCount((oldCount: number) => oldCount + 1),
-        element: (
-          <>
-            <Toast
-              {...{
-                ...properties,
-                position: props.position,
-                deleteToast,
-                count,
-              }}
-            />
-            <hr />
-          </>
-        ),
       };
       setToastList(
         produce((toastList) => {
@@ -74,7 +78,7 @@ const Toasts = (props: ToastsProps) => {
 
       if (!props.autoDeleteTime) return;
       setTimeout(() => {
-        deleteToast(newToast.id);
+        deleteToast(newToast.properties.id);
       }, props.autoDeleteTime);
     }
   };
@@ -83,7 +87,16 @@ const Toasts = (props: ToastsProps) => {
 
   return (
     <div class={props.position} id="notification-container">
-      <For each={toastList}>{(toast) => toast.element}</For>
+      <ToastContext.Provider value={toastContext}>
+        <For each={toastList}>
+          {(toast) => (
+            <>
+              <Toast {...toast.properties} />
+              <hr />
+            </>
+          )}
+        </For>
+      </ToastContext.Provider>
     </div>
   );
 };

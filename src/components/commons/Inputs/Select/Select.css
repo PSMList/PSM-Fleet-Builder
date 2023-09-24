@@ -16,6 +16,15 @@
   cursor: pointer;
 }
 
+.select-container > .selected-text > * {
+  display: flex;
+  align-items: center;
+}
+
+.select-container > .selected-text img:not([src]) {
+  display: none;
+}
+
 .select-container > .selected-text::after {
   content: "";
   position: absolute;
@@ -37,8 +46,8 @@
   top: 100%;
   left: 0;
   right: 0;
-  overflow-y: auto;
-  max-height: 22vh;
+  overflow-y: scroll;
+  max-height: 20em;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-top: none;
   border-bottom: 2px solid rgba(0, 0, 0, 0.3);
@@ -47,7 +56,8 @@
 
 .select-container > .select-options > .select-option {
   list-style-type: none;
-  padding: 6px 20px;
+  padding: 0.4em 0.6em;
+  margin: 0;
   background: #fff;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-top: unset;
@@ -62,4 +72,6 @@
 
 .select-container > .select-options > .select-option > * {
   pointer-events: none;
+  display: flex;
+  align-items: center;
 }

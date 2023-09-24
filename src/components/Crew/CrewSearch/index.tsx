@@ -13,10 +13,11 @@ interface CrewSearchProps {
 }
 
 const CrewSearch = (props: CrewSearchProps) => {
+  // eslint-disable-next-line solid/components-return-once
   if (onlyDisplay) return <></>;
 
   const crewItemsContext = useContext(CrewItemsContext);
-  const [cardsCollapse, { toggle: toggleCardsCollapse }] = useCardsCollapse();
+  const [cardsCollapse] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 

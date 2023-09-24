@@ -1,42 +1,46 @@
-import { createStore, produce } from "solid-js/store";
-import { crewDataPromise } from "./crew";
-import { extensionDataPromise } from "./extension";
-import { factionDataPromise } from "./faction";
-import { rarityDataPromise } from "./rarity";
-import { shipDataPromise } from "./ship";
+import { createStore, produce } from 'solid-js/store';
+import { crewDataPromise } from './crew';
+import { extensionDataPromise } from './extension';
+import { factionDataPromise } from './faction';
+import { rarityDataPromise } from './rarity';
+import { shipDataPromise } from './ship';
 
-type Database = {
+interface Database {
   extensions: Awaited<typeof extensionDataPromise>;
   factions: Awaited<typeof factionDataPromise>;
   rarities: Awaited<typeof rarityDataPromise>;
   crews: Awaited<typeof crewDataPromise>;
   ships: Awaited<typeof shipDataPromise>;
-};
+}
 
-const databaseStore = createStore<Database>({
-  extensions: [],
-  factions: [],
-  raritys: [],
-  crews: [],
-  ships: [],
-} as any);
+// eslint-disable-next-line solid/reactivity
+const [database, setDatabase] = createStore<Database>({
+  extensions: new Map(),
+  factions: new Map(),
+  rarities: new Map(),
+  crews: new Map(),
+  ships: new Map(),
+});
 
-export const DatabaseService = () => {
-  const [database, setDatabase] = databaseStore;
-
-  const loadingPromise = new Promise((resolve) => {
-    setDatabase(
-      produce(async (_database) => {
+const loadingPromise = new Promise((resolve, reject) => {
+  setDatabase(
+    produce(async (_database) => {
+      try {
         _database.extensions = await extensionDataPromise;
         _database.factions = await factionDataPromise;
         _database.rarities = await rarityDataPromise;
         _database.crews = await crewDataPromise;
         _database.ships = await shipDataPromise;
+      } catch {
+        reject();
+      }
 
-        resolve("");
-      })
-    );
-  });
+      // delay to avoid flickering
+      setTimeout(() => {
+        resolve('');
+      }, 700);
+    })
+  );
+});
 
-  return { database, loadingPromise };
-};
+export const DatabaseService = { database, loadingPromise };

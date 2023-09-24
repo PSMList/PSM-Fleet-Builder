@@ -4,7 +4,7 @@ import "./IconButton.css";
 
 type IconButtonProps = {
   iconID: string;
-  showTitle?: boolean;
+  primary?: boolean;
 } & JSX.IntrinsicAttributes &
   JSX.HTMLAttributes<HTMLButtonElement>;
 
@@ -13,6 +13,7 @@ const IconButton = (props: IconButtonProps) => {
     "iconID",
     "classList",
     "class",
+    "primary",
   ]);
 
   return (
@@ -21,12 +22,13 @@ const IconButton = (props: IconButtonProps) => {
       classList={{
         icon_button: true,
         [localProps.class ?? ""]: true,
+        primary: localProps.primary,
         ...localProps.classList,
       }}
     >
       <Icon iconID={localProps.iconID} />
-      <Show when={props.showTitle}>
-        <span class="title">{props.title}</span>
+      <Show when={props.children}>
+        <span class="title">{props.children}</span>
       </Show>
     </button>
   );

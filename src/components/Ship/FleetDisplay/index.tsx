@@ -13,14 +13,17 @@ import { useStore } from "@/data/store";
 import { fetchWithTimeout, objectId } from "@/utils";
 import {
   createEffect,
+  createRoot,
   createSignal,
   For,
   JSX,
+  onMount,
   Show,
   useContext,
 } from "solid-js";
 import { createStore, produce } from "solid-js/store";
 import "./FleetDisplay.css";
+import Input from "@/components/commons/Inputs/Input";
 
 interface FleetSavedDataType {
   name: string;
@@ -60,23 +63,31 @@ const FleetDisplay = () => {
 
   const [fleetData, setData] = createStore<FleetDataType>(defaultFleetData);
 
-  function getFleetData(
-    savedData: FleetSavedDataType
-  ): FleetDataType | undefined {
+  function getFleetData(savedData: FleetSavedDataType): FleetDataType {
     return {
       name: savedData.name,
       points: {
         current: 0,
         max: savedData.maxpoints,
       },
-      ships: savedData.data.map((item: any) => {
+      ships: savedData.data.reduce<ShipType[]>((allships, item) => {
         const { id: shipID, crew: crews } = item;
-        const ship = { ...database.ships.get(shipID)! };
-        ship.crew = crews.map((crew: { id: number }) => ({
-          ...database.crews.get(crew.id)!,
-        }));
-        return ship;
-      }),
+        const ship = database.ships.get(shipID);
+        if (!ship) return allships;
+        const crew = crews.reduce<CrewType[]>((allcrew, item) => {
+          const crew = database.crews.get(item.id);
+          if (crew)
+            allcrew.push({
+              ...crew,
+            });
+          return allcrew;
+        }, []);
+        allships.push({
+          ...ship,
+          crew,
+        });
+        return allships;
+      }, []),
       ispublic: savedData.ispublic,
       description: savedData.description,
     };
@@ -84,16 +95,23 @@ const FleetDisplay = () => {
 
   const [saved, setSaved] = createSignal(true);
 
-  const setNewData = (newData: FleetDataType) => {
-    setData(
-      produce((data) => {
-        data.ispublic = newData.ispublic;
-        data.name = newData.name;
-        data.points = newData.points;
-        data.ships = newData.ships;
-        data.description = newData.description;
-      })
-    );
+  const setNewData = (
+    newData: FleetDataType | Parameters<typeof produce<FleetDataType>>[0]
+  ) => {
+    if (typeof newData === "function") {
+      setData(produce(newData));
+    } else {
+      setData(
+        produce((data) => {
+          data.ispublic = newData.ispublic;
+          data.name = newData.name;
+          data.points = newData.points;
+          data.ships = newData.ships;
+          data.description = newData.description;
+        })
+      );
+    }
+    setSaved(() => false);
   };
 
   createEffect(() => {
@@ -112,7 +130,7 @@ const FleetDisplay = () => {
     );
   });
 
-  const fleetDataToString = (): string | undefined => {
+  const fleetDataToString = () => {
     try {
       const data: FleetSavedDataType = {
         name: fleetData.name,
@@ -127,13 +145,15 @@ const FleetDisplay = () => {
         description: fleetData.description,
       };
       return JSON.stringify(data);
-    } catch {}
+    } catch {
+      return;
+    }
   };
 
   const modalContext = useContext(ModalContext);
   const toastContext = useContext(ToastContext);
 
-  async function getSavedFleetData() {
+  onMount(async () => {
     try {
       const response = await fetch(
         `${window.baseUrl}/fleet/get/${hash}/${slug}`
@@ -141,26 +161,17 @@ const FleetDisplay = () => {
       const data = await response.json();
       if (!data) return;
 
+      await loadingPromise;
       const fleetData = getFleetData(data);
-      if (!fleetData) return;
-      return fleetData;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  (async () => {
-    await loadingPromise;
-    const savedFleetData = await getSavedFleetData();
-    if (savedFleetData) {
-      setNewData(savedFleetData);
+      setNewData(fleetData);
+      setSaved(() => true);
       toastContext.createToast({
         id: "success-loading-data",
-        type: "info",
-        title: "Loading fleet data",
-        description: `${savedFleetData.name}.`,
+        type: "success",
+        title: "Fleet data loaded",
+        description: `${fleetData.name}`,
       });
-    } else {
+    } catch {
       toastContext.createToast({
         id: "error-loading-data",
         type: "error",
@@ -168,7 +179,7 @@ const FleetDisplay = () => {
         description: "Network error.",
       });
     }
-  })();
+  });
 
   const exportFleet = () => {
     const fleetStr = fleetDataToString();
@@ -202,27 +213,28 @@ const FleetDisplay = () => {
   );
 
   const showCrew = (ship: ShipType) => {
-    const oldState = JSON.stringify(ship.crew);
+    const _ship = () => ship;
+    const oldState = JSON.stringify(_ship().crew);
     modalContext.showModal({
-      id: "add_crew_" + objectId(ship),
-      title: "Select crew for " + ship.fullname,
+      id: "add_crew_" + objectId(_ship()),
+      title: "Select crew for " + _ship().fullname,
       onClose: () => {
         const newState = JSON.stringify(ship.crew);
         if (!onlyDisplay && oldState !== newState) {
           setSaved(() => false);
         }
       },
-      content: () => (
+      content: createRoot(() => (
         <Crew
-          ship={ship}
+          ship={_ship()}
           remainingFleetPoints={fleetData.points.max - fleetData.points.current}
         />
-      ),
+      )),
     });
   };
 
-  let displayContainer: HTMLDivElement;
-  let removeShipAction: (ship: ShipType) => JSX.Element | undefined;
+  let displayContainer: HTMLDivElement | undefined;
+  let removeShipAction: (ship: ShipType) => JSX.Element = () => <></>;
   const fleetActions: JSX.Element[] = [];
   const settingsActions: JSX.Element = [];
 
@@ -230,14 +242,16 @@ const FleetDisplay = () => {
     const shipItemsContext = useContext(ShipItemsContext);
 
     const addShip = (ship: ShipType) => {
-      if (fleetData.ships.some((_ship) => _ship.name === ship.name))
+      const _ship = () => ship;
+      if (fleetData.ships.some((ship) => ship.name === _ship().name)) {
         toastContext.createToast({
           id: "warning-adding-same-ships",
           type: "warning",
           title: "Add ship",
           description: "Ships with the same name.",
         });
-      if (fleetData.points.current + ship.points > fleetData.points.max)
+      }
+      if (fleetData.points.current + _ship().points > fleetData.points.max) {
         toastContext.createToast({
           id: "warning-exceeding-maxpoints",
           type: "warning",
@@ -250,6 +264,7 @@ const FleetDisplay = () => {
             </>
           ),
         });
+      }
       setData(
         produce((data) => {
           data.ships.push({ ...ship, crew: [] });
@@ -259,22 +274,17 @@ const FleetDisplay = () => {
     };
 
     const removeShip = (ship: ShipType) => {
-      const shipIndex = fleetData.ships
-        .reverse()
-        .findIndex((_ship) => ship === _ship);
+      const shipIndex = fleetData.ships.findIndex((_ship) => ship === _ship);
       if (shipIndex >= 0) {
-        setData(
-          produce((data) => {
-            data.ships.splice(shipIndex, 1);
-          })
-        );
-        setSaved(() => false);
+        setNewData((data) => {
+          data.ships.splice(shipIndex, 1);
+        });
       }
     };
 
     removeShipAction = (ship: ShipType) => (
       <IconButton
-        iconID="minus-square"
+        iconID="trash-can"
         onClick={() => removeShip(ship)}
         title="Remove ship"
       />
@@ -287,9 +297,9 @@ const FleetDisplay = () => {
       inputFile.type = "file";
       inputFile.accept = "application/json";
       inputFile.addEventListener("change", async () => {
-        if (!inputFile.files || !inputFile.files.item(0)) {
+        if (!inputFile.files?.item(0)) {
           return toastContext.createToast({
-            id: "error-importing-no-file",
+            id: "error-import-missing-file",
             type: "error",
             title: "Import fleet data",
             description: "No file provided.",
@@ -306,16 +316,14 @@ const FleetDisplay = () => {
         }
         try {
           const fileFleetData = getFleetData(JSON.parse(await file.text()));
-          if (fileFleetData) {
-            setNewData(fileFleetData);
-            setSaved(() => false);
-            return toastContext.createToast({
-              id: "success-importing-data",
-              type: "success",
-              title: "Import fleet data",
-              description: `Loaded from ${fleetData.name} (not saved).`,
-            });
-          }
+          setNewData(fileFleetData);
+          setSaved(() => false);
+          return toastContext.createToast({
+            id: "success-importing-data",
+            type: "success",
+            title: "Import fleet data",
+            description: `Loaded from ${fleetData.name} (not saved).`,
+          });
         } catch {
           toastContext.createToast({
             id: "error-importing-data",
@@ -330,82 +338,109 @@ const FleetDisplay = () => {
 
     const saveFleet = async () => {
       const fleetStr = fleetDataToString();
-      fetchWithTimeout(`${window.baseUrl}/fleet/self/set/${hash}/${slug}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: fleetStr,
-      }).then(async (res) => {
+      return fetchWithTimeout(
+        `${window.baseUrl}/fleet/self/set/${hash}/${slug}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: fleetStr,
+        }
+      ).then(async (res) => {
         if (res.ok) {
           setSaved(() => true);
-          toastContext.createToast({
+          return toastContext.createToast({
             id: "success-saving-data",
             type: "success",
             title: "Save fleet data",
             description: "",
           });
-        } else {
-          switch (res.status) {
-            case 400:
-              let messages = [];
-              try {
-                messages = JSON.parse(await res.text());
-              } catch {}
-
-              if (!Array.isArray(messages) || messages.length === 0) {
-                messages = ["Invalid fleet data."];
-              }
-
-              for (const message of messages) {
-                toastContext.createToast({
-                  id:
-                    "error-saving-data-" +
-                    // trying to create different id for each error message
-                    message
-                      .split(" ")
-                      .slice(0, 2)
-                      .join("-")
-                      .toLocaleLowerCase(),
-                  type: "error",
-                  title: "Save fleet data",
-                  description: message,
-                });
-              }
-              break;
-            case 408:
-              toastContext.createToast({
-                id: "error-saving-data-network",
-                type: "error",
-                title: "Save fleet data",
-                description: "Network error.",
-              });
-              break;
-            default:
-              toastContext.createToast({
-                id: "error-saving-data-unknown",
-                type: "error",
-                title: "Save fleet data",
-                description: "Internal error. Please contact administrators.",
-              });
-          }
         }
+        switch (res.status) {
+          case 400: {
+            let messages: string[] | undefined;
+            try {
+              messages = JSON.parse(await res.text());
+            } catch {
+              //
+            }
+
+            if (!Array.isArray(messages) || messages.length === 0) {
+              messages = ["Invalid fleet data."];
+            }
+
+            for (const message of messages) {
+              toastContext.createToast({
+                id:
+                  "error-saving-data-" +
+                  // trying to create different id for each error message
+                  message.split(" ").slice(0, 2).join("-").toLocaleLowerCase(),
+                type: "error",
+                title: "Save fleet data",
+                description: message,
+              });
+            }
+            break;
+          }
+          case 408:
+            toastContext.createToast({
+              id: "error-saving-data-network",
+              type: "error",
+              title: "Save fleet data",
+              description: "Network error.",
+            });
+            break;
+          default:
+            toastContext.createToast({
+              id: "error-saving-data-unknown",
+              type: "error",
+              title: "Save fleet data",
+              description: "Internal error. Please contact administrators.",
+            });
+        }
+
+        throw new Error("Failed to save fleet data");
       });
     };
 
     const clearFleet = () => {
-      toastContext.createToast({
-        id: "info-clearing",
-        type: "info",
-        title: "Clear ships",
-        description: "Removed ships data (not saved).",
+      modalContext.showModal({
+        id: "clear-fleet-confirmation",
+        title: "Are you willing to clear all items in your fleet?",
+        onClose: false,
+        content: createRoot(() => (
+          <div style={{ "text-align": "center", flex: "1" }}>
+            <IconButton
+              iconID="window-close"
+              style={{
+                "font-size": "3em",
+              }}
+              onClick={() =>
+                modalContext.closeModal("clear-fleet-confirmation")
+              }
+            />
+            <IconButton
+              iconID="check-square"
+              style={{
+                "font-size": "3em",
+              }}
+              onClick={() => {
+                toastContext.createToast({
+                  id: "info-clearing",
+                  type: "info",
+                  title: "Clear fleet items",
+                  description: "Removed all items from your fleet (not saved).",
+                });
+                setNewData((data) => {
+                  data.ships.length = 0;
+                });
+                modalContext.closeModal("clear-fleet-confirmation");
+              }}
+            />
+          </div>
+        )),
       });
-      setData(
-        produce((data) => {
-          data.ships.length = 0;
-        })
-      );
-      setSaved(() => false);
     };
 
     const shareFleet = () => {
@@ -446,8 +481,7 @@ const FleetDisplay = () => {
       modalContext.showModal({
         id: "edit_fleet_settings",
         title: "Fleet settings",
-        onClose() {},
-        content: () => (
+        content: createRoot(() => (
           <Settings
             data={{
               name: {
@@ -476,21 +510,31 @@ const FleetDisplay = () => {
               },
             }}
             onSave={(data) => {
-              setNewData({
-                name: data.name.value as string,
-                ispublic: data.ispublic.checked!,
-                points: {
-                  max: data.maxpoints.value as number,
-                  current: fleetData.points.current,
-                },
-                ships: fleetData.ships,
-                description: data.description.value as string,
+              return new Promise((resolve) => {
+                try {
+                  setNewData({
+                    name: data.name.value as string,
+                    // @ts-expect-error checked should appear in input props
+                    ispublic: !!data.ispublic.checked,
+                    points: {
+                      max: data.maxpoints.value as number,
+                      current: fleetData.points.current,
+                    },
+                    ships: fleetData.ships,
+                    description: data.description.value as string,
+                  });
+                  setTimeout(() => {
+                    saveFleet().then(() => {
+                      resolve(true);
+                    });
+                  }, 500);
+                } catch {
+                  resolve(false);
+                }
               });
-              setSaved(() => false);
-              setTimeout(saveFleet, 500);
             }}
           />
-        ),
+        )),
       });
     };
 
@@ -501,6 +545,11 @@ const FleetDisplay = () => {
           searchContainer.scrollIntoView({
             behavior: "smooth",
           });
+          setTimeout(() => {
+            searchContainer.scrollIntoView({
+              behavior: "smooth",
+            });
+          }, 500);
           const input =
             searchContainer.querySelector<HTMLInputElement>("input[type=text]");
           if (input) {
@@ -515,9 +564,9 @@ const FleetDisplay = () => {
       modalContext.showModal({
         id: "copy_fleet",
         title: "Copy fleet as text",
-        onClose: () => {},
-        content: () => (
-          <textarea
+        content: createRoot(() => (
+          <Input
+            type="textarea"
             ref={(ref) => {
               setTimeout(async () => {
                 ref.focus();
@@ -537,15 +586,15 @@ const FleetDisplay = () => {
                 `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.defaultname}\n` +
                 `${ship.crew.reduce(
                   (output, crew) =>
-                    `${output}  (${crew.points}) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}\n`,
+                    `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}\n`,
                   ""
                 )}\n`,
               `${fleetData.name} (${window.location})\n${
                 fleetData.description ? `\n${fleetData.description}\n` : ""
               }\n`
             )}
-          </textarea>
-        ),
+          </Input>
+        )),
       });
     };
 
@@ -554,8 +603,10 @@ const FleetDisplay = () => {
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
-        title="Search ships"
-      />,
+        primary={true}
+      >
+        Search/add ships
+      </IconButton>,
       toggleIcon,
       <IconButton
         iconID="clipboard"
@@ -564,11 +615,17 @@ const FleetDisplay = () => {
       />,
       <IconButton
         iconID="save"
-        onClick={saveFleet}
+        onClick={() => {
+          try {
+            saveFleet();
+          } catch {
+            //
+          }
+        }}
         title="Save"
-        style={{ color: saved() ? "green" : "red" }}
+        data-unsaved={!saved() ? "" : null}
       />,
-      <Show when={navigator.clipboard || navigator.share}>
+      <Show when={"clipboard" in navigator || "share" in navigator}>
         <IconButton
           iconID="share-nodes"
           onClick={shareFleet}
@@ -576,12 +633,12 @@ const FleetDisplay = () => {
         />
       </Show>,
       <IconButton
-        iconID="share-square"
+        iconID="download"
         onClick={exportFleet}
         title="Export to file"
       />,
       <IconButton
-        iconID="file-import"
+        iconID="cloud-upload"
         onClick={importFleet}
         title="Import from file"
       />,
@@ -619,25 +676,30 @@ const FleetDisplay = () => {
   );
 
   const fleet = (
-    <For each={fleetData.ships}>
-      {(ship) => (
-        <ShipItem
-          collapse={cardsCollapse()}
-          data={ship}
-          actions={
-            <>
-              <IconButton
-                onClick={() => showCrew(ship)}
-                data-crew-room={ship.crew.length ? ship.crew.length : null}
-                iconID="users-cog"
-                title="Show crew"
-              />
-              {removeShipAction && removeShipAction(ship)}
-            </>
-          }
-        />
-      )}
-    </For>
+    <Show
+      when={fleetData.ships.length}
+      fallback={<h3 class="items_info">Empty fleet</h3>}
+    >
+      <For each={fleetData.ships}>
+        {(ship) => (
+          <ShipItem
+            collapse={cardsCollapse()}
+            data={ship}
+            actions={
+              <>
+                <IconButton
+                  onClick={() => showCrew(ship)}
+                  data-crew-room={ship.crew.length ? ship.crew.length : null}
+                  iconID="users-cog"
+                  title="Show crew"
+                />
+                {removeShipAction(ship)}
+              </>
+            }
+          />
+        )}
+      </For>
+    </Show>
   );
 
   return (

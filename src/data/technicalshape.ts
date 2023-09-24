@@ -1,16 +1,16 @@
-import { apiUrl } from "./api";
+import { apiUrl } from './api';
 
-type TechnicalShapeDataItem = {
+interface TechnicalShapeDataItem {
   id: number;
   name: string;
   masts: number;
   custom: boolean;
-};
+}
 
-export type TechnicalShapeType = {
+export interface TechnicalShapeType {
   id: number;
   name: string;
-};
+}
 
 export const technicalshapeDataPromise = fetch(`${apiUrl}/technicalshape`)
   .then((res) => res.json() as Promise<TechnicalShapeDataItem[]>)

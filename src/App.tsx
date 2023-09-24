@@ -29,7 +29,7 @@ interface CardCollapseContextProps {
 }
 
 function setDefaultCardsCollapseContext(_collapse?: boolean) {
-  const [collapse, setCollapse] = createSignal(_collapse || false);
+  const [collapse, setCollapse] = createSignal(_collapse ?? false);
   return [
     collapse,
     {
@@ -45,7 +45,8 @@ export const CardCollapseContext = createContext(
 );
 
 export const CardsCollapseProvider = (props: CardCollapseContextProps) => {
-  const value = setDefaultCardsCollapseContext(props.collapse);
+  const collapse = () => props.collapse;
+  const value = setDefaultCardsCollapseContext(collapse());
   return (
     <CardCollapseContext.Provider value={value}>
       {props.children}

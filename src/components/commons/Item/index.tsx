@@ -4,7 +4,7 @@ import { RarityType } from "@/data/rarity";
 import { JSX } from "solid-js";
 import "./Item.css";
 
-export type ItemType = {
+export interface ItemType {
   id: number;
   img: string;
   altimg: string;
@@ -17,17 +17,17 @@ export type ItemType = {
   points: number;
   defaultaptitude: string;
   custom: boolean;
-};
+}
 
-export type ItemsContextType<T extends ItemType> = {
+export interface ItemsContextType<T extends ItemType> {
   add: (item: T) => void;
-};
+}
 
-export type ItemProps = {
+export interface ItemProps {
   actions?: JSX.Element;
   color: string;
   children: JSX.Element;
-};
+}
 
 export const Item = (props: ItemProps) => {
   return (

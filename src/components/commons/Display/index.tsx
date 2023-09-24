@@ -2,13 +2,13 @@ import Items from "@/components/commons/Items";
 import { JSX, Ref, Show } from "solid-js";
 import "./Display.css";
 
-type DisplayProps = {
+interface DisplayProps {
   ref: Ref<HTMLDivElement>;
   title?: string | JSX.Element;
   info?: JSX.Element;
   actions?: JSX.Element;
   items: JSX.Element;
-};
+}
 
 const Display = (props: DisplayProps) => {
   return (
