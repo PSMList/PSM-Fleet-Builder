@@ -11,11 +11,8 @@
     <meta property="og:image" content="http://psmlist/public/img/logo.png" />
     <meta property="og:description" content="Build your fleet, share it with others and see others' fleet." />
     <title>PSMList.com | Fleet Builder</title>
-    <link rel="stylesheet" type="text/css" href="http://psmlist/public/css/all.css" />
-    <link rel="stylesheet" type="text/css" href="http://psmlist/public/css/blog.css" />
-    <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/fontawesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/solid.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://psmlist/public/fontawesome/css/brands.min.css" />
+    <link type="text/css" href="http://psmlist/public/css/all.css" rel="preload" as="style" onload="this.rel='stylesheet'" />
+    <link type="text/css" href="http://psmlist/public/css/blog.css" rel="preload" as="style" onload="this.rel='stylesheet'" />
     <script>
       window.fleetMaxpointsMin = 30;
       window.fleetMaxpointsMax = 200;
@@ -23,7 +20,12 @@
       window.fleetNameMaxlength = 60;
       window.baseUrl = "http://psmlist/public";
     </script>
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet" /> -->
+    <script type="module" src="/src/main.tsx" defer></script>
+    <link type="text/css" href="http://psmlist/public/fontawesome/css/fontawesome.min.css" rel="preload" as="style" onload="this.rel='stylesheet'" />
+    <link type="text/css" href="http://psmlist/public/fontawesome/css/solid.min.css" rel="preload" as="style" onload="this.rel='stylesheet'" />
+    <link type="text/css" href="http://psmlist/public/fontawesome/css/brands.min.css" rel="preload" as="style" onload="this.rel='stylesheet'" />
+    <script src="https://kit.fontawesome.com/f8943cefef.js" crossorigin="anonymous" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="preload" as="style" onload="this.rel='stylesheet'" />
   </head>
   <body>
     <div id="bg_container"></div>
@@ -399,7 +401,6 @@
           respective owners.
         </p>
       </footer>
-      <script type="module" src="/src/main.tsx"></script>
     </div>
   </body>
 </html>
