@@ -3,9 +3,10 @@ import { ItemType } from '@/components/commons/Item';
 import { apiUrl } from './api';
 import { CrewType } from './crew';
 import { extensionDataPromise } from './extension';
-import { factionDataPromise } from './faction';
+import { FactionType, factionDataPromise } from './faction';
 import { rarityDataPromise } from './rarity';
 import { technicalshapeDataPromise } from './technicalshape';
+import { EquipmentType } from './equipment';
 
 interface ShipDataItem {
   id: number;
@@ -31,12 +32,16 @@ interface ShipDataItem {
 }
 
 export type ShipType = ItemType & {
+  points: number;
+  faction: FactionType;
   basemove: string;
   cannons: string;
   crew: CrewType[];
+  equipment: EquipmentType[];
   masts: number;
   cargo: number;
   isfort: boolean;
+  room: () => number;
 };
 
 export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
@@ -72,7 +77,11 @@ export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
         defaultaptitude: item.defaultaptitude,
         isfort: item.isfort,
         crew: [],
+        equipment: [],
         custom: !!item.custom,
+        room: function () {
+          return this.crew.length + this.equipment.length;
+        },
       });
     });
     return shipData;

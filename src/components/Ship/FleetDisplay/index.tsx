@@ -24,6 +24,8 @@ import {
 import { createStore, produce } from "solid-js/store";
 import "./FleetDisplay.css";
 import Input from "@/components/commons/Inputs/Input";
+import { EquipmentType } from "@/data/equipment";
+import Equipment from "@/components/Equipment";
 
 interface FleetSavedDataType {
   name: string;
@@ -31,6 +33,7 @@ interface FleetSavedDataType {
   data: {
     id: number;
     crew: { id: number }[];
+    equipment?: { id: number }[];
   }[];
   ispublic: boolean;
   description: string;
@@ -71,7 +74,7 @@ const FleetDisplay = () => {
         max: savedData.maxpoints,
       },
       ships: savedData.data.reduce<ShipType[]>((allships, item) => {
-        const { id: shipID, crew: crews } = item;
+        const { id: shipID, crew: crews, equipment: equipments } = item;
         const ship = database.ships.get(shipID);
         if (!ship) return allships;
         const crew = crews.reduce<CrewType[]>((allcrew, item) => {
@@ -82,9 +85,19 @@ const FleetDisplay = () => {
             });
           return allcrew;
         }, []);
+        const equipment =
+          equipments?.reduce<EquipmentType[]>((allequipment, item) => {
+            const equipment = database.equipments.get(item.id);
+            if (equipment)
+              allequipment.push({
+                ...equipment,
+              });
+            return allequipment;
+          }, []) ?? [];
         allships.push({
           ...ship,
           crew,
+          equipment,
         });
         return allships;
       }, []),
@@ -121,9 +134,15 @@ const FleetDisplay = () => {
       fleetData.ships.reduce(
         (shipTotal: number, ship: ShipType) =>
           shipTotal +
+          ship.points +
           ship.crew.reduce(
             (crewTotal: number, crew: CrewType) => crewTotal + crew.points,
-            ship.points
+            0
+          ) +
+          ship.equipment.reduce(
+            (equipmentTotal: number, equipment: EquipmentType) =>
+              equipmentTotal + equipment.points,
+            0
           ),
         0
       )
@@ -139,6 +158,9 @@ const FleetDisplay = () => {
           id: ship.id,
           crew: ship.crew.map((crew) => ({
             id: crew.id,
+          })),
+          equipment: ship.equipment.map((equipment) => ({
+            id: equipment.id,
           })),
         })),
         ispublic: fleetData.ispublic,
@@ -226,6 +248,27 @@ const FleetDisplay = () => {
       },
       content: createRoot(() => (
         <Crew
+          ship={_ship()}
+          remainingFleetPoints={fleetData.points.max - fleetData.points.current}
+        />
+      )),
+    });
+  };
+
+  const showEquipment = (ship: ShipType) => {
+    const _ship = () => ship;
+    const oldState = JSON.stringify(_ship().equipment);
+    modalContext.showModal({
+      id: "add_equipment_" + objectId(_ship()),
+      title: "Select equipment for " + _ship().fullname,
+      onClose: () => {
+        const newState = JSON.stringify(ship.equipment);
+        if (!onlyDisplay && oldState !== newState) {
+          setSaved(() => false);
+        }
+      },
+      content: createRoot(() => (
+        <Equipment
           ship={_ship()}
           remainingFleetPoints={fleetData.points.max - fleetData.points.current}
         />
@@ -588,7 +631,13 @@ const FleetDisplay = () => {
                   (output, crew) =>
                     `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}\n`,
                   ""
-                )}\n`,
+                )}` +
+                `${ship.equipment.reduce(
+                  (output, equipment) =>
+                    `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}\n`,
+                  ""
+                )}` +
+                "\n",
               `${fleetData.name} (${window.location})\n${
                 fleetData.description ? `\n${fleetData.description}\n` : ""
               }\n`
@@ -692,6 +741,14 @@ const FleetDisplay = () => {
                   data-crew-room={ship.crew.length ? ship.crew.length : null}
                   iconID="users-cog"
                   title="Show crew"
+                />
+                <IconButton
+                  onClick={() => showEquipment(ship)}
+                  data-equipment-room={
+                    ship.equipment.length ? ship.equipment.length : null
+                  }
+                  iconID="tools"
+                  title="Show equipment"
                 />
                 {removeShipAction(ship)}
               </>

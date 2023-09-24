@@ -99,8 +99,8 @@ const ShipItem = (props: SearchItemProps) => {
           </div>
         </Show>
       </div>
-      <Show when={props.data.crew.length > 0}>
-        <ul class="crew">
+      <Show when={props.data.room() > 0}>
+        <ul class="cargo">
           <Show
             when={!props.collapse}
             fallback={
@@ -109,10 +109,27 @@ const ShipItem = (props: SearchItemProps) => {
                   {props.data.crew.reduce(
                     (total, crew) => total + crew.points,
                     0
-                  )}
+                  ) +
+                    props.data.equipment.reduce(
+                      (total, equipment) => total + equipment.points,
+                      0
+                    )}
                 </span>
                 &nbsp;
-                <span>{props.data.crew.length} crew</span>
+                <Show when={!props.data.equipment.length}>
+                  <span>{props.data.crew.length} crew</span>
+                </Show>
+                <Show when={!props.data.crew.length}>
+                  <span>
+                    {props.data.equipment.length} equipment
+                    {props.data.equipment.length > 1 && "s"}
+                  </span>
+                </Show>
+                <Show
+                  when={props.data.crew.length && props.data.equipment.length}
+                >
+                  <span>{props.data.room()} cargo</span>
+                </Show>
               </li>
             }
           >
@@ -127,6 +144,15 @@ const ShipItem = (props: SearchItemProps) => {
                   />
                   &nbsp;
                   <span class="name">{crew.fullname}</span>
+                </li>
+              )}
+            </For>
+            <For each={props.data.equipment}>
+              {(equipment) => (
+                <li>
+                  <span class="points">{equipment.points}</span>
+                  &nbsp;
+                  <span class="name">{equipment.fullname}</span>
                 </li>
               )}
             </For>

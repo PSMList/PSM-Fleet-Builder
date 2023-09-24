@@ -2,45 +2,38 @@
 import { ItemType } from '@/components/commons/Item';
 import { apiUrl } from './api';
 import { extensionDataPromise } from './extension';
-import { FactionType, factionDataPromise } from './faction';
 import { rarityDataPromise } from './rarity';
 
-interface CrewDataItem {
+interface EquipmentDataItem {
   id: number;
-  idfaction: number;
   idrarity: number;
   idextension: number;
   name: string;
   numid: string;
   points: number;
   defaultaptitude: string;
-  temporarylinktxt: string;
   custom: 0 | 1;
 }
 
-export type CrewType = ItemType & {
+export type EquipmentType = ItemType & {
   points: number;
-  faction: FactionType;
 };
 
-export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
-  .then((res) => res.json() as Promise<CrewDataItem[]>)
+export const equipmentDataPromise = fetch(`${apiUrl}/equipment?custom=include`)
+  .then((res) => res.json() as Promise<EquipmentDataItem[]>)
   .then(async (data) => {
     const extensionData = await extensionDataPromise;
-    const factionData = await factionDataPromise;
     const rarityData = await rarityDataPromise;
-    const crewData = new Map<number, CrewType>();
+    const equipmentData = new Map<number, EquipmentType>();
 
     data.forEach((item) => {
-      const faction = factionData.get(item.idfaction)!;
       const extension = extensionData.get(item.idextension)!;
       const rarity = rarityData.get(item.idrarity)!;
 
-      crewData.set(item.id, {
+      equipmentData.set(item.id, {
         id: item.id,
         img: `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
-        altimg: `${window.baseUrl}/img/logos/crew.png`,
-        faction,
+        altimg: `${window.baseUrl}/img/gameicons/x80/notfound.jpg`,
         rarity,
         extension,
         numid: item.numid,
@@ -51,5 +44,5 @@ export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
         custom: !!item.custom,
       });
     });
-    return crewData;
+    return equipmentData;
   });

@@ -20,6 +20,7 @@ interface SearchProps {
   placeholder: string;
   items: SearchItemType[];
   defaultFactionID?: string;
+  hideFactionFilter?: true;
 }
 
 const defaultSearchQuery = new RegExp("", "i");
@@ -216,7 +217,9 @@ const Search = (props: SearchProps) => {
 
     return props.items.filter(
       (element) =>
-        (_factionFilter === -1 || element.item.faction.id === _factionFilter) &&
+        (props.hideFactionFilter ||
+          _factionFilter === -1 ||
+          element.item.faction?.id === _factionFilter) &&
         (_extensionFilter === -1 ||
           element.item.extension.id === _extensionFilter) &&
         (_customBoth || _custom === element.item.custom)
@@ -311,13 +314,15 @@ const Search = (props: SearchProps) => {
           onClick={() => setShowFilters((previous) => !previous)}
         />
         <Show when={showFilters()}>
-          <Select
-            defaultSelectText="Select faction"
-            class="search_faction"
-            onOptionSelect={searchByFaction}
-            optionsList={factionOptions()}
-            defaultSelectOption={props.defaultFactionID}
-          />
+          <Show when={!props.hideFactionFilter}>
+            <Select
+              defaultSelectText="Select faction"
+              class="search_faction"
+              onOptionSelect={searchByFaction}
+              optionsList={factionOptions()}
+              defaultSelectOption={props.defaultFactionID}
+            />
+          </Show>
           <Select
             defaultSelectText="Select custom"
             class="search_custom"

@@ -27,8 +27,8 @@ export interface ExtensionType {
   colorhex: string;
   custom: boolean;
   searchsort: number;
-  bg: string;
-  icon: string;
+  bg?: string;
+  icon?: string;
 }
 
 export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
@@ -44,10 +44,14 @@ export const extensionDataPromise = fetch(`${apiUrl}/extension?custom=include`)
         custom: !!extension.custom,
         searchsort: extension.searchsort,
         bg: extension.custom
-          ? `img/custom/expansion/background/${extension.imagebackground}`
+          ? extension.imagebackground
+            ? `img/custom/expansion/background/${extension.imagebackground}`
+            : undefined
           : `img/bg_card/m/bg_${extension.short.replace(/U$/, '')}.png`,
         icon: extension.custom
-          ? `img/custom/expansion/icon/${extension.exticon}`
+          ? extension.exticon
+            ? `img/custom/expansion/icon/${extension.exticon}`
+            : undefined
           : `img/logos/logo_${extension.short.replace(/U$/, '')}_o.png`,
       })
     );

@@ -4,17 +4,17 @@ import { onlyDisplay, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ToastContext } from "@/components/commons/Toasts";
-import { CrewItemsContext } from "@/components/Crew";
-import CrewItem from "@/components/Crew/CrewItem";
-import { CrewType } from "@/data/crew";
+import { EquipmentItemsContext } from "@/components/Equipment";
+import EquipmentItem from "@/components/Equipment/EquipmentItem";
+import { EquipmentType } from "@/data/equipment";
 import { ShipType } from "@/data/ship";
-import "./CrewDisplay.css";
+import "./EquipmentDisplay.css";
 
-export interface CrewSavedDataType {
+export interface EquipmentSavedDataType {
   id: number;
 }
 
-export interface CrewDataType {
+export interface EquipmentDataType {
   points: {
     current: number;
     max: number;
@@ -23,18 +23,18 @@ export interface CrewDataType {
     current: number;
     max: number;
   };
-  crew: CrewType[];
+  equipments: EquipmentType[];
 }
 
-interface CrewDisplayProps {
+interface EquipmentDisplayProps {
   ship: ShipType;
   remainingFleetPoints: number;
 }
 
-const CrewDisplay = (props: CrewDisplayProps) => {
+const EquipmentDisplay = (props: EquipmentDisplayProps) => {
   const ship = () => props.ship;
 
-  const [crewData, setData] = createStore<CrewDataType>({
+  const [equipmentData, setData] = createStore<EquipmentDataType>({
     points: {
       current: 0,
       max: 0,
@@ -43,7 +43,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
       current: 0,
       max: ship().cargo,
     },
-    crew: [],
+    equipments: [],
   });
 
   createEffect(() => {
@@ -53,9 +53,9 @@ const CrewDisplay = (props: CrewDisplayProps) => {
   createEffect(() => {
     setData(
       produce((data) => {
-        data.crew = props.ship.crew;
-        data.points.current = data.crew.reduce(
-          (total: number, crew: CrewType) => total + crew.points,
+        data.equipments = props.ship.equipment;
+        data.points.current = data.equipments.reduce(
+          (total: number, equipment: EquipmentType) => total + equipment.points,
           0
         );
         data.points.max = data.points.current + props.remainingFleetPoints;
@@ -74,45 +74,44 @@ const CrewDisplay = (props: CrewDisplayProps) => {
   );
 
   let displayContainer: HTMLDivElement | undefined;
-  let removeCrewAction: (crew: CrewType) => JSX.Element = () => <></>;
-  const crewActions: JSX.Element[] = [];
+  let removeEquipmentAction: (equipment: EquipmentType) => JSX.Element = () => (
+    <></>
+  );
+  const equipmentActions: JSX.Element[] = [];
 
   if (!onlyDisplay) {
     const toastContext = useContext(ToastContext);
 
-    const crewItemsContext = useContext(CrewItemsContext);
+    const equipmentItemsContext = useContext(EquipmentItemsContext);
 
-    const addCrew = (crew: CrewType) => {
+    const addEquipment = (equipment: EquipmentType) => {
       const _ship = ship();
       if (_ship.room() + 1 > _ship.cargo)
         toastContext.createToast({
           id: "warning-exceeding-cargo",
           type: "warning",
-          title: "Add crew",
+          title: "Add equipment",
           description: "Exceeding cargo limit.",
         });
       // eslint-disable-next-line solid/reactivity
-      if (crew.faction.id !== _ship.faction.id)
+      if (
+        _ship.equipment.some((_equipment) => _equipment.name === equipment.name)
+      )
         toastContext.createToast({
-          id: "warning-different-faction",
+          id: "warning-same-equipment",
           type: "warning",
-          title: "Add crew",
-          description: "Different faction for crew and its ship.",
+          title: "Add equipment",
+          description: "Equipment with the same name.",
         });
       // eslint-disable-next-line solid/reactivity
-      if (_ship.crew.some((_crew) => _crew.name === crew.name))
-        toastContext.createToast({
-          id: "warning-same-crew",
-          type: "warning",
-          title: "Add crew",
-          description: "Crew with the same name.",
-        });
-      // eslint-disable-next-line solid/reactivity
-      if (crewData.points.current + crew.points > crewData.points.max)
+      if (
+        equipmentData.points.current + equipment.points >
+        equipmentData.points.max
+      )
         toastContext.createToast({
           id: "warning-exceeding-maxpoints",
           type: "warning",
-          title: "Add crew",
+          title: "Add equipment",
           description: (
             <>
               Exceeding fleet max points.
@@ -123,34 +122,36 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         });
       setData(
         produce((data) => {
-          data.crew.push({ ...crew });
+          data.equipments.push({ ...equipment });
         })
       );
     };
 
-    crewItemsContext.add = addCrew;
+    equipmentItemsContext.add = addEquipment;
 
-    const removeCrew = (crew: CrewType) => {
-      const crewIndex = crewData.crew.findIndex((_crew) => crew === _crew);
-      if (crewIndex >= 0) {
+    const removeEquipment = (equipment: EquipmentType) => {
+      const equipmentIndex = equipmentData.equipments.findIndex(
+        (_equipment) => equipment === _equipment
+      );
+      if (equipmentIndex >= 0) {
         setData(
           produce((data) => {
-            data.crew.splice(crewIndex, 1);
+            data.equipments.splice(equipmentIndex, 1);
           })
         );
       }
     };
 
-    const clearCrew = () => {
+    const clearEquipment = () => {
       toastContext.createToast({
         id: "info-clearing",
         type: "info",
-        title: "Clear crew",
-        description: "Removed crew data (not saved).",
+        title: "Clear equipment",
+        description: "Removed equipment data (not saved).",
       });
       setData(
         produce((data) => {
-          data.crew.length = 0;
+          data.equipments.length = 0;
         })
       );
     };
@@ -177,59 +178,61 @@ const CrewDisplay = (props: CrewDisplayProps) => {
       }
     };
 
-    crewActions.push(
+    equipmentActions.push(
       <IconButton
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
         primary={true}
       >
-        Search/add crew
+        Search/add equipment
       </IconButton>,
       toggleIcon,
       <IconButton
         iconID="eraser"
         class="clear"
-        onClick={clearCrew}
-        title="Clear all crew"
+        onClick={clearEquipment}
+        title="Clear all equipment"
       />
     );
 
-    removeCrewAction = (crew: CrewType) => (
+    removeEquipmentAction = (equipment: EquipmentType) => (
       <IconButton
         iconID="trash-can"
-        onClick={() => removeCrew(crew)}
-        title="Clear crew"
+        onClick={() => removeEquipment(equipment)}
+        title="Clear equipment"
       />
     );
   } else {
-    crewActions.push(toggleIcon);
+    equipmentActions.push(toggleIcon);
   }
 
   const headerInfo = (
     <>
       <span class="room">
         <i class="fas fa-boxes" />
-        &nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}
+        &nbsp;&nbsp;{equipmentData.room.current}&nbsp;/&nbsp;
+        {equipmentData.room.max}
       </span>
       &nbsp;&nbsp;
       <span class="points">
         <i class="fas fa-coins" />
-        &nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}
+        &nbsp;&nbsp;{equipmentData.points.current}&nbsp;/&nbsp;
+        {equipmentData.points.max}
       </span>
     </>
   );
 
-  const shipCrew = (
+  const shipEquipment = (
     <Show
-      when={crewData.crew.length}
-      fallback={<h3 class="items_info">Empty crew</h3>}
+      when={equipmentData.equipments.length}
+      fallback={<h3 class="items_info">No equipment</h3>}
     >
-      <For each={crewData.crew}>
-        {(crew) => (
-          <CrewItem
-            data={crew}
-            actions={removeCrewAction(crew)}
+      <For each={equipmentData.equipments}>
+        {(equipment) => (
+          <EquipmentItem
+            data={equipment}
+            actions={removeEquipmentAction(equipment)}
             collapse={cardsCollapse()}
           />
         )}
@@ -243,10 +246,10 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         displayContainer = ref;
       }}
       info={headerInfo}
-      actions={crewActions}
-      items={shipCrew}
+      actions={equipmentActions}
+      items={shipEquipment}
     />
   );
 };
 
-export default CrewDisplay;
+export default EquipmentDisplay;

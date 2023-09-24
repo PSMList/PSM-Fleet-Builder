@@ -43,14 +43,14 @@
   grid-area: aptitude;
 }
 
-.item > .crew {
+.item > .cargo {
   margin-top: 0.5em;
   padding: 0.6em;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 3px;
 }
 
-.item > .crew {
+.item > .cargo {
   list-style-type: none;
   color: white;
   font-family: Windlass, sans-serif;
@@ -59,14 +59,14 @@
   flex-grow: 10000;
 }
 
-.item > .crew > li {
+.item > .cargo > li {
   margin: 0;
   padding: 0.25em;
   display: flex;
   align-items: center;
 }
 
-.item > .crew > li > .points {
+.item > .cargo > li > .points {
   line-height: 1.4;
   font-size: 1em;
   min-width: 1.75em;
@@ -79,7 +79,7 @@
   align-items: flex-end;
 }
 
-.item > .crew > li > .faction {
+.item > .cargo > li > .faction {
   user-select: none;
   height: auto;
   width: 1.5em;

@@ -1,0 +1,8 @@
+#modal-root [id^="add_equipment"] .modal-container {
+  flex: 1;
+  align-self: stretch;
+}
+
+#modal-root [id^="add_equipment"] .modal-title {
+  font-family: Windlass, Roboto, sans-serif;
+}

@@ -8,13 +8,13 @@ export interface ItemType {
   id: number;
   img: string;
   altimg: string;
-  faction: FactionType;
+  faction?: FactionType;
   rarity: RarityType;
   extension: ExtensionType;
   name: string;
   numid: string;
   fullname: string;
-  points: number;
+  points?: number;
   defaultaptitude: string;
   custom: boolean;
 }
