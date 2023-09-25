@@ -6,8 +6,12 @@
   content: attr(data-crew-room);
 }
 
-.actions button[data-equipment-room]::after {
-  content: attr(data-equipment-room);
+.actions button[data-equipments-room]::after {
+  content: attr(data-equipments-room);
+}
+
+.actions button[data-treasures-count]::after {
+  content: attr(data-treasures-count);
 }
 
 .description {

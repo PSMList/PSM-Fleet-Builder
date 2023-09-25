@@ -26,15 +26,24 @@ import "./FleetDisplay.css";
 import Input from "@/components/commons/Inputs/Input";
 import { EquipmentType } from "@/data/equipment";
 import Equipment from "@/components/Equipment";
+import Treasure from "@/components/Treasure";
+import { TreasureType } from "@/data/treasure";
 
 interface FleetSavedDataType {
   name: string;
   maxpoints: number;
-  data: {
-    id: number;
-    crew: { id: number }[];
-    equipment?: { id: number }[];
-  }[];
+  data: (
+    | {
+        id: number;
+        crew: { id: number }[];
+        equipment: { id: number }[];
+        treasure?: false;
+      }
+    | {
+        id: number;
+        treasure: true;
+      }
+  )[];
   ispublic: boolean;
   description: string;
 }
@@ -47,6 +56,7 @@ export interface FleetDataType {
   };
   ispublic: boolean;
   ships: ShipType[];
+  treasures: TreasureType[];
   description: string;
 }
 
@@ -57,6 +67,7 @@ const defaultFleetData: FleetDataType = {
     max: 0,
   },
   ships: [],
+  treasures: [],
   ispublic: false,
   description: "",
 };
@@ -74,6 +85,7 @@ const FleetDisplay = () => {
         max: savedData.maxpoints,
       },
       ships: savedData.data.reduce<ShipType[]>((allships, item) => {
+        if (item.treasure) return allships;
         const { id: shipID, crew: crews, equipment: equipments } = item;
         const ship = database.ships.get(shipID);
         if (!ship) return allships;
@@ -85,21 +97,34 @@ const FleetDisplay = () => {
             });
           return allcrew;
         }, []);
-        const equipment =
-          equipments?.reduce<EquipmentType[]>((allequipment, item) => {
+        const equipment = equipments.reduce<EquipmentType[]>(
+          (allequipment, item) => {
             const equipment = database.equipments.get(item.id);
             if (equipment)
               allequipment.push({
                 ...equipment,
               });
             return allequipment;
-          }, []) ?? [];
+          },
+          []
+        );
         allships.push({
           ...ship,
           crew,
           equipment,
         });
         return allships;
+      }, []),
+      treasures: savedData.data.reduce<TreasureType[]>((alltreasures, item) => {
+        if (!item.treasure) return alltreasures;
+        const { id: treasureID } = item;
+        const treasure = database.treasures.get(treasureID);
+        if (treasure) {
+          alltreasures.push({
+            ...treasure,
+          });
+        }
+        return alltreasures;
       }, []),
       ispublic: savedData.ispublic,
       description: savedData.description,
@@ -154,15 +179,21 @@ const FleetDisplay = () => {
       const data: FleetSavedDataType = {
         name: fleetData.name,
         maxpoints: fleetData.points.max,
-        data: fleetData.ships.map((ship) => ({
-          id: ship.id,
-          crew: ship.crew.map((crew) => ({
-            id: crew.id,
+        data: [
+          ...fleetData.ships.map((ship) => ({
+            id: ship.id,
+            crew: ship.crew.map((crew) => ({
+              id: crew.id,
+            })),
+            equipment: ship.equipment.map((equipment) => ({
+              id: equipment.id,
+            })),
           })),
-          equipment: ship.equipment.map((equipment) => ({
-            id: equipment.id,
+          ...fleetData.treasures.map((treasure) => ({
+            id: treasure.id,
+            treasure: true as const,
           })),
-        })),
+        ],
         ispublic: fleetData.ispublic,
         description: fleetData.description,
       };
@@ -564,6 +595,7 @@ const FleetDisplay = () => {
                       current: fleetData.points.current,
                     },
                     ships: fleetData.ships,
+                    treasures: fleetData.treasures,
                     description: data.description.value as string,
                   });
                   setTimeout(() => {
@@ -576,6 +608,21 @@ const FleetDisplay = () => {
                 }
               });
             }}
+          />
+        )),
+      });
+    };
+
+    const showTreasures = () => {
+      modalContext.showModal({
+        id: "add_treasure",
+        title: "Select treasures",
+        content: createRoot(() => (
+          <Treasure
+            treasures={fleetData.treasures}
+            remainingFleetPoints={
+              fleetData.points.max - fleetData.points.current
+            }
           />
         )),
       });
@@ -656,6 +703,14 @@ const FleetDisplay = () => {
       >
         Search/add ships
       </IconButton>,
+      <IconButton
+        iconID="toolbox"
+        onClick={showTreasures}
+        data-treasures-count={
+          fleetData.treasures.length ? fleetData.treasures.length : null
+        }
+        title="Search/add treasure"
+      />,
       toggleIcon,
       <IconButton
         iconID="clipboard"
@@ -744,10 +799,10 @@ const FleetDisplay = () => {
                 />
                 <IconButton
                   onClick={() => showEquipment(ship)}
-                  data-equipment-room={
+                  data-equipments-room={
                     ship.equipment.length ? ship.equipment.length : null
                   }
-                  iconID="tools"
+                  iconID="dolly-box"
                   title="Show equipment"
                 />
                 {removeShipAction(ship)}

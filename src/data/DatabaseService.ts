@@ -4,6 +4,7 @@ import { extensionDataPromise } from './extension';
 import { factionDataPromise } from './faction';
 import { rarityDataPromise } from './rarity';
 import { shipDataPromise } from './ship';
+import { treasureDataPromise } from './treasure';
 import { equipmentDataPromise } from './equipment';
 
 interface Database {
@@ -11,6 +12,7 @@ interface Database {
   factions: Awaited<typeof factionDataPromise>;
   rarities: Awaited<typeof rarityDataPromise>;
   crews: Awaited<typeof crewDataPromise>;
+  treasures: Awaited<typeof treasureDataPromise>;
   equipments: Awaited<typeof equipmentDataPromise>;
   ships: Awaited<typeof shipDataPromise>;
 }
@@ -22,6 +24,7 @@ const [database, setDatabase] = createStore<Database>({
   rarities: new Map(),
   crews: new Map(),
   ships: new Map(),
+  treasures: new Map(),
   equipments: new Map(),
 });
 
@@ -32,6 +35,7 @@ const loadingPromise = new Promise((resolve, reject) => {
         _database.extensions = await extensionDataPromise;
         _database.factions = await factionDataPromise;
         _database.rarities = await rarityDataPromise;
+        _database.treasures = await treasureDataPromise;
         _database.equipments = await equipmentDataPromise;
         _database.crews = await crewDataPromise;
         _database.ships = await shipDataPromise;
