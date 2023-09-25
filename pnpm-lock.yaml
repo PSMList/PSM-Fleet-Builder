@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@types/node':
+    specifier: ^20.6.5
+    version: 20.6.5
   solid-js:
     specifier: ^1.7.11
     version: 1.7.11
@@ -42,7 +45,7 @@ devDependencies:
     version: 4.9.5
   vite:
     specifier: ^3.2.7
-    version: 3.2.7
+    version: 3.2.7(@types/node@20.6.5)
   vite-plugin-solid:
     specifier: ^2.7.0
     version: 2.7.0(solid-js@1.7.11)(vite@3.2.7)
@@ -544,6 +547,9 @@ packages:
   /@types/json5@0.0.29:
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
     dev: true
+
+  /@types/node@20.6.5:
+    resolution: {integrity: sha512-2qGq5LAOTh9izcc0+F+dToFigBWiK1phKPt7rNhOqJSr35y8rlIBjDwGtFSgAI6MGIhjwOVNSQZVdJsZJ2uR1w==}
 
   /@types/semver@7.5.1:
     resolution: {integrity: sha512-cJRQXpObxfNKkFAZbJl2yjWtJCqELQIdShsogr1d2MilP8dKD9TE/nEKHkJgUNHdGKCQaf9HbIynuV2csLGVLg==}
@@ -2608,13 +2614,13 @@ packages:
       merge-anything: 5.1.7
       solid-js: 1.7.11
       solid-refresh: 0.5.3(solid-js@1.7.11)
-      vite: 3.2.7
+      vite: 3.2.7(@types/node@20.6.5)
       vitefu: 0.2.4(vite@3.2.7)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite@3.2.7:
+  /vite@3.2.7(@types/node@20.6.5):
     resolution: {integrity: sha512-29pdXjk49xAP0QBr0xXqu2s5jiQIXNvE/xwd0vUizYT2Hzqe4BksNNoWllFVXJf4eLZ+UlVQmXfB4lWrc+t18g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -2639,6 +2645,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.6.5
       esbuild: 0.15.18
       postcss: 8.4.29
       resolve: 1.22.4
@@ -2655,7 +2662,7 @@ packages:
       vite:
         optional: true
     dependencies:
-      vite: 3.2.7
+      vite: 3.2.7(@types/node@20.6.5)
     dev: true
 
   /which-boxed-primitive@1.0.2:

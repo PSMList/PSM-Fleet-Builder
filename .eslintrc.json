@@ -14,5 +14,6 @@
   "rules": {
     "import/extensions": ["error", "ignorePackages", { "": "never" }],
     "prettier/prettier": ["error", { "endOfLine": "auto" }]
-  }
+  },
+  "ignorePatterns": ["*.*"]
 }
