@@ -30,6 +30,7 @@ const [database, setDatabase] = createStore<Database>({
 
 const loadingPromise = new Promise((resolve, reject) => {
   setDatabase(
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     produce(async (_database) => {
       try {
         _database.extensions = await extensionDataPromise;

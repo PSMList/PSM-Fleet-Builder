@@ -1,23 +1,23 @@
 import { ItemsContextType } from "@/components/commons/Item";
 import { TreasureType } from "@/data/treasure";
-import { ShipType } from "@/data/ship";
 import { createContext, ParentComponent } from "solid-js";
 import "./Treasure.css";
 import TreasureDisplay from "./TreasureDisplay";
 import TreasureSearch from "./TreasureSearch";
 import { CardsCollapseProvider } from "@/App";
 
-export const TreasureItemsContext = createContext<
-  ItemsContextType<TreasureType>
->({
+const defaultContext = {
   add: () => {
     //
   },
-});
+};
+
+export const TreasureItemsContext =
+  createContext<ItemsContextType<TreasureType>>(defaultContext);
 
 const TreasureItemsProvider: ParentComponent = (props) => {
   return (
-    <TreasureItemsContext.Provider value={{} as any}>
+    <TreasureItemsContext.Provider value={defaultContext}>
       {props.children}
     </TreasureItemsContext.Provider>
   );

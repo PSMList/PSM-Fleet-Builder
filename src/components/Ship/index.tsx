@@ -6,15 +6,18 @@ import "./Ship.css";
 import ShipSearch from "./ShipSearch";
 import { CardsCollapseProvider } from "@/App";
 
-export const ShipItemsContext = createContext<ItemsContextType<ShipType>>({
+const defaultContext = {
   add: () => {
     //
   },
-});
+};
+
+export const ShipItemsContext =
+  createContext<ItemsContextType<ShipType>>(defaultContext);
 
 const ShipItemsProvider: ParentComponent = (props) => {
   return (
-    <ShipItemsContext.Provider value={{} as any}>
+    <ShipItemsContext.Provider value={defaultContext}>
       {props.children}
     </ShipItemsContext.Provider>
   );

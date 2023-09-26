@@ -7,17 +7,18 @@ import EquipmentDisplay from "./EquipmentDisplay";
 import EquipmentSearch from "./EquipmentSearch";
 import { CardsCollapseProvider } from "@/App";
 
-export const EquipmentItemsContext = createContext<
-  ItemsContextType<EquipmentType>
->({
+const defaultContext = {
   add: () => {
     //
   },
-});
+};
+
+export const EquipmentItemsContext =
+  createContext<ItemsContextType<EquipmentType>>(defaultContext);
 
 const EquipmentItemsProvider: ParentComponent = (props) => {
   return (
-    <EquipmentItemsContext.Provider value={{} as any}>
+    <EquipmentItemsContext.Provider value={defaultContext}>
       {props.children}
     </EquipmentItemsContext.Provider>
   );

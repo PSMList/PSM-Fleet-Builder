@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { hash, onlyDisplay, slug, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
@@ -211,7 +212,7 @@ const FleetDisplay = () => {
       const response = await fetch(
         `${window.baseUrl}/fleet/get/${hash}/${slug}`
       );
-      const data = await response.json();
+      const data = (await response.json()) as FleetSavedDataType | undefined;
       if (!data) return;
 
       await loadingPromise;
@@ -269,7 +270,7 @@ const FleetDisplay = () => {
     const _ship = () => ship;
     const oldState = JSON.stringify(_ship().crew);
     modalContext.showModal({
-      id: "add_crew_" + objectId(_ship()),
+      id: "add_crew_" + objectId(_ship()).toString(),
       title: "Select crew for " + _ship().fullname,
       onClose: () => {
         const newState = JSON.stringify(ship.crew);
@@ -290,7 +291,7 @@ const FleetDisplay = () => {
     const _ship = () => ship;
     const oldState = JSON.stringify(_ship().equipment);
     modalContext.showModal({
-      id: "add_equipment_" + objectId(_ship()),
+      id: "add_equipment_" + objectId(_ship()).toString(),
       title: "Select equipment for " + _ship().fullname,
       onClose: () => {
         const newState = JSON.stringify(ship.equipment);
@@ -389,7 +390,9 @@ const FleetDisplay = () => {
           });
         }
         try {
-          const fileFleetData = getFleetData(JSON.parse(await file.text()));
+          const fileFleetData = getFleetData(
+            JSON.parse(await file.text()) as FleetSavedDataType
+          );
           setNewData(fileFleetData);
           setSaved(() => false);
           return toastContext.createToast({
@@ -435,7 +438,7 @@ const FleetDisplay = () => {
           case 400: {
             let messages: string[] | undefined;
             try {
-              messages = JSON.parse(await res.text());
+              messages = JSON.parse(await res.text()) as string[];
             } catch {
               //
             }
@@ -539,7 +542,7 @@ const FleetDisplay = () => {
       }
 
       if (typeof navigator.clipboard !== "undefined") {
-        navigator.clipboard.writeText(url).then(() => {
+        void navigator.clipboard.writeText(url).then(() => {
           clearTimeout(timeout);
           toastContext.createToast({
             id: "success-clearing",
@@ -599,7 +602,7 @@ const FleetDisplay = () => {
                     description: data.description.value as string,
                   });
                   setTimeout(() => {
-                    saveFleet().then(() => {
+                    void saveFleet().then(() => {
                       resolve(true);
                     });
                   }, 500);
@@ -685,7 +688,7 @@ const FleetDisplay = () => {
                   ""
                 )}` +
                 "\n",
-              `${fleetData.name} (${window.location})\n${
+              `${fleetData.name} (${window.location.href})\n${
                 fleetData.description ? `\n${fleetData.description}\n` : ""
               }\n`
             )}
@@ -721,7 +724,7 @@ const FleetDisplay = () => {
         iconID="save"
         onClick={() => {
           try {
-            saveFleet();
+            void saveFleet();
           } catch {
             //
           }
@@ -828,7 +831,7 @@ const FleetDisplay = () => {
                 readonly
                 ref={(ref) => {
                   setTimeout(() => {
-                    ref.style.height = ref.scrollHeight + "px";
+                    ref.style.height = ref.scrollHeight.toString() + "px";
                   });
                 }}
               >

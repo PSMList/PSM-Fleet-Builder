@@ -9,25 +9,27 @@
 The commercial edition was stopped in 2008 but there still are a lot of players and collectors around the world, espacially in the USA. Projects on top of this boardgame are (or were) keeping the player base in love with it.
 
 The most important one is the community keeping the fan base alive on social networks:
-  * [Discord](https://discord.com/invite/qeY7e3Q) (main one)
-  * [Facebook](https://www.facebook.com/piratesconstructiblestrategygame/)
-  * [Instagram](https://www.instagram.com/piratescsg/)
+
+- [Discord](https://discord.com/invite/qeY7e3Q) (main one)
+- [Facebook](https://www.facebook.com/piratesconstructiblestrategygame/)
+- [Instagram](https://www.instagram.com/piratescsg/)
 
 ## Presentation
 
 The Fleet Builder project is a part of the [PSMList](https://www.psmlist.com/public/) website that was built to centralize projetcs aiming to improve Pirates CSG players' experience.
 
-The webssite started as an encyclopedia for this boardgame. 
+The webssite started as an encyclopedia for this boardgame.
 It went online with a "Fleets" section that promised to bring features for building and sharing fleets.
 
 The Fleet Builder is built on top of the encyclopedia database and aims to enable players to:
-  * Manage their fleets:
-    * Define fleet settings
-    * Search through the PSMList database
-    * Add ships with their crew
-  * Save, export and import fleets
-  * Search through everyone's public fleets
-  * And more...
+
+- Manage their fleets:
+  - Define fleet settings
+  - Search through the PSMList database
+  - Add ships with their crew
+- Save, export and import fleets
+- Search through everyone's public fleets
+- And more...
 
 It still is in an alpha stage of development.
 The connection to PSMList accounts is not visible in the files of this repository as this part belongs to the PSMList code (not shared for security reasons).
@@ -35,18 +37,20 @@ The connection to PSMList accounts is not visible in the files of this repositor
 # Features
 
 The main features available are:
-  * Searching through the database
-  * Select a ship, submarine, creature, flotilla or fort to add
-  * Show ships' crew and new crew
-  * Deselect unwanted ships and crew
-  * Edit fleet name, max points and public visibility
-  * Add, edit, save and delete fleets linked with your account
-  * Search others' public fleets and show their content
-  * Share, export their data as file or import data to clone your or one another's fleet
+
+- Searching through the database
+- Select a ship, submarine, creature, flotilla or fort to add
+- Show ships' crew and new crew
+- Deselect unwanted ships and crew
+- Edit fleet name, max points and public visibility
+- Add, edit, save and delete fleets linked with your account
+- Search others' public fleets and show their content
+- Share, export their data as file or import data to clone your or one another's fleet
 
 There are two types of search inputs:
-  * a text input to filter results by name or ID
-  * a select input to filter the results by faction and one by extension
+
+- a text input to filter results by name or ID
+- a select input to filter the results by faction and one by extension
 
 Ship and crew selection gets some validation warnings and errors.
 As an example, adding multiple ships with the same name raises a warning.
@@ -78,13 +82,14 @@ Demo of the main features:
 The alpha version of the Fleet Builder is online with limited access.
 
 It is far from complete, but it aims, in the long run, to give the ability to:
-  * Enhanced selection rules:
-    * Conditions when contrary to the Pirates' code rules
-    * Taking ships and crew links, keywords and abilities modifiers
-  * Advanced settings:
-    * Opting in or out for Pirates' code rules
-    * Adding custom rules (ex: only Pirates of the Carribean ships and crew, only worst "rank" ships, no submarines...) 
-  * Creating and sharing predefined settings (ex: specific rules for an event) 
+
+- Enhanced selection rules:
+  - Conditions when contrary to the Pirates' code rules
+  - Taking ships and crew links, keywords and abilities modifiers
+- Advanced settings:
+  - Opting in or out for Pirates' code rules
+  - Adding custom rules (ex: only Pirates of the Carribean ships and crew, only worst "rank" ships, no submarines...)
+- Creating and sharing predefined settings (ex: specific rules for an event)
 
 ## Technical details
 

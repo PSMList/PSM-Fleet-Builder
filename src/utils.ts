@@ -1,5 +1,3 @@
-/* */
-
 export function removeItemFromArray<T>(
   array: T[],
   func: (value: T, index: number, obj: T[]) => boolean
@@ -23,7 +21,7 @@ export async function fetchWithTimeout(
   options: RequestInit & { timeout?: number } = {}
 ) {
   const { timeout = 10000 } = options;
-  let id = -1;
+  let id: NodeJS.Timeout;
   const controller = new AbortController();
   return Promise.race([
     new Promise((resolve) => {
@@ -58,12 +56,13 @@ export async function fetchWithTimeout(
   }>;
 }
 
-const objectsIdMap = new WeakMap();
+const objectsIdMap = new WeakMap<object, number>();
 let objectCount = 0;
 
 export function objectId(object: object) {
-  if (!objectsIdMap.has(object)) objectsIdMap.set(object, ++objectCount);
-  return objectsIdMap.get(object);
+  let id = objectsIdMap.get(object);
+  if (!id) objectsIdMap.set(object, (id = ++objectCount));
+  return id;
 }
 
 export function onError(target: HTMLImageElement, url?: string) {
@@ -75,8 +74,8 @@ export function onError(target: HTMLImageElement, url?: string) {
   target.onerror = null;
 }
 
-export function setBackground(element: HTMLDivElement, url: string) {
-  if (element.parentElement) {
+export function setBackground(element: HTMLDivElement, url?: string) {
+  if (element.parentElement && url) {
     element.parentElement.style.backgroundImage = `url(${window.baseUrl}/${url})`;
   }
 }

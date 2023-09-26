@@ -55,7 +55,8 @@
   color: white;
   font-family: Windlass, sans-serif;
   font-weight: bold;
-  text-shadow: rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 2px, rgb(0, 0, 0) 1px 1px 0px;
+  text-shadow: rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 2px,
+    rgb(0, 0, 0) 1px 1px 0px;
   flex-grow: 10000;
 }
 

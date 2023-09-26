@@ -7,15 +7,18 @@ import CrewDisplay from "./CrewDisplay";
 import CrewSearch from "./CrewSearch";
 import { CardsCollapseProvider } from "@/App";
 
-export const CrewItemsContext = createContext<ItemsContextType<CrewType>>({
+const defaultContext = {
   add: () => {
     //
   },
-});
+};
+
+export const CrewItemsContext =
+  createContext<ItemsContextType<CrewType>>(defaultContext);
 
 const CrewItemsProvider: ParentComponent = (props) => {
   return (
-    <CrewItemsContext.Provider value={{} as any}>
+    <CrewItemsContext.Provider value={defaultContext}>
       {props.children}
     </CrewItemsContext.Provider>
   );

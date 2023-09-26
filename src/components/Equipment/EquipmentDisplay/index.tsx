@@ -85,6 +85,7 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
     const equipmentItemsContext = useContext(EquipmentItemsContext);
 
     const addEquipment = (equipment: EquipmentType) => {
+      const _equipment = () => equipment;
       const _ship = ship();
       if (_ship.room() + 1 > _ship.cargo)
         toastContext.createToast({
@@ -95,7 +96,9 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
         });
       // eslint-disable-next-line solid/reactivity
       if (
-        _ship.equipment.some((_equipment) => _equipment.name === equipment.name)
+        _ship.equipment.some(
+          (equipment) => equipment.name === _equipment().name
+        )
       )
         toastContext.createToast({
           id: "warning-same-equipment",
@@ -105,7 +108,7 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
         });
       // eslint-disable-next-line solid/reactivity
       if (
-        equipmentData.points.current + equipment.points >
+        equipmentData.points.current + _equipment().points >
         equipmentData.points.max
       )
         toastContext.createToast({

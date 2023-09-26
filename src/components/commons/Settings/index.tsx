@@ -23,7 +23,7 @@ const Settings = (props: SettingsProps) => {
   const [saved, setSaved] = createSignal(true);
 
   const save = () => {
-    props.onSave(settings).then((saved) => {
+    void props.onSave(settings).then((saved) => {
       setSaved(() => saved);
     });
   };

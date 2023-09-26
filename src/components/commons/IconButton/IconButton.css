@@ -60,6 +60,6 @@
 .icon_button.primary:hover i,
 .icon_button.primary:focus i,
 .icon_button.primary:focus-within i {
-    background-color: #2E6390;
-    color: #fff;
+  background-color: #2e6390;
+  color: #fff;
 }
