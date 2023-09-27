@@ -9,6 +9,7 @@ import CrewItem from "@/components/Crew/CrewItem";
 import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
 import "./CrewDisplay.css";
+import Items from "@/components/commons/Items";
 
 export interface CrewSavedDataType {
   id: number;
@@ -184,7 +185,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         class="scroll_to_search"
         primary={true}
       >
-        Search/add crew
+        Add crew
       </IconButton>,
       toggleIcon,
       <IconButton
@@ -206,34 +207,27 @@ const CrewDisplay = (props: CrewDisplayProps) => {
     crewActions.push(toggleIcon);
   }
 
-  const headerInfo = (
-    <>
-      <span class="room">
-        <i class="fas fa-boxes" />
-        &nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}
-      </span>
-      &nbsp;&nbsp;
-      <span class="points">
-        <i class="fas fa-coins" />
-        &nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;{crewData.points.max}
-      </span>
-    </>
-  );
-
   const shipCrew = (
     <Show
       when={crewData.crew.length}
       fallback={<h3 class="items_info">Empty crew</h3>}
     >
-      <For each={crewData.crew}>
-        {(crew) => (
-          <CrewItem
-            data={crew}
-            actions={removeCrewAction(crew)}
-            collapse={cardsCollapse()}
-          />
-        )}
-      </For>
+      <Items
+        classList={{
+          minimized: cardsCollapse(),
+          maximized: !cardsCollapse(),
+        }}
+      >
+        <For each={crewData.crew}>
+          {(crew) => (
+            <CrewItem
+              data={crew}
+              actions={removeCrewAction(crew)}
+              collapse={cardsCollapse()}
+            />
+          )}
+        </For>
+      </Items>
     </Show>
   );
 
@@ -242,7 +236,20 @@ const CrewDisplay = (props: CrewDisplayProps) => {
       ref={(ref) => {
         displayContainer = ref;
       }}
-      info={headerInfo}
+      header={
+        <>
+          <span class="room">
+            <i class="fas fa-boxes" />
+            &nbsp;&nbsp;{crewData.room.current}&nbsp;/&nbsp;{crewData.room.max}
+          </span>
+          &nbsp;&nbsp;
+          <span class="points">
+            <i class="fas fa-coins" />
+            &nbsp;&nbsp;{crewData.points.current}&nbsp;/&nbsp;
+            {crewData.points.max}
+          </span>
+        </>
+      }
       actions={crewActions}
       items={shipCrew}
     />

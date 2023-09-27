@@ -1,9 +1,6 @@
 @media only screen and (min-width: 62em) {
   .search_container {
     flex: 0 0 40%;
-    position: sticky;
-    top: 1em;
-    left: 0;
   }
 }
 
@@ -18,16 +15,6 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 0.5em;
-  align-items: center;
-}
-
-.search_container > .search_info {
-  flex: 1 0 auto;
-  max-width: 16em;
-  margin: 3em auto 2em;
-  display: flex;
-  text-align: center;
-  justify-content: center;
   align-items: center;
 }
 

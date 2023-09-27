@@ -30,33 +30,34 @@ export const ToastContext = createContext<{
 const Toasts = (props: ToastsProps) => {
   const toastContext = useContext(ToastContext);
 
-  const [toastList, setToastList] = createStore<ToastInstanceType[]>([]);
+  const [toastList, setToastList] = createStore<
+    Record<string, ToastInstanceType | undefined>
+  >({});
 
   const deleteToast = (id: string) => {
-    setToastList(
-      produce((toastList) => {
-        const toastIndex = toastList.findIndex(
-          (toast) => toast.properties.id === id
-        );
-        if (toastIndex >= 0) {
-          toastList.splice(toastIndex, 1);
-          const container = document.getElementById("notification-container");
-          const toastElement = container?.querySelector(
-            `.notification:nth-child(${toastIndex * 2 + 1})`
-          );
-          if (toastElement) {
-            toastElement.classList.add("hide");
+    const toast = toastList[id];
+    if (toast) {
+      setToastList(
+        produce((toastList) => {
+          const toast = toastList[id];
+          if (toast) {
+            toast.properties.hide = true;
           }
-        }
-      })
-    );
+        })
+      );
+      setTimeout(() => {
+        setToastList(
+          produce((toastList) => {
+            toastList[id] = undefined;
+          })
+        );
+      }, 1000);
+    }
   };
 
   const createToast = (properties: ToastType) => {
     const _properties = () => properties;
-    const currentToast = toastList.find(
-      (toast) => toast.properties.id === _properties().id
-    );
+    const currentToast = toastList[properties.id];
     if (currentToast) {
       currentToast.addCount();
     } else {
@@ -72,7 +73,7 @@ const Toasts = (props: ToastsProps) => {
       };
       setToastList(
         produce((toastList) => {
-          toastList.push(newToast);
+          toastList[properties.id] = newToast;
         })
       );
 
@@ -88,13 +89,15 @@ const Toasts = (props: ToastsProps) => {
   return (
     <div class={props.position} id="notification-container">
       <ToastContext.Provider value={toastContext}>
-        <For each={toastList}>
-          {(toast) => (
-            <>
-              <Toast {...toast.properties} />
-              <hr />
-            </>
-          )}
+        <For each={Object.values(toastList)}>
+          {(toast) =>
+            toast && (
+              <>
+                <Toast {...toast.properties} />
+                <hr />
+              </>
+            )
+          }
         </For>
       </ToastContext.Provider>
     </div>

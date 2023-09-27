@@ -8,6 +8,7 @@ import { TreasureItemsContext } from "@/components/Treasure";
 import TreasureItem from "@/components/Treasure/TreasureItem";
 import { TreasureType } from "@/data/treasure";
 import "./TreasureDisplay.css";
+import Items from "@/components/commons/Items";
 
 export interface TreasureSavedDataType {
   id: number;
@@ -119,7 +120,7 @@ const TreasureDisplay = (props: TreasureDisplayProps) => {
         class="scroll_to_search"
         primary={true}
       >
-        Search/add treasure
+        Add treasure
       </IconButton>,
       toggleIcon,
       <IconButton
@@ -141,29 +142,27 @@ const TreasureDisplay = (props: TreasureDisplayProps) => {
     treasureActions.push(toggleIcon);
   }
 
-  const headerInfo = (
-    <>
-      <span class="room">
-        <i class="fas fa-toolbox" />
-        &nbsp;&nbsp;{treasureData.length}
-      </span>
-    </>
-  );
-
   const shipTreasure = (
     <Show
       when={treasureData.length}
       fallback={<h3 class="items_info">No treasure</h3>}
     >
-      <For each={treasureData}>
-        {(treasure) => (
-          <TreasureItem
-            data={treasure}
-            actions={removeTreasureAction(treasure)}
-            collapse={cardsCollapse()}
-          />
-        )}
-      </For>
+      <Items
+        classList={{
+          minimized: cardsCollapse(),
+          maximized: !cardsCollapse(),
+        }}
+      >
+        <For each={treasureData}>
+          {(treasure) => (
+            <TreasureItem
+              data={treasure}
+              actions={removeTreasureAction(treasure)}
+              collapse={cardsCollapse()}
+            />
+          )}
+        </For>
+      </Items>
     </Show>
   );
 
@@ -172,7 +171,14 @@ const TreasureDisplay = (props: TreasureDisplayProps) => {
       ref={(ref) => {
         displayContainer = ref;
       }}
-      info={headerInfo}
+      header={
+        <>
+          <span class="room">
+            <i class="fas fa-toolbox" />
+            &nbsp;&nbsp;{treasureData.length}
+          </span>
+        </>
+      }
       actions={treasureActions}
       items={shipTreasure}
     />

@@ -33,4 +33,5 @@
 
 [data-unsaved]::after {
   content: "✱";
+  background-color: red;
 }

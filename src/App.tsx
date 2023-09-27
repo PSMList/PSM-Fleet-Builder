@@ -59,7 +59,7 @@ export const useCardsCollapse = () => useContext(CardCollapseContext);
 export function App() {
   return (
     <StoreProvider>
-      <Toasts position="top-right" autoDeleteTime={8000} />
+      <Toasts position="top-right" autoDeleteTime={5000} />
       <ModalRoot />
       <Ship />
     </StoreProvider>

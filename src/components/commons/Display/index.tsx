@@ -1,24 +1,21 @@
-import Items from "@/components/commons/Items";
-import { JSX, Ref, Show } from "solid-js";
+import { JSX, Ref } from "solid-js";
 import "./Display.css";
 
 interface DisplayProps {
   ref: Ref<HTMLDivElement>;
-  title?: string | JSX.Element;
-  info?: JSX.Element;
+  header?: JSX.Element;
   actions?: JSX.Element;
   items: JSX.Element;
 }
 
 const Display = (props: DisplayProps) => {
   return (
-    <div class="display_container whitebox" ref={props.ref}>
-      <div class="display_header">
-        <div class="title">{props.title}</div>
-        <Show when={props.info}>{props.info}</Show>
+    <div class="display_container" ref={props.ref}>
+      <div class="display_header whitebox">
+        {props.header && <div class="info">{props.header}</div>}
+        <div class="actions">{props.actions}</div>
       </div>
-      <div class="display_actions actions">{props.actions}</div>
-      <Items class="display_grid">{props.items}</Items>
+      <div class="whitebox display_grid">{props.items}</div>
     </div>
   );
 };

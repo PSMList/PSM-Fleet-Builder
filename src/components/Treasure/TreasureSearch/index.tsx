@@ -1,4 +1,4 @@
-import { onlyDisplay, useCardsCollapse } from "@/App";
+import { onlyDisplay } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { TreasureItemsContext } from "@/components/Treasure";
@@ -13,7 +13,6 @@ const TreasureSearch = () => {
   if (onlyDisplay) return <></>;
 
   const treasureItemsContext = useContext(TreasureItemsContext);
-  const [cardsCollapse] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 
@@ -40,7 +39,6 @@ const TreasureSearch = () => {
                     title="Add treasure"
                   />
                 }
-                collapse={cardsCollapse()}
               />
             ),
           } as SearchItemType)

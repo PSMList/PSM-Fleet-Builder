@@ -3,7 +3,7 @@ import Input, {
   InputProps,
   InputTypes,
 } from "@/components/commons/Inputs/Input";
-import { For, createSignal } from "solid-js";
+import { For } from "solid-js";
 import { createStore } from "solid-js/store";
 import "./Settings.css";
 
@@ -14,57 +14,56 @@ export type Data = Record<
 
 interface SettingsProps {
   data: Data;
-  onSave: (data: Data) => Promise<boolean>;
+  onSave: () => void;
+  onInput: (data: Data) => void;
+  saved: boolean;
 }
 
 const Settings = (props: SettingsProps) => {
   const data = () => props.data;
-  const [settings] = createStore(data());
-  const [saved, setSaved] = createSignal(true);
-
-  const save = () => {
-    void props.onSave(settings).then((saved) => {
-      setSaved(() => saved);
-    });
-  };
-
-  const inputsData = (
-    <For each={Object.entries(settings)}>
-      {([, _input]) => {
-        return (
-          <>
-            <span>{_input.name}:</span>
-            <Input {..._input} />
-          </>
-        );
-      }}
-    </For>
-  );
+  const [settings, setSettings] = createStore(data());
 
   return (
-    <div class="settings_container">
+    <div class="settings_container whitebox">
       <div class="settings_header">
         <h3>
           <IconButton
-            onClick={save}
+            onClick={() => props.onSave()}
             iconID="save"
             title="Save"
-            data-unsaved={!saved() ? "" : null}
+            data-unsaved={!props.saved ? "" : null}
             primary={true}
           />
           Save&nbsp;
         </h3>
         <b>Valid special characters: ' : " _ - and accents</b>
       </div>
-      <form
-        class="settings_inputs"
-        onInput={() => {
-          if (!saved()) {
-            setSaved(() => false);
-          }
-        }}
-      >
-        {inputsData}
+      <form class="settings_inputs">
+        <For each={Object.entries(settings)}>
+          {([key, input]) => {
+            return (
+              <>
+                <span>{input.name}:</span>
+                <Input
+                  {...input}
+                  onInput={(event: InputEvent) => {
+                    const target = event.currentTarget as
+                      | HTMLInputElement
+                      | HTMLTextAreaElement;
+                    if ("checked" in target) {
+                      // @ts-expect-error mismatch with input and textarea union
+                      setSettings(key, "checked", () => target.checked);
+                    }
+                    if ("value" in target) {
+                      setSettings(key, "value", () => target.value);
+                    }
+                    props.onInput(settings);
+                  }}
+                />
+              </>
+            );
+          }}
+        </For>
       </form>
     </div>
   );

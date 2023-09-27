@@ -9,11 +9,17 @@ function isTextArea(
   return "type" in props && props.type === "textarea";
 }
 
+export function isInput(
+  target: HTMLInputElement | HTMLTextAreaElement
+): target is HTMLInputElement {
+  return "type" in target;
+}
+
 export type InputTypes = "text" | "number" | "checkbox" | "textarea";
 
 export type InputProps<T extends InputTypes> = {
   type: T;
-  onValidate?: () => void;
+  onValidate?: (value: string | boolean) => void;
   class?: string;
 } & (T extends "textarea"
   ? JSX.InputHTMLAttributes<HTMLInputElement>
@@ -25,27 +31,41 @@ function Input<T extends InputTypes>(props: InputProps<T>) {
     Exclude<InputProps<T>, "class">
   ];
 
+  const onKeyPress: JSX.EventHandler<
+    HTMLInputElement | HTMLTextAreaElement,
+    KeyboardEvent
+  > = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      if (typeof props.onValidate === "function") {
+        const target = event.currentTarget;
+        props.onValidate(
+          isInput(target)
+            ? target.type === "checkbox"
+              ? target.checked
+              : target.value
+            : target.innerHTML
+        );
+      }
+    }
+    if (typeof props.onKeyPress === "function") {
+      // @ts-expect-error props splitting causes event to target input and textarea types
+      props.onKeyPress(event);
+    }
+  };
+
   return (
     <form onSubmit={(event) => event.preventDefault()} class={formProps.class}>
       <div class="validation_container">
         {isTextArea(inputProps) ? (
-          <textarea {...inputProps} rows="20" cols="50" />
-        ) : (
-          <input
+          <textarea
             {...inputProps}
-            onKeyPress={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                if (typeof props.onValidate === "function") {
-                  props.onValidate();
-                }
-              }
-              if (typeof props.onKeyPress === "function") {
-                // @ts-expect-error props splitting causes event to target input and textarea types
-                props.onKeyPress(event);
-              }
-            }}
+            rows="20"
+            cols="50"
+            onKeyPress={onKeyPress}
           />
+        ) : (
+          <input {...inputProps} onKeyPress={onKeyPress} />
         )}
       </div>
     </form>

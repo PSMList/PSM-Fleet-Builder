@@ -25,6 +25,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  padding: 1em;
 }
 
 .actions {
@@ -37,32 +38,19 @@
 
 .main_container {
   position: relative;
-  padding: 0 1em;
-  padding-bottom: 0.7em !important;
+  padding: 0 0 0.7em 0;
   display: flex;
   flex-grow: 1;
   height: max-content;
   min-height: 100%;
   gap: 1em;
-}
-
-.main_container > * {
-  margin-top: 0;
-  margin-bottom: 0;
+  overflow: scroll;
+  scroll-snap-type: mandatory y;
 }
 
 @media only screen and (max-width: 62em) {
   .main_container {
     flex-direction: column-reverse;
-    align-items: normal;
-    min-height: 0;
-    justify-content: flex-end;
-  }
-
-  .main_container > * {
-    min-height: 49vh;
-    flex-shrink: 0;
-    flex-grow: 1;
   }
 }
 

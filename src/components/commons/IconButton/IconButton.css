@@ -8,6 +8,7 @@
   justify-content: center;
   cursor: pointer;
   position: relative;
+  gap: 0.25em;
 }
 
 .icon_button::after {
@@ -22,7 +23,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  background-color: red;
+  background-color: #428bca;
   color: white;
 }
 
@@ -34,19 +35,7 @@
   margin-right: 0.25em;
 }
 
-.icon_button:hover i,
-.icon_button:focus i,
-.icon_button:focus-within i {
-  color: #428bca;
-}
-
-.icon_button .title {
-  margin-left: 0.25em;
-  font-size: 0.8em;
-}
-
-.icon_button.primary i {
-  width: max-content;
+.icon_button.primary {
   border-radius: 5px;
   padding: 0.3em 0.4em;
   background-color: #428bca;
@@ -54,12 +43,21 @@
   border: none;
   text-decoration: none;
   transition: 0.1s;
+  margin: 0 0.2em;
+}
+
+.icon_button:not(.primary):hover i,
+.icon_button:not(.primary):focus i,
+.icon_button:not(.primary):focus-within i {
+  color: #428bca;
+}
+
+.icon_button.primary > * {
   font-size: 0.8em;
 }
 
-.icon_button.primary:hover i,
-.icon_button.primary:focus i,
-.icon_button.primary:focus-within i {
+.icon_button.primary:hover,
+.icon_button.primary:focus,
+.icon_button.primary:focus-within {
   background-color: #2e6390;
-  color: #fff;
 }

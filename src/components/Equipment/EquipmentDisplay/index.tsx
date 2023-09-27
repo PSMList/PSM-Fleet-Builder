@@ -9,6 +9,7 @@ import EquipmentItem from "@/components/Equipment/EquipmentItem";
 import { EquipmentType } from "@/data/equipment";
 import { ShipType } from "@/data/ship";
 import "./EquipmentDisplay.css";
+import Items from "@/components/commons/Items";
 
 export interface EquipmentSavedDataType {
   id: number;
@@ -188,7 +189,7 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
         class="scroll_to_search"
         primary={true}
       >
-        Search/add equipment
+        Add equipment
       </IconButton>,
       toggleIcon,
       <IconButton
@@ -210,36 +211,27 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
     equipmentActions.push(toggleIcon);
   }
 
-  const headerInfo = (
-    <>
-      <span class="room">
-        <i class="fas fa-boxes" />
-        &nbsp;&nbsp;{equipmentData.room.current}&nbsp;/&nbsp;
-        {equipmentData.room.max}
-      </span>
-      &nbsp;&nbsp;
-      <span class="points">
-        <i class="fas fa-coins" />
-        &nbsp;&nbsp;{equipmentData.points.current}&nbsp;/&nbsp;
-        {equipmentData.points.max}
-      </span>
-    </>
-  );
-
   const shipEquipment = (
     <Show
       when={equipmentData.equipments.length}
       fallback={<h3 class="items_info">No equipment</h3>}
     >
-      <For each={equipmentData.equipments}>
-        {(equipment) => (
-          <EquipmentItem
-            data={equipment}
-            actions={removeEquipmentAction(equipment)}
-            collapse={cardsCollapse()}
-          />
-        )}
-      </For>
+      <Items
+        classList={{
+          minimized: cardsCollapse(),
+          maximized: !cardsCollapse(),
+        }}
+      >
+        <For each={equipmentData.equipments}>
+          {(equipment) => (
+            <EquipmentItem
+              data={equipment}
+              actions={removeEquipmentAction(equipment)}
+              collapse={cardsCollapse()}
+            />
+          )}
+        </For>
+      </Items>
     </Show>
   );
 
@@ -248,7 +240,21 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
       ref={(ref) => {
         displayContainer = ref;
       }}
-      info={headerInfo}
+      header={
+        <>
+          <span class="room">
+            <i class="fas fa-boxes" />
+            &nbsp;&nbsp;{equipmentData.room.current}&nbsp;/&nbsp;
+            {equipmentData.room.max}
+          </span>
+          &nbsp;&nbsp;
+          <span class="points">
+            <i class="fas fa-coins" />
+            &nbsp;&nbsp;{equipmentData.points.current}&nbsp;/&nbsp;
+            {equipmentData.points.max}
+          </span>
+        </>
+      }
       actions={equipmentActions}
       items={shipEquipment}
     />

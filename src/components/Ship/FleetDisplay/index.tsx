@@ -29,6 +29,7 @@ import { EquipmentType } from "@/data/equipment";
 import Equipment from "@/components/Equipment";
 import Treasure from "@/components/Treasure";
 import { TreasureType } from "@/data/treasure";
+import Items from "@/components/commons/Items";
 
 interface FleetSavedDataType {
   name: string;
@@ -476,8 +477,6 @@ const FleetDisplay = () => {
               description: "Internal error. Please contact administrators.",
             });
         }
-
-        throw new Error("Failed to save fleet data");
       });
     };
 
@@ -560,6 +559,7 @@ const FleetDisplay = () => {
         title: "Fleet settings",
         content: createRoot(() => (
           <Settings
+            saved={saved()}
             data={{
               name: {
                 name: "Fleet name",
@@ -586,31 +586,16 @@ const FleetDisplay = () => {
                 value: fleetData.description,
               },
             }}
-            onSave={(data) => {
-              return new Promise((resolve) => {
-                try {
-                  setNewData({
-                    name: data.name.value as string,
-                    // @ts-expect-error checked should appear in input props
-                    ispublic: !!data.ispublic.checked,
-                    points: {
-                      max: data.maxpoints.value as number,
-                      current: fleetData.points.current,
-                    },
-                    ships: fleetData.ships,
-                    treasures: fleetData.treasures,
-                    description: data.description.value as string,
-                  });
-                  setTimeout(() => {
-                    void saveFleet().then(() => {
-                      resolve(true);
-                    });
-                  }, 500);
-                } catch {
-                  resolve(false);
-                }
+            onInput={(data) => {
+              setNewData((_data) => {
+                _data.name = data.name.value as string;
+                // @ts-expect-error checked should appear in input props
+                _data.public = !!data.ispublic.checked;
+                _data.points.max = data.maxpoints.value as number;
+                _data.description = data.description.value as string;
               });
             }}
+            onSave={saveFleet}
           />
         )),
       });
@@ -654,6 +639,7 @@ const FleetDisplay = () => {
     };
 
     const copyFleet = () => {
+      const newLine = "\n";
       modalContext.showModal({
         id: "copy_fleet",
         title: "Copy fleet as text",
@@ -676,21 +662,20 @@ const FleetDisplay = () => {
           >
             {fleetData.ships.reduce(
               (output, ship) =>
-                `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.defaultname}\n` +
+                `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.defaultname}${newLine}` +
                 `${ship.crew.reduce(
                   (output, crew) =>
-                    `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}\n`,
+                    `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}${newLine}`,
                   ""
                 )}` +
                 `${ship.equipment.reduce(
                   (output, equipment) =>
-                    `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}\n`,
+                    `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}${newLine}`,
                   ""
                 )}` +
-                "\n",
-              `${fleetData.name} (${window.location.href})\n${
-                fleetData.description ? `\n${fleetData.description}\n` : ""
-              }\n`
+                newLine,
+              `${fleetData.name} (${window.location.href})${newLine}${newLine}` +
+                fleetData.description && `${fleetData.description}${newLine}`
             )}
           </Input>
         )),
@@ -704,7 +689,7 @@ const FleetDisplay = () => {
         class="scroll_to_search"
         primary={true}
       >
-        Search/add ships
+        Add ships
       </IconButton>,
       <IconButton
         iconID="toolbox"
@@ -712,7 +697,7 @@ const FleetDisplay = () => {
         data-treasures-count={
           fleetData.treasures.length ? fleetData.treasures.length : null
         }
-        title="Search/add treasure"
+        title="Add treasure"
       />,
       toggleIcon,
       <IconButton
@@ -722,13 +707,7 @@ const FleetDisplay = () => {
       />,
       <IconButton
         iconID="save"
-        onClick={() => {
-          try {
-            void saveFleet();
-          } catch {
-            //
-          }
-        }}
+        onClick={saveFleet}
         title="Save"
         data-unsaved={!saved() ? "" : null}
       />,
@@ -771,57 +750,63 @@ const FleetDisplay = () => {
     );
   }
 
-  const headerInfo = (
-    <>
-      <span class="points">
-        <i class="fas fa-coins" />
-        &nbsp;&nbsp;{fleetData.points.current}&nbsp;/&nbsp;
-        {fleetData.points.max}
-      </span>
-      {settingsActions}
-    </>
-  );
-
   const fleet = (
     <Show
       when={fleetData.ships.length}
       fallback={<h3 class="items_info">Empty fleet</h3>}
     >
-      <For each={fleetData.ships}>
-        {(ship) => (
-          <ShipItem
-            collapse={cardsCollapse()}
-            data={ship}
-            actions={
-              <>
-                <IconButton
-                  onClick={() => showCrew(ship)}
-                  data-crew-room={ship.crew.length ? ship.crew.length : null}
-                  iconID="users-cog"
-                  title="Show crew"
-                />
-                <IconButton
-                  onClick={() => showEquipment(ship)}
-                  data-equipments-room={
-                    ship.equipment.length ? ship.equipment.length : null
-                  }
-                  iconID="dolly-box"
-                  title="Show equipment"
-                />
-                {removeShipAction(ship)}
-              </>
-            }
-          />
-        )}
-      </For>
+      <Items
+        classList={{
+          minimized: cardsCollapse(),
+          maximized: !cardsCollapse(),
+        }}
+      >
+        <For each={fleetData.ships}>
+          {(ship) => (
+            <ShipItem
+              data={ship}
+              actions={
+                <>
+                  <IconButton
+                    onClick={() => showCrew(ship)}
+                    data-crew-room={ship.crew.length ? ship.crew.length : null}
+                    iconID="users-cog"
+                    title="Show crew"
+                  />
+                  <IconButton
+                    onClick={() => showEquipment(ship)}
+                    data-equipments-room={
+                      ship.equipment.length ? ship.equipment.length : null
+                    }
+                    iconID="dolly-box"
+                    title="Show equipment"
+                  />
+                  {removeShipAction(ship)}
+                </>
+              }
+            />
+          )}
+        </For>
+      </Items>
     </Show>
   );
 
   return (
     <Display
       ref={(ref) => (displayContainer = ref)}
-      title={fleetData.name}
-      info={headerInfo}
+      header={
+        <>
+          <h2 class="title">{fleetData.name}</h2>
+          <span class="points">
+            <i class="fas fa-coins" />
+            &nbsp;&nbsp;{fleetData.points.current}&nbsp;/&nbsp;
+            {fleetData.points.max}
+          </span>
+          {settingsActions.length && (
+            <span class="settings">{settingsActions}</span>
+          )}
+        </>
+      }
       actions={
         <>
           {fleetActions}

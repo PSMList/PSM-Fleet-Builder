@@ -1,69 +1,53 @@
 .display_container {
-  flex-grow: 1;
-  display: grid;
-  gap: 0.5em;
-  align-items: center;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto 1fr;
-  grid-template-areas:
-    "header"
-    "actions"
-    "items";
-}
-
-@media only screen and (min-width: 62em) {
-  .display_container {
-    row-gap: 0;
-    grid-template-columns: 1fr auto;
-    grid-template-rows: max-content max-content 1fr;
-  }
-}
-
-.display_container > .display_header {
-  grid-area: header;
-  word-break: break-word;
   display: flex;
-  align-items: center;
-  margin-bottom: 0.5em;
-  justify-content: flex-end;
-  font-weight: bold;
+  flex-direction: column;
+  gap: 1em;
+  flex-grow: 1;
 }
 
 @media only screen and (max-width: 62em) {
-  .display_container > .display_header {
+  .display_container .display_header > .info {
     flex-wrap: wrap;
   }
 }
 
-.display_container > .display_header > .title {
+#fleet_builder .display_header .info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 0.5em;
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.display_container .display_header .info > .title {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
   word-break: break-all;
-  margin-right: auto;
+  flex-grow: 1;
   font-family: Windlass, sans-serif;
+}
+
+.display_container .display_header .info {
   font-size: 1.4em;
 }
 
-.display_container > .actions {
-  grid-area: actions;
+.display_container .display_grid {
+  flex-grow: 1;
 }
 
-.display_container > .display_grid {
-  margin-top: 0;
-  grid-area: items;
-  align-content: flex-start;
-  align-self: stretch;
-  align-items: stretch;
-}
-
-.items > .items_info {
-  grid-area: 1 / 1 / -1 / -1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.8em;
+h3[class$="_info"] {
+  display: block;
+  margin: 4.5em auto;
+  text-align: center;
+  font-size: 1.6em;
   opacity: 0.6;
+}
+
+.minimized .maximize,
+.maximized .minimize {
+  display: none !important;
 }

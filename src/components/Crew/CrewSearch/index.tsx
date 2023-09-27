@@ -1,4 +1,4 @@
-import { onlyDisplay, useCardsCollapse } from "@/App";
+import { onlyDisplay } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { CrewItemsContext } from "@/components/Crew";
@@ -17,7 +17,6 @@ const CrewSearch = (props: CrewSearchProps) => {
   if (onlyDisplay) return <></>;
 
   const crewItemsContext = useContext(CrewItemsContext);
-  const [cardsCollapse] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 
@@ -44,7 +43,6 @@ const CrewSearch = (props: CrewSearchProps) => {
                     title="Add crew"
                   />
                 }
-                collapse={cardsCollapse()}
               />
             ),
           } as SearchItemType)

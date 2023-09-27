@@ -22,6 +22,7 @@ export interface ToastType {
   type: ToastTypes;
   title?: string;
   description: string | JSX.Element;
+  hide?: boolean;
 }
 
 export type ToastProps = ToastType & {
@@ -48,7 +49,11 @@ const Toast = (props: ToastProps) => {
 
   return (
     <div
-      class={`notification ${props.position}`}
+      classList={{
+        notification: true,
+        [props.position]: true,
+        hide: props.hide,
+      }}
       style={{ "background-color": backgroundColor() }}
     >
       <span class="notification-close">

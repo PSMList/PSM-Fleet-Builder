@@ -24,10 +24,11 @@ input[type="number"] {
   box-sizing: border-box;
 }
 
-#donation_container {
-  margin: 0 1.25em;
-}
-
 #donation_container > .whitebox {
   width: 100%;
+}
+
+.whitebox {
+  margin: 0;
+  max-width: 100%;
 }

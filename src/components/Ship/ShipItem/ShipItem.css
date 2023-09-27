@@ -8,6 +8,9 @@
 .item > .info > .bottom > .stats {
   grid-area: stats;
 }
+.item > .info > .bottom > .stats > .basemove {
+  letter-spacing: 2px;
+}
 .item > .info > .bottom > .stats > .basemove > .L {
   color: red;
 }

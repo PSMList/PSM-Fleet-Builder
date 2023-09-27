@@ -280,7 +280,13 @@ const Search = (props: SearchProps) => {
     }
 
     return (
-      <Items class="search_results">
+      <Items
+        classList={{
+          search_results: true,
+          minimized: cardsCollapse(),
+          maximized: !cardsCollapse(),
+        }}
+      >
         <For each={sortedItems}>{(item) => item.element}</For>
       </Items>
     );

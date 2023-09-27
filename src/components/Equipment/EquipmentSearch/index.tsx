@@ -1,4 +1,4 @@
-import { onlyDisplay, useCardsCollapse } from "@/App";
+import { onlyDisplay } from "@/App";
 import IconButton from "@/components/commons/IconButton";
 import Search, { SearchItemType } from "@/components/commons/Search";
 import { EquipmentItemsContext } from "@/components/Equipment";
@@ -13,7 +13,6 @@ const EquipmentSearch = () => {
   if (onlyDisplay) return <></>;
 
   const equipmentItemsContext = useContext(EquipmentItemsContext);
-  const [cardsCollapse] = useCardsCollapse();
 
   const { database } = useStore().databaseService;
 
@@ -40,7 +39,6 @@ const EquipmentSearch = () => {
                     title="Add equipment"
                   />
                 }
-                collapse={cardsCollapse()}
               />
             ),
           } as SearchItemType)
