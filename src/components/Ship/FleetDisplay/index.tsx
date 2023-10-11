@@ -34,18 +34,11 @@ import Items from "@/components/commons/Items";
 interface FleetSavedDataType {
   name: string;
   maxpoints: number;
-  data: (
-    | {
-        id: number;
-        crew: { id: number }[];
-        equipment: { id: number }[];
-        treasure?: false;
-      }
-    | {
-        id: number;
-        treasure: true;
-      }
-  )[];
+  data: {
+    id: number;
+    crew?: { id: number }[];
+    equipment?: { id: number }[];
+  }[];
   ispublic: boolean;
   description: string;
 }
@@ -87,7 +80,7 @@ const FleetDisplay = () => {
         max: savedData.maxpoints,
       },
       ships: savedData.data.reduce<ShipType[]>((allships, item) => {
-        if (item.treasure) return allships;
+        if (!item.crew) return allships;
         const { id: shipID, crew: crews, equipment: equipments } = item;
         const ship = database.ships.get(shipID);
         if (!ship) return allships;
@@ -99,7 +92,7 @@ const FleetDisplay = () => {
             });
           return allcrew;
         }, []);
-        const equipment = equipments.reduce<EquipmentType[]>(
+        const equipment = (equipments ?? []).reduce<EquipmentType[]>(
           (allequipment, item) => {
             const equipment = database.equipments.get(item.id);
             if (equipment)
@@ -118,7 +111,7 @@ const FleetDisplay = () => {
         return allships;
       }, []),
       treasures: savedData.data.reduce<TreasureType[]>((alltreasures, item) => {
-        if (!item.treasure) return alltreasures;
+        if (item.crew) return alltreasures;
         const { id: treasureID } = item;
         const treasure = database.treasures.get(treasureID);
         if (treasure) {
