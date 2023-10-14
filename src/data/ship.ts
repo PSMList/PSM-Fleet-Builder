@@ -7,6 +7,7 @@ import { FactionType, factionDataPromise } from './faction';
 import { rarityDataPromise } from './rarity';
 import { technicalshapeDataPromise } from './technicalshape';
 import { EquipmentType } from './equipment';
+import { baseUrl } from '@/App';
 
 interface ShipDataItem {
   id: number;
@@ -61,8 +62,8 @@ export const shipDataPromise = fetch(`${apiUrl}/ship?custom=include`)
 
       shipData.set(item.id, {
         id: item.id,
-        img: `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
-        altimg: `${window.baseUrl}/img/technicalshape/icon/${technicalshape.name}.jpg`,
+        img: `${baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
+        altimg: `${baseUrl}/img/technicalshape/icon/${technicalshape.name}.jpg`,
         faction,
         rarity,
         extension,

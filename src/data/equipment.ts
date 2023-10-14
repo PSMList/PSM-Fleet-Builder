@@ -3,6 +3,7 @@ import { ItemType } from '@/components/commons/Item';
 import { apiUrl } from './api';
 import { extensionDataPromise } from './extension';
 import { rarityDataPromise } from './rarity';
+import { baseUrl } from '@/App';
 
 interface EquipmentDataItem {
   id: number;
@@ -32,8 +33,8 @@ export const equipmentDataPromise = fetch(`${apiUrl}/equipment?custom=include`)
 
       equipmentData.set(item.id, {
         id: item.id,
-        img: `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
-        altimg: `${window.baseUrl}/img/gameicons/x80/notfound.jpg`,
+        img: `${baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
+        altimg: `${baseUrl}/img/gameicons/x80/notfound.jpg`,
         rarity,
         extension,
         numid: item.numid,

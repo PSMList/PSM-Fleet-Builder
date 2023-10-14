@@ -4,6 +4,7 @@ import Item from "@/components/commons/Item";
 import { CrewType } from "@/data/crew";
 import "./CrewItem.css";
 import { onError, setBackground } from "@/utils";
+import { baseUrl } from "@/App";
 
 interface SearchItemProps {
   data: CrewType;
@@ -21,7 +22,7 @@ const CrewItem = (props: SearchItemProps) => {
             iconID="book-open"
             onClick={() =>
               open(
-                `${window.baseUrl}/crew/${props.data.extension.short}${props.data.numid}`,
+                `${baseUrl}/crew/${props.data.extension.short}${props.data.numid}`,
                 "_blank"
               )
             }
@@ -42,13 +43,13 @@ const CrewItem = (props: SearchItemProps) => {
           <div class="name">{props.data.name}</div>
           <img
             class="extension"
-            src={`${window.baseUrl}/${props.data.extension.icon}`}
+            src={`${baseUrl}/${props.data.extension.icon}`}
             alt={props.data.extension.short}
           />
           <span class="id">{`${props.data.extension.short} ${props.data.numid}`}</span>
           <img
             class="faction"
-            src={`${window.baseUrl}/${props.data.faction.icon}`}
+            src={`${baseUrl}/${props.data.faction.icon}`}
             alt={props.data.faction.defaultname}
           />
         </div>

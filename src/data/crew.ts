@@ -4,6 +4,7 @@ import { apiUrl } from './api';
 import { extensionDataPromise } from './extension';
 import { FactionType, factionDataPromise } from './faction';
 import { rarityDataPromise } from './rarity';
+import { baseUrl } from '@/App';
 
 interface CrewDataItem {
   id: number;
@@ -38,8 +39,8 @@ export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
 
       crewData.set(item.id, {
         id: item.id,
-        img: `${window.baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
-        altimg: `${window.baseUrl}/img/logos/crew.png`,
+        img: `${baseUrl}/img/gameicons/x80/${extension.short}/${item.numid}.jpg`,
+        altimg: `${baseUrl}/img/logos/crew.png`,
         faction,
         rarity,
         extension,

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { hash, onlyDisplay, slug, useCardsCollapse } from "@/App";
+import { baseUrl, hash, onlyDisplay, slug, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -203,9 +203,7 @@ const FleetDisplay = () => {
 
   onMount(async () => {
     try {
-      const response = await fetch(
-        `${window.baseUrl}/fleet/get/${hash}/${slug}`
-      );
+      const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
       const data = (await response.json()) as FleetSavedDataType | undefined;
       if (!data) return;
 
@@ -409,16 +407,13 @@ const FleetDisplay = () => {
 
     const saveFleet = async () => {
       const fleetStr = fleetDataToString();
-      return fetchWithTimeout(
-        `${window.baseUrl}/fleet/self/set/${hash}/${slug}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: fleetStr,
-        }
-      ).then(async (res) => {
+      return fetchWithTimeout(`${baseUrl}/fleet/self/set/${hash}/${slug}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: fleetStr,
+      }).then(async (res) => {
         if (res.ok) {
           setSaved(() => true);
           return toastContext.createToast({
@@ -558,8 +553,8 @@ const FleetDisplay = () => {
                 name: "Fleet name",
                 type: "text",
                 value: fleetData.name,
-                minlength: window.fleetNameMinlength,
                 maxlength: window.fleetNameMaxlength,
+                minlength: window.fleetNameMinlength,
               },
               maxpoints: {
                 name: "Max points",
@@ -667,7 +662,7 @@ const FleetDisplay = () => {
                   ""
                 )}` +
                 newLine,
-              `${fleetData.name} (${window.location.href})${newLine}${newLine}` +
+              `${fleetData.name} (${location.href})${newLine}${newLine}` +
                 fleetData.description && `${fleetData.description}${newLine}`
             )}
           </Input>

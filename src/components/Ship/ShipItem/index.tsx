@@ -4,6 +4,7 @@ import Item from "@/components/commons/Item";
 import { ShipType } from "@/data/ship";
 import "./ShipItem.css";
 import { onError, setBackground } from "@/utils";
+import { baseUrl } from "@/App";
 
 interface SearchItemProps {
   data: ShipType;
@@ -19,8 +20,8 @@ const ShipItem = (props: SearchItemProps) => {
           <IconButton
             iconID="book-open"
             onClick={() =>
-              window.open(
-                `${window.baseUrl}/ship/${props.data.extension.short}${props.data.numid}`,
+              open(
+                `${baseUrl}/ship/${props.data.extension.short}${props.data.numid}`,
                 "_blank"
               )
             }
@@ -41,13 +42,13 @@ const ShipItem = (props: SearchItemProps) => {
           <div class="name">{props.data.name}</div>
           <img
             class="extension"
-            src={`${window.baseUrl}/${props.data.extension.icon}`}
+            src={`${baseUrl}/${props.data.extension.icon}`}
             alt={props.data.faction.defaultname}
           />
           <span class="id">{`${props.data.extension.short} ${props.data.numid}`}</span>
           <img
             class="faction"
-            src={`${window.baseUrl}/${props.data.faction.icon}`}
+            src={`${baseUrl}/${props.data.faction.icon}`}
             alt={props.data.faction.defaultname}
           />
         </div>
@@ -65,16 +66,16 @@ const ShipItem = (props: SearchItemProps) => {
           />
           <span class="stats">
             <span class="masts">
-              <img src={`${window.baseUrl}/img/svg/masts_nobg.svg`} />
+              <img src={`${baseUrl}/img/svg/masts_nobg.svg`} />
               {props.data.masts}
             </span>
             <span class="cargo">
-              <img src={`${window.baseUrl}/img/svg/cargo_nobg.svg`} />
+              <img src={`${baseUrl}/img/svg/cargo_nobg.svg`} />
               {props.data.cargo}
             </span>
             {/* add color by changing L to <span class="L">L</span> */}
             <span class="basemove">
-              <img src={`${window.baseUrl}/img/svg/basemove_nobg.svg`} />
+              <img src={`${baseUrl}/img/svg/basemove_nobg.svg`} />
               {props.data.basemove
                 .match(/./g)
                 ?.map((move) =>
@@ -83,13 +84,10 @@ const ShipItem = (props: SearchItemProps) => {
             </span>
           </span>
           <span class="cannons">
-            <img src={`${window.baseUrl}/img/svg/cannons.svg`} />
+            <img src={`${baseUrl}/img/svg/cannons.svg`} />
             <For each={props.data.cannons.match(/.{2}/g)}>
               {(cannon) => (
-                <img
-                  src={`${window.baseUrl}/img/svg/dice/${cannon}.svg`}
-                  alt="■"
-                />
+                <img src={`${baseUrl}/img/svg/dice/${cannon}.svg`} alt="■" />
               )}
             </For>
           </span>
@@ -126,7 +124,7 @@ const ShipItem = (props: SearchItemProps) => {
                 <span class="points">{crew.points}</span>&nbsp;
                 <img
                   class="faction"
-                  src={`${window.baseUrl}/${crew.faction.icon}`}
+                  src={`${baseUrl}/${crew.faction.icon}`}
                   alt={crew.faction.defaultname}
                 />
                 &nbsp;

@@ -8,7 +8,7 @@ import IconButton from "../IconButton";
 import Select from "../Inputs/Select";
 import { ItemType } from "../Item";
 import "./Search.css";
-import { useCardsCollapse } from "@/App";
+import { baseUrl, useCardsCollapse } from "@/App";
 
 export interface SearchItemType {
   element: JSX.Element;
@@ -57,7 +57,7 @@ const Search = (props: SearchProps) => {
       display: (
         <span>
           <img
-            src={faction.icon ? `${window.baseUrl}/${faction.icon}` : undefined}
+            src={faction.icon ? `${baseUrl}/${faction.icon}` : undefined}
             onError={(event) => {
               event.currentTarget.style.height = "0";
               event.currentTarget.removeAttribute("src");
@@ -105,9 +105,7 @@ const Search = (props: SearchProps) => {
       display: (
         <span>
           <img
-            src={
-              extension.icon ? `${window.baseUrl}/${extension.icon}` : undefined
-            }
+            src={extension.icon ? `${baseUrl}/${extension.icon}` : undefined}
             onError={(event) => {
               event.currentTarget.style.height = "0";
               event.currentTarget.removeAttribute("src");

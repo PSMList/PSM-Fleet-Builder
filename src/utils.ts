@@ -1,3 +1,5 @@
+import { baseUrl } from './App';
+
 export function removeItemFromArray<T>(
   array: T[],
   func: (value: T, index: number, obj: T[]) => boolean
@@ -6,10 +8,6 @@ export function removeItemFromArray<T>(
   if (index !== -1) {
     return array.splice(index, 1);
   }
-}
-
-export function isStrPositiveInt(str: string) {
-  return /^\+?(0|[1-9]\d*)$/.test(str);
 }
 
 export function capitalize(value: string) {
@@ -76,6 +74,6 @@ export function onError(target: HTMLImageElement, url?: string) {
 
 export function setBackground(element: HTMLDivElement, url?: string) {
   if (element.parentElement && url) {
-    element.parentElement.style.backgroundImage = `url(${window.baseUrl}/${url})`;
+    element.parentElement.style.backgroundImage = `url(${baseUrl}/${url})`;
   }
 }

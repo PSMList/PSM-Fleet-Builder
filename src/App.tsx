@@ -5,14 +5,6 @@ import "@/App.css";
 import { JSX, createContext, createSignal, useContext } from "solid-js";
 import { StoreProvider } from "@/data/store";
 
-export const [hash, slug] = window.location.pathname.split("/").splice(-2, 2);
-export const onlyDisplay = !/self\/show\/\d+\/[^/]+$/.test(
-  window.location.pathname
-);
-export const fleetMaxpointsMin = window.fleetMaxpointsMin;
-export const fleetMaxpointsMax = window.fleetMaxpointsMax;
-export const baseUrl = window.baseUrl;
-
 declare global {
   interface Window {
     fleetMaxpointsMin: number;
@@ -22,6 +14,12 @@ declare global {
     baseUrl: string;
   }
 }
+
+export const [, self, hash, slug] = location.pathname.match(
+  /(self\/)?show\/(\d+)\/([^/]+)$/
+) ?? ["", "", "", ""];
+export const onlyDisplay = !self;
+export const baseUrl = window.baseUrl;
 
 interface CardCollapseContextProps {
   children?: JSX.Element;
