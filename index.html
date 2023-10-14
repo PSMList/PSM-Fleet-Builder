@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <base href="http://localhost" />
     <meta charset="UTF-8" />
-    <link rel="icon" href="http://psmlist/public/img/favicon.ico" />
+    <link rel="icon" href="/public/img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <meta property="og:site_name" content="PSMList.com" />
@@ -11,7 +12,7 @@
       content="PSMList - Search for ships, crew and treasures from Pirates CSG"
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="http://psmlist/public/img/logo.png" />
+    <meta property="og:image" content="/public/img/logo.png" />
     <meta
       property="og:description"
       content="Build your fleet, share it with others and see others' fleet."
@@ -19,14 +20,14 @@
     <title>PSMList.com | Fleet Builder</title>
     <link
       type="text/css"
-      href="http://psmlist/public/css/all.css"
+      href="/public/css/all.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
     />
     <link
       type="text/css"
-      href="http://psmlist/public/css/blog.css"
+      href="/public/css/blog.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
@@ -36,26 +37,30 @@
       window.fleetMaxpointsMax = 200;
       window.fleetNameMinlength = 5;
       window.fleetNameMaxlength = 60;
-      window.baseUrl = "http://psmlist/public";
+      window.baseUrl = "/public";
     </script>
-    <script type="module" src="/src/main.tsx" defer></script>
+    <script
+      type="module"
+      src="http://localhost:5173/src/main.tsx"
+      defer
+    ></script>
     <link
       type="text/css"
-      href="http://psmlist/public/fontawesome/css/fontawesome.min.css"
+      href="/public/fontawesome/css/fontawesome.min.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
     />
     <link
       type="text/css"
-      href="http://psmlist/public/fontawesome/css/solid.min.css"
+      href="/public/fontawesome/css/solid.min.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
     />
     <link
       type="text/css"
-      href="http://psmlist/public/fontawesome/css/brands.min.css"
+      href="/public/fontawesome/css/brands.min.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
@@ -78,7 +83,7 @@
       <header>
         <div id="header_title">
           <a href="/public/">
-            <img src="http://psmlist/public/img/logo.png" alt="logo.png" />
+            <img src="/public/img/logo.png" alt="logo.png" />
             <div id="website_title_container">
               <p id="website_title">PSM List</p>
               <p id="slogan">The PSM collector's reference</p>
