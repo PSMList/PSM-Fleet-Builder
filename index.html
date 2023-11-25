@@ -32,6 +32,12 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
+    <script type="text/javascript" src="/public/js/jquery.js"></script>
+    <script type="text/javascript" src="/public/js/async_loading.js"></script>
+    <script
+      type="text/javascript"
+      src="/public/js/jquery.dataTables.min.js"
+    ></script>
     <script>
       window.fleetMaxpointsMin = 30;
       window.fleetMaxpointsMax = 200;
@@ -39,32 +45,7 @@
       window.fleetNameMaxlength = 60;
       window.baseUrl = "/public";
     </script>
-    <script
-      type="module"
-      src="http://localhost:5173/src/main.tsx"
-      defer
-    ></script>
-    <link
-      type="text/css"
-      href="/public/fontawesome/css/fontawesome.min.css"
-      rel="preload"
-      as="style"
-      onload="this.rel='stylesheet'"
-    />
-    <link
-      type="text/css"
-      href="/public/fontawesome/css/solid.min.css"
-      rel="preload"
-      as="style"
-      onload="this.rel='stylesheet'"
-    />
-    <link
-      type="text/css"
-      href="/public/fontawesome/css/brands.min.css"
-      rel="preload"
-      as="style"
-      onload="this.rel='stylesheet'"
-    />
+    <script type="module" src="/src/main.tsx" defer></script>
     <script
       src="https://kit.fontawesome.com/f8943cefef.js"
       crossorigin="anonymous"
