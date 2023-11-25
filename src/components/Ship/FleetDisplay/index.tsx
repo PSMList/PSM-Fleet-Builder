@@ -140,6 +140,7 @@ const FleetDisplay = () => {
           data.name = newData.name;
           data.points = newData.points;
           data.ships = newData.ships;
+          data.treasures = newData.treasures;
           data.description = newData.description;
         })
       );
@@ -186,7 +187,6 @@ const FleetDisplay = () => {
           })),
           ...fleetData.treasures.map((treasure) => ({
             id: treasure.id,
-            treasure: true as const,
           })),
         ],
         ispublic: fleetData.ispublic,
@@ -590,9 +590,17 @@ const FleetDisplay = () => {
     };
 
     const showTreasures = () => {
+      const oldState = JSON.stringify(fleetData.treasures);
+
       modalContext.showModal({
         id: "add_treasure",
         title: "Select treasures",
+        onClose: () => {
+          const newState = JSON.stringify(fleetData.treasures);
+          if (!onlyDisplay && oldState !== newState) {
+            setSaved(() => false);
+          }
+        },
         content: createRoot(() => (
           <Treasure
             treasures={fleetData.treasures}
