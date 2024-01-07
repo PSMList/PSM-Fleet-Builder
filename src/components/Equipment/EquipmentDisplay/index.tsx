@@ -10,6 +10,7 @@ import { EquipmentType } from "@/data/equipment";
 import { ShipType } from "@/data/ship";
 import "./EquipmentDisplay.css";
 import Items from "@/components/commons/Items";
+import Icon from "@/components/commons/Icon";
 
 export interface EquipmentSavedDataType {
   id: number;
@@ -187,7 +188,7 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
-        primary={true}
+        primary
       >
         Add equipment
       </IconButton>,
@@ -214,7 +215,12 @@ const EquipmentDisplay = (props: EquipmentDisplayProps) => {
   const shipEquipment = (
     <Show
       when={equipmentData.equipments.length}
-      fallback={<h3 class="items_info">No equipment</h3>}
+      fallback={
+        <h3 class="items_info">
+          No selected equipment, click on <Icon iconID="search-plus" /> to
+          start.
+        </h3>
+      }
     >
       <Items
         classList={{

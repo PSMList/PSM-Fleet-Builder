@@ -30,6 +30,7 @@ import Equipment from "@/components/Equipment";
 import Treasure from "@/components/Treasure";
 import { TreasureType } from "@/data/treasure";
 import Items from "@/components/commons/Items";
+import Icon from "@/components/commons/Icon";
 
 interface FleetSavedDataType {
   name: string;
@@ -685,7 +686,7 @@ const FleetDisplay = () => {
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
-        primary={true}
+        primary
       >
         Add ships
       </IconButton>,
@@ -751,7 +752,11 @@ const FleetDisplay = () => {
   const fleet = (
     <Show
       when={fleetData.ships.length}
-      fallback={<h3 class="items_info">Empty fleet</h3>}
+      fallback={
+        <h3 class="items_info">
+          No selected ship, click on <Icon iconID="search-plus" /> to start.
+        </h3>
+      }
     >
       <Items
         classList={{

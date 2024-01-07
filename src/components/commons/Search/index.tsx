@@ -238,7 +238,7 @@ const Search = (props: SearchProps) => {
         <h3 class="search_info">
           Enter any text in the search bar to show items.
           <br />
-          (leave blank and click search to show all)
+          Leave blank and click search to show all.
         </h3>
       );
     }
@@ -305,7 +305,7 @@ const Search = (props: SearchProps) => {
           iconID="search"
           title="Search"
           onClick={() => searchInItems()}
-          primary={true}
+          primary
         />
         <IconButton
           iconID={cardsCollapse() ? "expand-arrows-alt" : "compress-arrows-alt"}

@@ -9,6 +9,7 @@ import TreasureItem from "@/components/Treasure/TreasureItem";
 import { TreasureType } from "@/data/treasure";
 import "./TreasureDisplay.css";
 import Items from "@/components/commons/Items";
+import Icon from "@/components/commons/Icon";
 
 export interface TreasureSavedDataType {
   id: number;
@@ -118,7 +119,7 @@ const TreasureDisplay = (props: TreasureDisplayProps) => {
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
-        primary={true}
+        primary
       >
         Add treasure
       </IconButton>,
@@ -145,7 +146,11 @@ const TreasureDisplay = (props: TreasureDisplayProps) => {
   const shipTreasure = (
     <Show
       when={treasureData.length}
-      fallback={<h3 class="items_info">No treasure</h3>}
+      fallback={
+        <h3 class="items_info">
+          No selected treasure, click on <Icon iconID="search-plus" /> to start.
+        </h3>
+      }
     >
       <Items
         classList={{

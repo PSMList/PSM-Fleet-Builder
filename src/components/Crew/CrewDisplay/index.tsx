@@ -10,6 +10,7 @@ import { CrewType } from "@/data/crew";
 import { ShipType } from "@/data/ship";
 import "./CrewDisplay.css";
 import Items from "@/components/commons/Items";
+import Icon from "@/components/commons/Icon";
 
 export interface CrewSavedDataType {
   id: number;
@@ -183,7 +184,7 @@ const CrewDisplay = (props: CrewDisplayProps) => {
         iconID="search-plus"
         onClick={scrollToDisplayBottom}
         class="scroll_to_search"
-        primary={true}
+        primary
       >
         Add crew
       </IconButton>,
@@ -210,7 +211,11 @@ const CrewDisplay = (props: CrewDisplayProps) => {
   const shipCrew = (
     <Show
       when={crewData.crew.length}
-      fallback={<h3 class="items_info">Empty crew</h3>}
+      fallback={
+        <h3 class="items_info">
+          No selected crew, click on <Icon iconID="search-plus" /> to start.
+        </h3>
+      }
     >
       <Items
         classList={{

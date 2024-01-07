@@ -32,7 +32,7 @@ const Settings = (props: SettingsProps) => {
             iconID="save"
             title="Save"
             data-unsaved={!props.saved ? "" : null}
-            primary={true}
+            primary
           />
           Save&nbsp;
         </h3>
