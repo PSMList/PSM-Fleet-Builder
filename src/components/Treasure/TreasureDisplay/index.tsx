@@ -177,12 +177,10 @@ const TreasureDisplay = (props: TreasureDisplayProps) => {
         displayContainer = ref;
       }}
       header={
-        <>
-          <span class="room">
-            <i class="fas fa-toolbox" />
-            &nbsp;&nbsp;{treasureData.length}
-          </span>
-        </>
+        <span class="room">
+          <i class="fas fa-treasure-chest" />
+          &nbsp;&nbsp;{treasureData.length}
+        </span>
       }
       actions={treasureActions}
       items={shipTreasure}

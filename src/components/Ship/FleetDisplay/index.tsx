@@ -691,7 +691,7 @@ const FleetDisplay = () => {
         Add ships
       </IconButton>,
       <IconButton
-        iconID="toolbox"
+        iconID="treasure-chest"
         onClick={showTreasures}
         data-treasures-count={
           fleetData.treasures.length ? fleetData.treasures.length : null
