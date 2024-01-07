@@ -581,7 +581,7 @@ const FleetDisplay = () => {
               setNewData((_data) => {
                 _data.name = data.name.value as string;
                 // @ts-expect-error checked should appear in input props
-                _data.public = !!data.ispublic.checked;
+                _data.ispublic = !!data.ispublic.checked;
                 _data.points.max = data.maxpoints.value as number;
                 _data.description = data.description.value as string;
               });
