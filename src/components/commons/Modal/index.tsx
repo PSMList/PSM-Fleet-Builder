@@ -14,6 +14,7 @@ export interface ModalProperties {
   id: string;
   content?: JSX.Element;
   title: string;
+  subtitle?: string;
   onClose?: (() => void) | false;
 }
 
@@ -48,7 +49,12 @@ const Modal = (props: ModalProps) => {
           when={props.properties.title || props.properties.onClose !== false}
         >
           <div class="modal-header">
-            <h2 class="modal-title">{props.properties.title}</h2>
+            <div class="modal-title">
+              <h2>{props.properties.title}</h2>
+              <Show when={props.properties.subtitle}>
+                <h3>{props.properties.subtitle}</h3>
+              </Show>
+            </div>
             <Show when={props.properties.onClose !== false}>
               <div class="modal-actions">
                 <IconButton

@@ -27,16 +27,37 @@
   padding: 1.5em;
 }
 
+@media only screen and (max-width: 42em) {
+  .modal-shadow {
+    padding: 0;
+  }
+
+  .modal-container {
+    border-radius: 0;
+  }
+
+  .modal-container {
+    padding: 1em;
+  }
+}
+
 .modal-header {
   width: 100%;
   flex: 0 0 auto;
   margin: 0;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-.modal-title {
+.modal-title h2 {
   color: #333;
+  margin: 0;
+}
+
+.modal-title h3 {
+  color: #666;
+  margin: 0.5em 0 0 0;
 }
 
 .modal-content {

@@ -26,7 +26,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  word-break: break-all;
   flex-grow: 1;
   font-family: Windlass, sans-serif;
 }

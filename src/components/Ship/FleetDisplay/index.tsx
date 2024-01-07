@@ -263,7 +263,8 @@ const FleetDisplay = () => {
     const oldState = JSON.stringify(_ship().crew);
     modalContext.showModal({
       id: "add_crew_" + objectId(_ship()).toString(),
-      title: "Select crew for " + _ship().fullname,
+      title: "Crew manager",
+      subtitle: _ship().fullname,
       onClose: () => {
         const newState = JSON.stringify(ship.crew);
         if (!onlyDisplay && oldState !== newState) {
@@ -284,7 +285,8 @@ const FleetDisplay = () => {
     const oldState = JSON.stringify(_ship().equipment);
     modalContext.showModal({
       id: "add_equipment_" + objectId(_ship()).toString(),
-      title: "Select equipment for " + _ship().fullname,
+      title: "Equipment manager",
+      subtitle: _ship().fullname,
       onClose: () => {
         const newState = JSON.stringify(ship.equipment);
         if (!onlyDisplay && oldState !== newState) {
@@ -594,7 +596,7 @@ const FleetDisplay = () => {
 
       modalContext.showModal({
         id: "add_treasure",
-        title: "Select treasures",
+        title: "Treasure manager",
         onClose: () => {
           const newState = JSON.stringify(fleetData.treasures);
           if (!onlyDisplay && oldState !== newState) {

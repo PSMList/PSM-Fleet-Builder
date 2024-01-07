@@ -17,10 +17,6 @@
   scrollbar-gutter: stable;
 }
 
-#content_container h2 {
-  margin: 0;
-}
-
 #fleet_builder {
   flex-grow: 1;
   display: flex;

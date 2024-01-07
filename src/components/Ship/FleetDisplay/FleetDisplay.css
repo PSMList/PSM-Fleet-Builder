@@ -10,6 +10,10 @@
   content: attr(data-treasures-count);
 }
 
+#fleet_container .info .title {
+  margin: 0;
+}
+
 #fleet_container .info .settings {
   font-size: 1.2em;
 }
