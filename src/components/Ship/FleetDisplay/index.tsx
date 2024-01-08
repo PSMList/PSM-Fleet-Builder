@@ -673,8 +673,14 @@ const FleetDisplay = () => {
                   ""
                 )}` +
                 newLine,
-              `${fleetData.name} (${location.href})${newLine}${newLine}` +
-                fleetData.description && `${fleetData.description}${newLine}`
+              `[${fleetData.name}](${location.href.replace(
+                "/self",
+                ""
+              )})${newLine}${newLine}${
+                fleetData.description
+                  ? `${fleetData.description}${newLine}${newLine}`
+                  : ""
+              }`
             )}
           </Input>
         )),
