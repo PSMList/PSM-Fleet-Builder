@@ -34,7 +34,6 @@
   resize: none;
   max-height: 10em;
   font-family: inherit;
-  line-height: 0.7;
 }
 
 .description textarea:focus-visible {
