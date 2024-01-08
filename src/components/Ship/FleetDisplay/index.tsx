@@ -785,20 +785,26 @@ const FleetDisplay = () => {
               data={ship}
               actions={
                 <>
-                  <IconButton
-                    onClick={() => showCrew(ship)}
-                    data-crew-room={ship.crew.length ? ship.crew.length : null}
-                    iconID="users-cog"
-                    title="Show crew"
-                  />
-                  <IconButton
-                    onClick={() => showEquipment(ship)}
-                    data-equipments-room={
-                      ship.equipment.length ? ship.equipment.length : null
-                    }
-                    iconID="dolly-box"
-                    title="Show equipment"
-                  />
+                  {!ship.isfort && (
+                    <>
+                      <IconButton
+                        onClick={() => showCrew(ship)}
+                        data-crew-room={
+                          ship.crew.length ? ship.crew.length : null
+                        }
+                        iconID="users-cog"
+                        title="Show crew"
+                      />
+                      <IconButton
+                        onClick={() => showEquipment(ship)}
+                        data-equipments-room={
+                          ship.equipment.length ? ship.equipment.length : null
+                        }
+                        iconID="dolly-box"
+                        title="Show equipment"
+                      />
+                    </>
+                  )}
                   {removeShipAction(ship)}
                 </>
               }
