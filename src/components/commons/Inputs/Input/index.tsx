@@ -35,7 +35,7 @@ function Input<T extends InputTypes>(props: InputProps<T>) {
     HTMLInputElement | HTMLTextAreaElement,
     KeyboardEvent
   > = (event) => {
-    if (event.key === "Enter") {
+    if (event.key === "Enter" && !isTextArea(inputProps)) {
       event.preventDefault();
       if (typeof props.onValidate === "function") {
         const target = event.currentTarget;
