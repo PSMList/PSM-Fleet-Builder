@@ -303,6 +303,136 @@ const FleetDisplay = () => {
     });
   };
 
+  const showTreasures = (
+    <IconButton
+      iconID="treasure-chest"
+      onClick={() => {
+        const oldState = JSON.stringify(fleetData.treasures);
+
+        modalContext.showModal({
+          id: "add_treasure",
+          title: "Treasure manager",
+          onClose: () => {
+            const newState = JSON.stringify(fleetData.treasures);
+            if (!onlyDisplay && oldState !== newState) {
+              setSaved(() => false);
+            }
+          },
+          content: createRoot(() => (
+            <Treasure
+              treasures={fleetData.treasures}
+              remainingFleetPoints={
+                fleetData.points.max - fleetData.points.current
+              }
+            />
+          )),
+        });
+      }}
+      data-treasures-count={
+        fleetData.treasures.length ? fleetData.treasures.length : null
+      }
+      title="Add treasure"
+    />
+  );
+
+  const copyFleet = (
+    <IconButton
+      iconID="clipboard"
+      onClick={() => {
+        const newLine = "\n";
+        modalContext.showModal({
+          id: "copy_fleet",
+          title: "Copy fleet as text",
+          content: createRoot(() => (
+            <Input
+              type="textarea"
+              ref={(ref) => {
+                setTimeout(async () => {
+                  ref.focus();
+                  ref.select();
+                  await navigator.clipboard.writeText(ref.innerHTML);
+                  toastContext.createToast({
+                    id: "success-write-clipboard",
+                    title: "Copied fleet data",
+                    type: "success",
+                    description: "",
+                  });
+                }, 150);
+              }}
+            >
+              {fleetData.ships.reduce(
+                (output, ship) =>
+                  `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.defaultname}${newLine}` +
+                  `${ship.crew.reduce(
+                    (output, crew) =>
+                      `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}${newLine}`,
+                    ""
+                  )}` +
+                  `${ship.equipment.reduce(
+                    (output, equipment) =>
+                      `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}${newLine}`,
+                    ""
+                  )}` +
+                  newLine,
+                `[${fleetData.name}](${location.href.replace(
+                  "/self",
+                  ""
+                )})${newLine}${newLine}${
+                  fleetData.description
+                    ? `${fleetData.description}${newLine}${newLine}`
+                    : ""
+                }`
+              )}
+            </Input>
+          )),
+        });
+      }}
+      title="Copy as text"
+    />
+  );
+
+  const shareFleet = (
+    <Show when={"clipboard" in navigator || "share" in navigator}>
+      <IconButton
+        iconID="share-nodes"
+        onClick={() => {
+          const url = location.href.replace("/self", "");
+
+          const timeout = setTimeout(() => {
+            toastContext.createToast({
+              id: "error-sharing",
+              type: "error",
+              title: "Share my fleet",
+              description: "Impossible to share, please copy the browser URL.",
+            });
+          }, 2000);
+
+          if (typeof navigator.share === "function") {
+            clearTimeout(timeout);
+            return navigator.share({
+              title: fleetData.name,
+              text: "Take a look at my awesome fleet!",
+              url,
+            });
+          }
+
+          if (typeof navigator.clipboard !== "undefined") {
+            void navigator.clipboard.writeText(url).then(() => {
+              clearTimeout(timeout);
+              toastContext.createToast({
+                id: "success-clearing",
+                type: "success",
+                title: "Share my fleet",
+                description: "Link copied to clipboard.",
+              });
+            });
+          }
+        }}
+        title="Share your fleet"
+      />
+    </Show>
+  );
+
   let displayContainer: HTMLDivElement | undefined;
   let removeShipAction: (ship: ShipType) => JSX.Element = () => <></>;
   const fleetActions: JSX.Element[] = [];
@@ -510,40 +640,6 @@ const FleetDisplay = () => {
       });
     };
 
-    const shareFleet = () => {
-      const url = location.href.replace("/self", "");
-
-      const timeout = setTimeout(() => {
-        toastContext.createToast({
-          id: "error-sharing",
-          type: "error",
-          title: "Share my fleet",
-          description: "Impossible to share, please copy the browser URL.",
-        });
-      }, 2000);
-
-      if (typeof navigator.share === "function") {
-        clearTimeout(timeout);
-        return navigator.share({
-          title: fleetData.name,
-          text: "Take a look at my awesome fleet!",
-          url,
-        });
-      }
-
-      if (typeof navigator.clipboard !== "undefined") {
-        void navigator.clipboard.writeText(url).then(() => {
-          clearTimeout(timeout);
-          toastContext.createToast({
-            id: "success-clearing",
-            type: "success",
-            title: "Share my fleet",
-            description: "Link copied to clipboard.",
-          });
-        });
-      }
-    };
-
     const editFleetSettings = () => {
       modalContext.showModal({
         id: "edit_fleet_settings",
@@ -592,29 +688,6 @@ const FleetDisplay = () => {
       });
     };
 
-    const showTreasures = () => {
-      const oldState = JSON.stringify(fleetData.treasures);
-
-      modalContext.showModal({
-        id: "add_treasure",
-        title: "Treasure manager",
-        onClose: () => {
-          const newState = JSON.stringify(fleetData.treasures);
-          if (!onlyDisplay && oldState !== newState) {
-            setSaved(() => false);
-          }
-        },
-        content: createRoot(() => (
-          <Treasure
-            treasures={fleetData.treasures}
-            remainingFleetPoints={
-              fleetData.points.max - fleetData.points.current
-            }
-          />
-        )),
-      });
-    };
-
     const scrollToDisplayBottom = () => {
       if (displayContainer) {
         const searchContainer = displayContainer.previousElementSibling;
@@ -637,56 +710,6 @@ const FleetDisplay = () => {
       }
     };
 
-    const copyFleet = () => {
-      const newLine = "\n";
-      modalContext.showModal({
-        id: "copy_fleet",
-        title: "Copy fleet as text",
-        content: createRoot(() => (
-          <Input
-            type="textarea"
-            ref={(ref) => {
-              setTimeout(async () => {
-                ref.focus();
-                ref.select();
-                await navigator.clipboard.writeText(ref.innerHTML);
-                toastContext.createToast({
-                  id: "success-write-clipboard",
-                  title: "Copied fleet data",
-                  type: "success",
-                  description: "",
-                });
-              }, 150);
-            }}
-          >
-            {fleetData.ships.reduce(
-              (output, ship) =>
-                `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.defaultname}${newLine}` +
-                `${ship.crew.reduce(
-                  (output, crew) =>
-                    `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.defaultname}${newLine}`,
-                  ""
-                )}` +
-                `${ship.equipment.reduce(
-                  (output, equipment) =>
-                    `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}${newLine}`,
-                  ""
-                )}` +
-                newLine,
-              `[${fleetData.name}](${location.href.replace(
-                "/self",
-                ""
-              )})${newLine}${newLine}${
-                fleetData.description
-                  ? `${fleetData.description}${newLine}${newLine}`
-                  : ""
-              }`
-            )}
-          </Input>
-        )),
-      });
-    };
-
     fleetActions.push(
       <IconButton
         iconID="search-plus"
@@ -696,33 +719,16 @@ const FleetDisplay = () => {
       >
         Add ships
       </IconButton>,
-      <IconButton
-        iconID="treasure-chest"
-        onClick={showTreasures}
-        data-treasures-count={
-          fleetData.treasures.length ? fleetData.treasures.length : null
-        }
-        title="Add treasure"
-      />,
+      showTreasures,
       toggleIcon,
-      <IconButton
-        iconID="clipboard"
-        onClick={copyFleet}
-        title="Copy as text"
-      />,
+      copyFleet,
       <IconButton
         iconID="save"
         onClick={saveFleet}
         title="Save"
         data-unsaved={!saved() ? "" : null}
       />,
-      <Show when={"clipboard" in navigator || "share" in navigator}>
-        <IconButton
-          iconID="share-nodes"
-          onClick={shareFleet}
-          title="Share your fleet"
-        />
-      </Show>,
+      shareFleet,
       <IconButton
         iconID="download"
         onClick={exportFleet}
@@ -746,6 +752,9 @@ const FleetDisplay = () => {
   } else {
     fleetActions.push(
       toggleIcon,
+      showTreasures,
+      copyFleet,
+      shareFleet,
       <IconButton
         iconID="share-square"
         class="export"
