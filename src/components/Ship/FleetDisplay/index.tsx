@@ -156,7 +156,7 @@ const FleetDisplay = () => {
       fleetData.ships.reduce(
         (shipTotal: number, ship: ShipType) =>
           shipTotal +
-          ship.points +
+          (ship.isfort ? 0 : ship.points) +
           ship.crew.reduce(
             (crewTotal: number, crew: CrewType) => crewTotal + crew.points,
             0
