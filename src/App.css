@@ -5,11 +5,15 @@
   line-height: 1.3;
 }
 
-@media only screen and (max-width: 62em) {
-  #content_container {
-    min-height: min(199.5vh, 80em);
-    font-size: 0.9em;
-  }
+#content_container h1 {
+  margin-top: 0;
+}
+
+#code {
+  position: absolute;
+  top: 0;
+  right: 1.5em;
+  z-index: 1;
 }
 
 #content_container * {
@@ -25,7 +29,10 @@
 }
 
 .actions {
-  text-align: right;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: 0.5em;
 }
 
 .fa-coins {
@@ -45,6 +52,17 @@
 }
 
 @media only screen and (max-width: 62em) {
+  #content_container {
+    min-height: min(199.5vh, 80em);
+    font-size: 0.9em;
+    margin-top: 0.5em;
+    position: relative;
+  }
+
+  #fleet_builder {
+    padding: 0.5em;
+  }
+
   .main_container {
     flex-direction: column-reverse;
   }
