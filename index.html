@@ -33,7 +33,6 @@
       onload="this.rel='stylesheet'"
     />
     <script type="text/javascript" src="/public/js/jquery.js"></script>
-    <script type="text/javascript" src="/public/js/async_loading.js"></script>
     <script
       type="text/javascript"
       src="/public/js/jquery.dataTables.min.js"
@@ -45,7 +44,6 @@
       window.fleetNameMaxlength = 60;
       window.baseUrl = "/public";
     </script>
-    <script type="module" src="/src/main.tsx" defer></script>
     <script
       src="https://kit.fontawesome.com/f8943cefef.js"
       crossorigin="anonymous"
@@ -57,6 +55,8 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
+    <script type="module" src="/src/main.tsx" defer></script>
+    <script>window.isOwn = true;</script>
   </head>
   <body>
     <div id="bg_container"></div>

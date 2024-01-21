@@ -12,13 +12,14 @@ declare global {
     fleetNameMinlength: number;
     fleetNameMaxlength: number;
     baseUrl: string;
+    isOwn: boolean;
   }
 }
 
-export const [, self, hash, slug] = location.pathname.match(
-  /(self\/)?show\/(\d+)\/([^/]+)$/
+export const [, slugname] = location.pathname.match(
+  /show\/(\w{10,16})$/
 ) ?? ["", "", "", ""];
-export const onlyDisplay = !self;
+export const onlyDisplay = !window.isOwn;
 export const baseUrl = window.baseUrl;
 
 interface CardCollapseContextProps {

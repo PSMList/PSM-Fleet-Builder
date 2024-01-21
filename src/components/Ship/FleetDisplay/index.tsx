@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
-import { baseUrl, hash, onlyDisplay, slug, useCardsCollapse } from "@/App";
+import { baseUrl, onlyDisplay, slugname, useCardsCollapse } from "@/App";
 import Display from "@/components/commons/Display";
 import IconButton from "@/components/commons/IconButton";
 import { ModalContext } from "@/components/commons/Modal";
@@ -204,7 +204,7 @@ const FleetDisplay = () => {
 
   onMount(async () => {
     try {
-      const response = await fetch(`${baseUrl}/fleet/get/${hash}/${slug}`);
+      const response = await fetch(`${baseUrl}/fleet/get/${slugname}`);
       const data = (await response.json()) as FleetSavedDataType | undefined;
       if (!data) return;
 
@@ -374,10 +374,7 @@ const FleetDisplay = () => {
                     ""
                   )}` +
                   newLine,
-                `[${fleetData.name}](${location.href.replace(
-                  "/self",
-                  ""
-                )})${newLine}${newLine}${
+                `[${fleetData.name}](${location.href})${newLine}${newLine}${
                   fleetData.description
                     ? `${fleetData.description}${newLine}${newLine}`
                     : ""
@@ -396,7 +393,7 @@ const FleetDisplay = () => {
       <IconButton
         iconID="share-nodes"
         onClick={() => {
-          const url = location.href.replace("/self", "");
+          const url = location.href;
 
           const timeout = setTimeout(() => {
             toastContext.createToast({
@@ -540,7 +537,7 @@ const FleetDisplay = () => {
 
     const saveFleet = async () => {
       const fleetStr = fleetDataToString();
-      return fetchWithTimeout(`${baseUrl}/fleet/self/set/${hash}/${slug}`, {
+      return fetchWithTimeout(`${baseUrl}/fleet/self/set/${slugname}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
