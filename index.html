@@ -1,48 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <base href="http://localhost" />
+    <base href="/psmlist/" />
     <meta charset="UTF-8" />
-    <link rel="icon" href="/public/img/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="public/img/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <meta property="og:site_name" content="PSMList.com" />
-    <meta
-      property="og:title"
-      content="PSMList - Search for ships, crew and treasures from Pirates CSG"
-    />
-    <meta property="og:type" content="website" />
-    <meta property="og:image" content="/public/img/logo.png" />
-    <meta
-      property="og:description"
-      content="Build your fleet, share it with others and see others' fleet."
-    />
     <title>PSMList.com | Fleet Builder</title>
     <link
       type="text/css"
-      href="/public/css/all.css"
+      href="public/css/all.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
     />
     <link
       type="text/css"
-      href="/public/css/blog.css"
+      href="public/css/blog.css"
       rel="preload"
       as="style"
       onload="this.rel='stylesheet'"
     />
-    <script type="text/javascript" src="/public/js/jquery.js"></script>
+    <script type="text/javascript" src="public/js/jquery.js"></script>
     <script
       type="text/javascript"
-      src="/public/js/jquery.dataTables.min.js"
+      src="public/js/jquery.dataTables.min.js"
     ></script>
     <script>
       window.fleetMaxpointsMin = 30;
       window.fleetMaxpointsMax = 200;
       window.fleetNameMinlength = 5;
       window.fleetNameMaxlength = 60;
-      window.baseUrl = "/public";
+      window.baseUrl = "public";
     </script>
     <script
       src="https://kit.fontawesome.com/f8943cefef.js"
@@ -55,429 +44,802 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
+    <script src="public/js/datatablescall.js"></script>
+    <script src="public/js/resetMenuHoverMobile.js"></script>
     <script type="module" src="/src/main.tsx" defer></script>
-    <script>window.isOwn = true;</script>
+    <script>
+      window.isOwn = true;
+    </script>
   </head>
   <body>
     <div id="bg_container"></div>
     <div id="main_container">
       <header>
         <div id="header_title">
-          <a href="/public/">
-            <img src="/public/img/logo.png" alt="logo.png" />
+          <a href="public/">
+            <img src="public/img/logo_small.png" alt="logo.png" />
             <div id="website_title_container">
-              <p id="website_title">PSM List</p>
+              <p id="website_title">PSMList</p>
               <p id="slogan">The PSM collector's reference</p>
             </div>
           </a>
         </div>
+
+        <a class="locale_choice_redirect" href="public/change_language">
+          <i class="fa-solid fa-globe" aria-hidden="true"></i>
+        </a>
+
         <div id="header_account">
-          <a href="/public/login">Login</a>
-          <a href="/public/register">Register</a>
+          <div class="user_hover">
+            <p class="username_container">DodoDye</p>
+            <a
+              href="public/expansion/list/self"
+              class="userShortcut"
+              title="My Expansions"
+            >
+              <i class="fa-regular fa-cards-blank" aria-hidden="true"></i>
+            </a>
+            <a
+              href="public/fleet/self/search"
+              class="userShortcut"
+              title="My Fleets"
+            >
+              <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+            </a>
+            <div class="avatar_container">
+              <img src="public/img/avatar/user/4.png" alt="user.png" />
+            </div>
+            <div class="user_dropdown">
+              <a href="public/u/dododye">
+                <i class="fa-solid fa-user" aria-hidden="true"></i>
+                <span>Profile</span>
+              </a>
+              <a href="public/self/edit">
+                <i class="fa-solid fa-gear" aria-hidden="true"></i>
+                <span>Settings</span>
+              </a>
+              <a href="public/fleet/self/search">
+                <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+                <span>My Fleets</span>
+              </a>
+              <a href="public/expansion/list/self">
+                <i class="fa-regular fa-cards-blank" aria-hidden="true"></i>
+                <span>My Expansions</span>
+              </a>
+              <div class="spacer_line"></div>
+              <a href="public/logout">
+                <i class="fa-solid fa-power-off" aria-hidden="true"></i>
+                <span>Logout</span>
+              </a>
+              <div class="spacer"></div>
+            </div>
+          </div>
         </div>
       </header>
+
       <ul id="navbar">
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fas fa-book"></i>
+            <i class="fa-solid fa-book" aria-hidden="true"></i>
             Encyclopedia
           </p>
           <div class="navbarExtended">
             <table class="columnWrapTable">
-              <tr>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Game pieces</a>
-                    <ul>
-                      <li>
-                        <a href="/public/ship/search"
-                          ><i class="fas fa-circle"></i>Ships</a
-                        >
-                      </li>
-                      <li>
-                        <a href="/public/crew/search"
-                          ><i class="fas fa-circle"></i>Crew</a
-                        >
-                      </li>
-                      <li>
-                        <a href="/public/treasure/search"
-                          ><i class="fas fa-circle"></i>Treasures</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Islands</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Stories</a
-                        >
-                      </li>
-                      <li>
-                        <a href="/public/keyword/search"
-                          ><i class="fas fa-circle"></i>Keywords</a
-                        >
-                      </li>
-                      <li>
-                        <a href="/public/technicalshapes"
-                          ><i class="fas fa-circle"></i>Shapes</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Custom game pieces</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Ships</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Crew</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Rulesets</a>
-                    <ul>
-                      <li>
-                        <a
-                          href="https://pirateswithben.com/wp-content/uploads/2018/05/The-Pirate-Code-FAQ-Dec-2016.pdf"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Pirates' Code</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>All</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Points Calculator</a>
-                    <ul>
-                      <li>
-                        <a href="/public/simcost_calculator"
-                          ><i class="fas fa-circle"></i>SimCost</a
-                        >
-                      </li>
-                      <li>
-                        <a href="/public/udc_calculator"
-                          ><i class="fas fa-circle"></i>UDC</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Dev</a>
-                    <ul>
-                      <li>
-                        <a href="/public/reports/database-issue" target="_blank"
-                          ><i class="fas fa-circle"></i>Report a data
-                          mistake/error</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Scan project</a>
-                    <ul>
-                      <li>
-                        <a
-                          href="https://drive.google.com/drive/folders/1GZmP66qkMpC9diMaXj-Net-_rZ0vQY9S"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Thunderbros99's google
-                          drive folder</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Search</a>
+                      <ul>
+                        <li>
+                          <a href="public/ship/search"
+                            ><i
+                              class="fa-solid fa-sailboat"
+                              aria-hidden="true"
+                            ></i
+                            >Ships</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/crew/search"
+                            ><i class="fa-solid fa-users" aria-hidden="true"></i
+                            >Crews</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/treasure/search"
+                            ><i
+                              class="fa-solid fa-treasure-chest"
+                              aria-hidden="true"
+                            ></i
+                            >Treasures</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/equipment/search"
+                            ><i
+                              class="fa-solid fa-dolly-box"
+                              aria-hidden="true"
+                            ></i
+                            >Equipments</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/island/search"
+                            ><i
+                              class="fa-solid fa-island-tree-palm"
+                              aria-hidden="true"
+                            ></i
+                            >Islands</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/expansion/search"
+                            ><i
+                              class="fa-solid fa-cards-blank"
+                              aria-hidden="true"
+                            ></i
+                            >Expansions</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/keyword/search"
+                            ><i class="fa-solid fa-list" aria-hidden="true"></i
+                            >Keywords</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/technicalshapes"
+                            ><i
+                              class="fa-solid fa-scissors"
+                              aria-hidden="true"
+                            ></i
+                            >Ship Shapes</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-scroll"
+                              aria-hidden="true"
+                            ></i
+                            >Stories</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Scan Project</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="https://drive.google.com/drive/folders/1hF0jXYcK-1DssnBUbhG-Von7tvaaPH-I"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Google Drive folder</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Custom Cards</a>
+                      <ul>
+                        <li>
+                          <a href="public/expansion/search"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Search</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/expansion/list/self"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >My Expansions</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/expansion/custom/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New Expansion</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/custom/ship/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New Ship</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/custom/crew/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New Crew</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/custom/treasure/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New Treasure</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/custom/equipment/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New Equipment</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://psmlist.compublic/blog/submitting_custom_faction"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Submit a new Faction</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Points Calculator</a>
+                      <ul>
+                        <li>
+                          <a href="public/ship_calculator"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >SimCost &amp; UDC</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/simcost_calculator"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >SimCost only</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/udc_calculator"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >UDC only</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Dev</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="public/reports/database-issue"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Report a data mistake/error</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/reports/list" target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Report List</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Rule-Sets</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="https://pirateswithben.com/wp-content/uploads/2018/05/The-Pirate-Code-FAQ-Dec-2016.pdf"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Pirate's Code</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >All</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Achievements</a>
+                      <ul>
+                        <li>
+                          <a href="public/achievements/user" target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >User Badges</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="public/admin/userachievement/add"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New Badge</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="public/admin/userachievement/linker"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Linker</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </li>
+
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fas fa-window-restore"></i>
-            Collection
+            <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+            Fleets
           </p>
           <div class="navbarExtended">
             <table class="columnWrapTable">
-              <tr>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Collections</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>My collection</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Add a new card</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Other players</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Hoards</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Manage</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Log a new hoard</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Unboxing</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>See all</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>New unboxing</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td></td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Custom Rules</a>
+                      <ul>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Search</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >My custom rules</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Create</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Fleet</a>
+                      <ul>
+                        <li>
+                          <a href="public/fleet/search"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Search</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/fleet/self/search"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >My Fleets</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/fleet/self/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Create my fleet</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td></td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </li>
+
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fas fa-anchor"></i>
-            Fleets
+            <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+            Ratings
           </p>
-          <div class="navbarExtended">Coming in a future update !</div>
+          <div class="navbarExtended">
+            <p style="margin: 1em">
+              This feature is supposedly coming soon now that we did several
+              waves of bug fixing and QoL features.
+            </p>
+            <br />
+          </div>
         </li>
+
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fas fa-balance-scale"></i>
-            Trading
-          </p>
-          <div class="navbarExtended">Coming in a future update !</div>
-        </li>
-        <li class="navbarItem">
-          <p class="navbarTitle">
-            <i class="fas fa-cube"></i>
+            <i class="fa-solid fa-cube" aria-hidden="true"></i>
             Others
           </p>
           <div class="navbarExtended">
             <table class="columnWrapTable">
-              <tr>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Online ressources</a>
-                    <ul>
-                      <li>
-                        <a
-                          href="https://boardgamegeek.com/boardgame/10653/pirates-spanish-main"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>BoardGamesGeek</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://www.ebay.com/sch/i.html?_from=R40&_trksid=p2380057.m570.l1313&_nkw=wizkids+pirates&_sacat=0"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Ebay</a
-                        >
-                      </li>
-                      <li>
-                        <a href="https://pirateswithben.com/" target="_blank"
-                          ><i class="fas fa-circle"></i>Pirates with Ben</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://www.raintyger.com/index.php?main_page=product_info&cPath=39_43&products_id=1544"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>RainTyger</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://tilorfire27.github.io/PiratesCSGDB/"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Tilorfire27's DB</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Additional ressources</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Arshellan's files</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://discord.com/invite/qeY7e3Q"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Discord invite</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Donate</a>
-                    <ul>
-                      <li>
-                        <a
-                          href="https://www.buymeacoffee.com/psmlist"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Via "Buy me a
-                          coffee®"</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Wiki</a>
-                    <ul>
-                      <li>
-                        <a
-                          href="https://de.wikipedia.org/wiki/Pirates_of_the_Spanish_Main"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Deutsch</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>English</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://fr.wikipedia.org/wiki/Pirates_of_the_Spanish_Main"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Français</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://fi.wikipedia.org/wiki/Pirates_CSG"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Suomi</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Users</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Search for a user</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Contact</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>information</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Additional info</a>
-                    <ul>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>FAQ</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Personal data usage</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-                <td>
-                  <div class="groupNav">
-                    <a class="title" href="">Dev</a>
-                    <ul>
-                      <li>
-                        <a
-                          href="/public/reports/database-issue?s="
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>Report a database
-                          mistake</a
-                        >
-                      </li>
-                      <li>
-                        <a href="/public/userhelp/images"
-                          ><i class="fas fa-circle"></i>Help fixing images</a
-                        >
-                      </li>
-                      <li>
-                        <a class="disabled" href=""
-                          ><i class="fas fa-circle"></i>Suggestions</a
-                        >
-                      </li>
-                      <li>
-                        <a
-                          href="https://psmlist.com/compressor/v2/"
-                          target="_blank"
-                          ><i class="fas fa-circle"></i>File Compressor</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                  <div class="groupNav">
-                    <a class="title" href="">Blog</a>
-                    <ul>
-                      <li>
-                        <a href="/public/blog"
-                          ><i class="fas fa-circle"></i>Articles</a
-                        >
-                      </li>
-                    </ul>
-                  </div>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Online Resources</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="https://boardgamegeek.com/boardgame/10653/pirates-spanish-main"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >BoardGameGeek</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.ebay.com/sch/i.html?_from=R40&amp;_trksid=p2380057.m570.l1313&amp;_nkw=wizkids+pirates&amp;_sacat=0"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Ebay</a
+                          >
+                        </li>
+                        <li>
+                          <a href="https://pirateswithben.com/" target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Pirates with Ben</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.raintyger.com/index.php?main_page=product_info&amp;cPath=39_43&amp;products_id=1544"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >RainTyger</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://tilorfire27.github.io/PiratesCSGDB/"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Tilorfire27's DB</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Additional resources</a>
+                      <ul>
+                        <li>
+                          <a href="public/download_menu"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Downloadable files archive</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://discord.com/invite/qeY7e3Q"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >PSM Discord Server</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Donate</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="https://www.buymeacoffee.com/psmlist/membership"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >via "Buy Me a Coffee®"</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Wiki</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="https://de.wikipedia.org/wiki/Pirates_of_the_Spanish_Main"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Deutsch</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >English</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://fr.wikipedia.org/wiki/Pirates_of_the_Spanish_Main"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Francais</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://fi.wikipedia.org/wiki/Pirates_CSG"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Suomi</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Users</a>
+                      <ul>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Search for a user</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Contact us</a>
+                      <ul>
+                        <li>
+                          <a href="public/contact-us"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Contact us</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Additional Info</a>
+                      <ul>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >FAQ</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Personal data usage</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Dev</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="public/reports/database-issue?s="
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Report a database mistake</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/reports/list" target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Report list</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/admin/portal"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Admin portal</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/admin/image_list_viewer"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Custom images</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/userhelp/images"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Help fixing images</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Suggestions</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://psmlist.com/compressor/v2/"
+                            target="_blank"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >File compressor</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Blog</a>
+                      <ul>
+                        <li>
+                          <a href="public/blog"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >Articles</a
+                          >
+                        </li>
+                        <li>
+                          <a href="public/blog/add"
+                            ><i
+                              class="fa-solid fa-circle"
+                              aria-hidden="true"
+                            ></i
+                            >New article</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </li>
@@ -512,10 +874,12 @@
         </div>
       </div>
       <footer>
-        <p>&copy;2022 PSMList.com</p>
+        <p>©2024 PSMList.com</p>
         <p>
           All credits for the images and texts recreated or directly sourced
-          from this game material belong to their respective owners.
+          from this game material belong to their respective owners. This site
+          is a fan-made project and is not affiliated with the game's creators
+          or distributors.
         </p>
       </footer>
     </div>
