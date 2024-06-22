@@ -16,9 +16,7 @@ declare global {
   }
 }
 
-export const [, slugname] = location.pathname.match(
-  /show\/(\w{10,16})$/
-) ?? ["", "", "", ""];
+export const slugname = location.pathname.match(/show\/(\w{10,16})/)?.[1] ?? "";
 export const onlyDisplay = !window.isOwn;
 export const baseUrl = window.baseUrl;
 
