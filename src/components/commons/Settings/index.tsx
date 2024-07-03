@@ -6,6 +6,7 @@ import Input, {
 import { For } from "solid-js";
 import { createStore } from "solid-js/store";
 import "./Settings.css";
+import { baseUrl, slugname } from "@/App";
 
 export type Data = Record<
   string,
@@ -65,6 +66,18 @@ const Settings = (props: SettingsProps) => {
           }}
         </For>
       </form>
+      <div class="settings_footer">
+        <IconButton
+          id="delete_fleet"
+          onClick={() =>
+            (window.location.href = `${baseUrl}/fleet/self/delete/${slugname}`)
+          }
+          iconID="trash"
+          title="Delete this fleet"
+        >
+          Delete this fleet
+        </IconButton>
+      </div>
     </div>
   );
 };
