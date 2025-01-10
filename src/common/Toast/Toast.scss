@@ -1,0 +1,90 @@
+// source: https://github.com/uzoeddie/react-toast/blob/master/src/components/toast/Toast.css
+
+.toast {
+  background: #fff;
+  transition: 0.3s ease;
+  position: relative;
+  pointer-events: auto;
+  padding: 7px 5px 7px 10px;
+  border-radius: 0.25em;
+  box-shadow: 0 0 0.75em #999;
+  opacity: 0.95;
+  display: grid;
+  align-items: flex-end;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "icon title close"
+    "icon message message";
+  max-height: 10em;
+  width: 17em;
+  max-width: 100%;
+  color: #fff;
+  pointer-events: none;
+
+  &:hover,
+  &:focus,
+  &:focus-within {
+    box-shadow: 0 0 1.25em #999;
+    opacity: 1;
+  }
+
+  > * {
+    align-self: center;
+  }
+
+  + hr {
+    border: 0;
+  }
+
+  &.hide {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  &.hide + hr {
+    margin: 0;
+    scale: 0;
+    transition:
+      scale 0s ease 0.3s,
+      margin 0s ease 0.3s;
+  }
+
+  > .title {
+    font-weight: 700;
+    font-size: 16px;
+    text-align: left;
+    grid-area: title;
+  }
+
+  > .message {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.3;
+    text-align: left;
+    margin-left: -1px;
+    grid-area: message;
+  }
+
+  > .image {
+    font-size: 20px;
+    margin-right: 10px;
+    grid-area: icon;
+  }
+
+  > .close {
+    grid-area: close;
+    pointer-events: all;
+
+    > .icon_button {
+      margin: 0;
+      padding: 3px 10px;
+      height: 100%;
+      width: 100%;
+      cursor: pointer;
+      color: #fff;
+    }
+  }
+}

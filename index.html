@@ -1,51 +1,44 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <base href="/psmlist/" />
     <meta charset="UTF-8" />
-    <link rel="icon" href="public/img/favicon.ico" />
+    <link rel="icon" href="psmlist/public/img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>PSMList.com | Fleet Builder</title>
+    <link rel="stylesheet" type="text/css" href="/psmlist/public/css/all.css" />
     <link
+      rel="stylesheet"
       type="text/css"
-      href="public/css/all.css"
-      rel="preload"
-      as="style"
-      onload="this.rel='stylesheet'"
+      href="/psmlist/public/css/blog.css"
     />
     <link
-      type="text/css"
-      href="public/css/blog.css"
-      rel="preload"
-      as="style"
-      onload="this.rel='stylesheet'"
+      href="/psmlist/public/fontawesome/css/fontawesome.min.css"
+      rel="stylesheet"
     />
-    <script type="text/javascript" src="public/js/jquery.js"></script>
-    <script
-      type="text/javascript"
-      src="public/js/jquery.dataTables.min.js"
-    ></script>
+    <link
+      href="/psmlist/public/fontawesome/css/brands.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/psmlist/public/fontawesome/css/solid.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="/psmlist/public/fontawesome/css/regular.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap"
+      rel="stylesheet"
+    />
     <script>
       window.fleetMaxpointsMin = 30;
       window.fleetMaxpointsMax = 200;
       window.fleetNameMinlength = 5;
       window.fleetNameMaxlength = 60;
-      window.baseUrl = "public";
+      window.baseUrl = "/psmlist/public";
     </script>
-    <script
-      src="https://kit.fontawesome.com/f8943cefef.js"
-      crossorigin="anonymous"
-      defer
-    ></script>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-      rel="preload"
-      as="style"
-      onload="this.rel='stylesheet'"
-    />
-    <script src="public/js/datatablescall.js"></script>
-    <script src="public/js/resetMenuHoverMobile.js"></script>
     <script type="module" src="/src/main.tsx" defer></script>
     <script>
       window.isOwn = true;
@@ -56,59 +49,93 @@
     <div id="main_container">
       <header>
         <div id="header_title">
-          <a href="public/">
-            <img src="public/img/logo_small.png" alt="logo.png" />
+          <a href="/psmlist/public/">
+            <img
+              class="site_logo"
+              src="/psmlist/public/img/logo_small.png"
+              alt="logo.png"
+            />
             <div id="website_title_container">
               <p id="website_title">PSMList</p>
-              <p id="slogan">The PSM collector's reference</p>
             </div>
           </a>
         </div>
 
-        <a class="locale_choice_redirect" href="public/change_language">
-          <i class="fa-solid fa-globe" aria-hidden="true"></i>
+        <div class="fast_search_container">
+          <div class="fast_search" data-controller="fastsearch">
+            <label class="fast_search_input_container">
+              <input
+                type="text"
+                data-fastsearch-target="input"
+                data-action="keyup->fastsearch#search"
+                placeholder="Quick Search..."
+              />
+              <button
+                class="button button-grey"
+                type="button"
+                onclick="document.querySelector('[data-fastsearch-target=input]').value=''; document.querySelector('[data-fastsearch-target=results]').innerHTML='';"
+              >
+                Clear
+              </button>
+            </label>
+            <div
+              data-fastsearch-target="results"
+              class="results whitebox"
+            ></div>
+          </div>
+        </div>
+
+        <a
+          class="locale_choice_redirect"
+          href="/psmlist/public/change_language"
+        >
+          <i class="fa-solid fa-globe"></i>
         </a>
 
         <div id="header_account">
           <div class="user_hover">
             <p class="username_container">DodoDye</p>
             <a
-              href="public/expansion/list/self"
+              href="/psmlist/public/expansion/list/self"
               class="userShortcut"
               title="My Expansions"
             >
-              <i class="fa-regular fa-cards-blank" aria-hidden="true"></i>
+              <i class="fa-regular fa-cards-blank"></i>
             </a>
             <a
-              href="public/fleet/self/search"
+              href="/psmlist/public/fleet/self/search"
               class="userShortcut"
               title="My Fleets"
             >
-              <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+              <i class="fa-solid fa-anchor"></i>
             </a>
             <div class="avatar_container">
-              <img src="public/img/avatar/user/4.png" alt="user.png" />
+              <img
+                src="/psmlist/public/img/avatar/user/default_user.png"
+                alt="user.png"
+                style="background: linear-gradient(0deg, FFFFFF, FFFFFF)"
+              />
             </div>
             <div class="user_dropdown">
-              <a href="public/u/dododye">
-                <i class="fa-solid fa-user" aria-hidden="true"></i>
+              <a href="/psmlist/public/u/dododye">
+                <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
               </a>
-              <a href="public/self/edit">
-                <i class="fa-solid fa-gear" aria-hidden="true"></i>
+              <a href="/psmlist/public/self/edit">
+                <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
               </a>
-              <a href="public/fleet/self/search">
-                <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+              <a href="/psmlist/public/fleet/self/search">
+                <i class="fa-solid fa-anchor"></i>
                 <span>My Fleets</span>
               </a>
-              <a href="public/expansion/list/self">
-                <i class="fa-regular fa-cards-blank" aria-hidden="true"></i>
+              <a href="/psmlist/public/expansion/list/self">
+                <i class="fa-regular fa-cards-blank"></i>
                 <span>My Expansions</span>
               </a>
               <div class="spacer_line"></div>
-              <a href="public/logout">
-                <i class="fa-solid fa-power-off" aria-hidden="true"></i>
+              <a href="/psmlist/public/logout">
+                <i class="fa-solid fa-power-off"></i>
                 <span>Logout</span>
               </a>
               <div class="spacer"></div>
@@ -117,10 +144,17 @@
         </div>
       </header>
 
+      <div id="navbar_mobile_trigger_container">
+        <div id="trigger_display_mobile_nav" class="button button-grey">
+          <i class="fa-solid fa-bars"></i>
+          Navigation menu
+        </div>
+      </div>
+
       <ul id="navbar">
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fa-solid fa-book" aria-hidden="true"></i>
+            <i class="fa-solid fa-book"></i>
             Encyclopedia
           </p>
           <div class="navbarExtended">
@@ -132,233 +166,80 @@
                       <a class="title" href="">Search</a>
                       <ul>
                         <li>
-                          <a href="public/ship/search"
-                            ><i
-                              class="fa-solid fa-sailboat"
-                              aria-hidden="true"
-                            ></i
-                            >Ships</a
+                          <a href="/psmlist/public/ship/search"
+                            ><i class="fa-solid fa-sailboat"></i>Ships</a
                           >
                         </li>
                         <li>
-                          <a href="public/crew/search"
-                            ><i class="fa-solid fa-users" aria-hidden="true"></i
-                            >Crews</a
+                          <a href="/psmlist/public/crew/search"
+                            ><i class="fa-solid fa-users"></i>Crews</a
                           >
                         </li>
                         <li>
-                          <a href="public/treasure/search"
-                            ><i
-                              class="fa-solid fa-treasure-chest"
-                              aria-hidden="true"
-                            ></i
+                          <a href="/psmlist/public/treasure/search"
+                            ><i class="fa-solid fa-treasure-chest"></i
                             >Treasures</a
                           >
                         </li>
                         <li>
-                          <a href="public/equipment/search"
-                            ><i
-                              class="fa-solid fa-dolly-box"
-                              aria-hidden="true"
-                            ></i
-                            >Equipments</a
+                          <a href="/psmlist/public/equipment/search"
+                            ><i class="fa-solid fa-dolly-box"></i>Equipments</a
                           >
                         </li>
                         <li>
-                          <a href="public/island/search"
-                            ><i
-                              class="fa-solid fa-island-tree-palm"
-                              aria-hidden="true"
-                            ></i
+                          <a href="/psmlist/public/island/search"
+                            ><i class="fa-solid fa-island-tree-palm"></i
                             >Islands</a
                           >
                         </li>
                         <li>
-                          <a href="public/expansion/search"
-                            ><i
-                              class="fa-solid fa-cards-blank"
-                              aria-hidden="true"
-                            ></i
+                          <a href="/psmlist/public/expansion/search"
+                            ><i class="fa-solid fa-cards-blank"></i
                             >Expansions</a
                           >
                         </li>
                         <li>
-                          <a href="public/keyword/search"
-                            ><i class="fa-solid fa-list" aria-hidden="true"></i
-                            >Keywords</a
+                          <a href="/psmlist/public/keyword/search"
+                            ><i class="fa-solid fa-list"></i>Keywords</a
                           >
                         </li>
                         <li>
-                          <a href="public/technicalshapes"
-                            ><i
-                              class="fa-solid fa-scissors"
-                              aria-hidden="true"
-                            ></i
-                            >Ship Shapes</a
+                          <a href="/psmlist/public/technicalshapes"
+                            ><i class="fa-solid fa-scissors"></i>Ship Shapes</a
                           >
                         </li>
                         <li>
                           <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-scroll"
-                              aria-hidden="true"
-                            ></i
-                            >Stories</a
+                            ><i class="fa-solid fa-scroll"></i>Stories</a
                           >
                         </li>
                       </ul>
                     </div>
+                  </td>
+                  <td>
                     <div class="groupNav">
-                      <a class="title" href="">Scan Project</a>
+                      <a class="title" href="">Utilities</a>
                       <ul>
+                        <li>
+                          <a href="/psmlist/public/ship_calculator"
+                            ><i class="fa-solid fa-calculator"></i>Points
+                            Calculator</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="/psmlist/public/reports/database-issue"
+                            target="_blank"
+                            ><i class="fa-solid fa-database"></i>Report a data
+                            mistake/error</a
+                          >
+                        </li>
                         <li>
                           <a
                             href="https://drive.google.com/drive/folders/1hF0jXYcK-1DssnBUbhG-Von7tvaaPH-I"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Google Drive folder</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="groupNav">
-                      <a class="title" href="">Custom Cards</a>
-                      <ul>
-                        <li>
-                          <a href="public/expansion/search"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Search</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/expansion/list/self"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >My Expansions</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/expansion/custom/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New Expansion</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/custom/ship/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New Ship</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/custom/crew/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New Crew</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/custom/treasure/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New Treasure</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/custom/equipment/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New Equipment</a
-                          >
-                        </li>
-                        <li>
-                          <a
-                            href="https://psmlist.compublic/blog/submitting_custom_faction"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Submit a new Faction</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="groupNav">
-                      <a class="title" href="">Points Calculator</a>
-                      <ul>
-                        <li>
-                          <a href="public/ship_calculator"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >SimCost &amp; UDC</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/simcost_calculator"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >SimCost only</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/udc_calculator"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >UDC only</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="groupNav">
-                      <a class="title" href="">Dev</a>
-                      <ul>
-                        <li>
-                          <a
-                            href="public/reports/database-issue"
-                            target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Report a data mistake/error</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/reports/list" target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Report List</a
+                            ><i class="fa-brands fa-google-drive"></i>Google
+                            Drive folder</a
                           >
                         </li>
                       </ul>
@@ -370,20 +251,13 @@
                           <a
                             href="https://pirateswithben.com/wp-content/uploads/2018/05/The-Pirate-Code-FAQ-Dec-2016.pdf"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Pirate's Code</a
+                            ><i class="fa-solid fa-book-skull"></i>Pirate's
+                            Code</a
                           >
                         </li>
                         <li>
                           <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >All</a
+                            ><i class="fa-solid fa-book"></i>All</a
                           >
                         </li>
                       </ul>
@@ -392,34 +266,24 @@
                       <a class="title" href="">Achievements</a>
                       <ul>
                         <li>
-                          <a href="public/achievements/user" target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >User Badges</a
+                          <a
+                            href="/psmlist/public/achievements/user"
+                            target="_blank"
+                            ><i class="fa-solid fa-award"></i>User Badges</a
                           >
                         </li>
                         <li>
                           <a
-                            href="public/admin/userachievement/add"
+                            href="/psmlist/public/admin/userachievement/add"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New Badge</a
+                            ><i class="fa-solid fa-award"></i>New Badge</a
                           >
                         </li>
                         <li>
                           <a
-                            href="public/admin/userachievement/linker"
+                            href="/psmlist/public/admin/userachievement/linker"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Linker</a
+                            ><i class="fa-solid fa-award"></i>Linker</a
                           >
                         </li>
                       </ul>
@@ -433,7 +297,159 @@
 
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fa-solid fa-anchor" aria-hidden="true"></i>
+            <i class="fa-solid fa-users"></i>
+            Community
+          </p>
+          <div class="navbarExtended">
+            <table class="columnWrapTable">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Custom Cards</a>
+                      <ul>
+                        <li>
+                          <a href="/psmlist/public/expansion/list/self"
+                            ><i class="fa-solid fa-cards-blank"></i>My
+                            Expansions</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/expansion/custom/add"
+                            ><i class="fa-solid fa-circle"></i>New Expansion</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/custom/ship/add"
+                            ><i class="fa-solid fa-circle"></i>New Ship</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/custom/crew/add"
+                            ><i class="fa-solid fa-circle"></i>New Crew</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/custom/treasure/add"
+                            ><i class="fa-solid fa-circle"></i>New Treasure</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/custom/equipment/add"
+                            ><i class="fa-solid fa-circle"></i>New Equipment</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="/psmlist/public/blog/submitting_custom_faction"
+                            ><i class="fa-solid fa-circle"></i>Submit a new
+                            Faction</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Ratings</a>
+                      <ul>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i class="fa-solid fa-magnifying-glass"></i
+                            >Search</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i class="fa-solid fa-trophy"></i>My Ratings</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i class="fa-solid fa-add"></i>New Rating</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i class="fa-solid fa-arrow-up-short-wide"></i>Most
+                            Recent</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Help us!</a>
+                      <ul>
+                        <li>
+                          <a
+                            href="/psmlist/public/reports/database-issue?s="
+                            target="_blank"
+                            ><i class="fa-solid fa-cloud-exclamation"></i>Report
+                            a database mistake</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/admin/portal"
+                            ><i class="fa-solid fa-shield"></i>Admin portal</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/userhelp/images"
+                            ><i class="fa-solid fa-camera"></i>Help fixing
+                            images</a
+                          >
+                        </li>
+                        <li>
+                          <a class="disabled" href=""
+                            ><i class="fa-solid fa-message-check"></i
+                            >Suggestions</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://psmlist.com/compressor/v2/"
+                            target="_blank"
+                            ><i class="fa-solid fa-bulldozer"></i>File
+                            compressor</a
+                          >
+                        </li>
+                        <li>
+                          <a
+                            href="https://www.buymeacoffee.com/psmlist/membership"
+                            target="_blank"
+                            ><i class="fa-solid fa-star"></i>via "Buy Me a
+                            Coffee®"</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="groupNav">
+                      <a class="title" href="">Blog</a>
+                      <ul>
+                        <li>
+                          <a href="/psmlist/public/blog"
+                            ><i class="fa-solid fa-newspaper"></i>Articles</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/blog/add"
+                            ><i class="fa-solid fa-newspaper"></i>New article</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fa-solid fa-anchor"></i>
             Fleets
           </p>
           <div class="navbarExtended">
@@ -446,29 +462,19 @@
                       <ul>
                         <li>
                           <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
+                            ><i class="fa-solid fa-magnifying-glass"></i
                             >Search</a
                           >
                         </li>
                         <li>
                           <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >My custom rules</a
+                            ><i class="fa-solid fa-circle"></i>My custom
+                            rules</a
                           >
                         </li>
                         <li>
                           <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Create</a
+                            ><i class="fa-solid fa-circle"></i>Create</a
                           >
                         </li>
                       </ul>
@@ -479,30 +485,19 @@
                       <a class="title" href="">Fleet</a>
                       <ul>
                         <li>
-                          <a href="public/fleet/search"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
+                          <a href="/psmlist/public/fleet/search"
+                            ><i class="fa-solid fa-magnifying-glass"></i
                             >Search</a
                           >
                         </li>
                         <li>
-                          <a href="public/fleet/self/search"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >My Fleets</a
+                          <a href="/psmlist/public/fleet/self/search"
+                            ><i class="fa-solid fa-anchor"></i>My Fleets</a
                           >
                         </li>
                         <li>
-                          <a href="public/fleet/self/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Create my fleet</a
+                          <a href="/psmlist/public/fleet/self/add"
+                            ><i class="fa-solid fa-add"></i>Create my fleet</a
                           >
                         </li>
                       </ul>
@@ -517,21 +512,134 @@
 
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fa-solid fa-trophy" aria-hidden="true"></i>
-            Ratings
+            <i class="fa-solid fa-shelves"></i>
+            Collections
           </p>
           <div class="navbarExtended">
-            <p style="margin: 1em">
-              This feature is supposedly coming soon now that we did several
-              waves of bug fixing and QoL features.
-            </p>
-            <br />
+            <table class="columnWrapTable">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Collection</a>
+                      <ul>
+                        <li>
+                          <a href="/psmlist/public/collection/search"
+                            ><i class="fa-solid fa-magnifying-glass"></i
+                            >Search</a
+                          >
+                        </li>
+                        <li>
+                          <a href="/psmlist/public/collection/show/self/"
+                            ><i class="fa-solid fa-shelves"></i>My collection</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </li>
 
         <li class="navbarItem">
           <p class="navbarTitle">
-            <i class="fa-solid fa-cube" aria-hidden="true"></i>
+            <i class="fa-solid fa-shop"></i>
+            Market
+          </p>
+          <div class="navbarExtended">
+            <table class="columnWrapTable">
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Creators</a>
+                      <ul>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-magnifying-glass"></i>Find
+                            creators</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-magnifying-glass"></i>Search
+                            for creations</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-hand-holding-dollar"></i>Sell
+                            your creations</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-cart-flatbed-boxes"></i>My
+                            shop</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Trading</a>
+                      <ul>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-box-open"></i>My orders</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-truck-arrow-right"></i
+                            >Trade</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-list-check"></i>Want list</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="groupNav">
+                      <a class="title" href="">Store</a>
+                      <ul>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-magnifying-glass"></i>All
+                            items</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-shirt"></i>Merchandise</a
+                          >
+                        </li>
+                        <li>
+                          <a href="" class="disabled"
+                            ><i class="fa-solid fa-star"></i>Premium backer</a
+                          >
+                        </li>
+                      </ul>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </li>
+
+        <li class="navbarItem">
+          <p class="navbarTitle">
+            <i class="fa-solid fa-cube"></i>
             Others
           </p>
           <div class="navbarExtended">
@@ -546,53 +654,35 @@
                           <a
                             href="https://boardgamegeek.com/boardgame/10653/pirates-spanish-main"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >BoardGameGeek</a
+                            ><i class="fa-solid fa-circle"></i>BoardGameGeek</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://www.ebay.com/sch/i.html?_from=R40&amp;_trksid=p2380057.m570.l1313&amp;_nkw=wizkids+pirates&amp;_sacat=0"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Ebay</a
+                            ><i class="fa-solid fa-circle"></i>Ebay</a
                           >
                         </li>
                         <li>
                           <a href="https://pirateswithben.com/" target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Pirates with Ben</a
+                            ><i class="fa-solid fa-circle"></i>Pirates with
+                            Ben</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://www.raintyger.com/index.php?main_page=product_info&amp;cPath=39_43&amp;products_id=1544"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >RainTyger</a
+                            ><i class="fa-solid fa-circle"></i>RainTyger</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://tilorfire27.github.io/PiratesCSGDB/"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Tilorfire27's DB</a
+                            ><i class="fa-solid fa-circle"></i>Tilorfire27's
+                            DB</a
                           >
                         </li>
                       </ul>
@@ -601,39 +691,17 @@
                       <a class="title" href="">Additional resources</a>
                       <ul>
                         <li>
-                          <a href="public/download_menu"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Downloadable files archive</a
+                          <a href="/psmlist/public/download_menu"
+                            ><i class="fa-solid fa-circle"></i>Downloadable
+                            files archive</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://discord.com/invite/qeY7e3Q"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >PSM Discord Server</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="groupNav">
-                      <a class="title" href="">Donate</a>
-                      <ul>
-                        <li>
-                          <a
-                            href="https://www.buymeacoffee.com/psmlist/membership"
-                            target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >via "Buy Me a Coffee®"</a
+                            ><i class="fa-solid fa-circle"></i>PSM Discord
+                            Server</a
                           >
                         </li>
                       </ul>
@@ -647,44 +715,28 @@
                           <a
                             href="https://de.wikipedia.org/wiki/Pirates_of_the_Spanish_Main"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Deutsch</a
+                            ><i class="fa-solid fa-circle"></i>Deutsch</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://en.wikipedia.org/wiki/Pirates_Constructible_Strategy_Game"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >English</a
+                            ><i class="fa-solid fa-circle"></i>English</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://fr.wikipedia.org/wiki/Pirates_of_the_Spanish_Main"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Francais</a
+                            ><i class="fa-solid fa-circle"></i>Francais</a
                           >
                         </li>
                         <li>
                           <a
                             href="https://fi.wikipedia.org/wiki/Pirates_CSG"
                             target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Suomi</a
+                            ><i class="fa-solid fa-circle"></i>Suomi</a
                           >
                         </li>
                       </ul>
@@ -694,11 +746,8 @@
                       <ul>
                         <li>
                           <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Search for a user</a
+                            ><i class="fa-solid fa-circle"></i>Search for a
+                            user</a
                           >
                         </li>
                       </ul>
@@ -707,132 +756,8 @@
                       <a class="title" href="">Contact us</a>
                       <ul>
                         <li>
-                          <a href="public/contact-us"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Contact us</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="groupNav">
-                      <a class="title" href="">Additional Info</a>
-                      <ul>
-                        <li>
-                          <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >FAQ</a
-                          >
-                        </li>
-                        <li>
-                          <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Personal data usage</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="groupNav">
-                      <a class="title" href="">Dev</a>
-                      <ul>
-                        <li>
-                          <a
-                            href="public/reports/database-issue?s="
-                            target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Report a database mistake</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/reports/list" target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Report list</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/admin/portal"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Admin portal</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/admin/image_list_viewer"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Custom images</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/userhelp/images"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Help fixing images</a
-                          >
-                        </li>
-                        <li>
-                          <a class="disabled" href=""
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Suggestions</a
-                          >
-                        </li>
-                        <li>
-                          <a
-                            href="https://psmlist.com/compressor/v2/"
-                            target="_blank"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >File compressor</a
-                          >
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="groupNav">
-                      <a class="title" href="">Blog</a>
-                      <ul>
-                        <li>
-                          <a href="public/blog"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >Articles</a
-                          >
-                        </li>
-                        <li>
-                          <a href="public/blog/add"
-                            ><i
-                              class="fa-solid fa-circle"
-                              aria-hidden="true"
-                            ></i
-                            >New article</a
+                          <a href="/psmlist/public/contact-us"
+                            ><i class="fa-solid fa-circle"></i>Contact us</a
                           >
                         </li>
                       </ul>
@@ -844,6 +769,7 @@
           </div>
         </li>
       </ul>
+
       <div id="general_container">
         <div id="content_container">
           <a

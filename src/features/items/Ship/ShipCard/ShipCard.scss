@@ -1,0 +1,57 @@
+.ship.item {
+  > .info {
+    > div.extra {
+      grid-template-areas:
+        "preview stats"
+        "preview cannons"
+        "aptitude aptitude";
+
+      > .stats {
+        grid-area: stats;
+
+        > .basemove {
+          letter-spacing: 2px;
+
+          > .L {
+            color: red;
+          }
+        }
+
+        img {
+          height: 0.8em;
+        }
+      }
+
+      > .cannons {
+        grid-area: cannons;
+        gap: 0.2em !important;
+
+        img {
+          height: 0.8em;
+
+          &:first-child {
+            height: 0.7em;
+          }
+        }
+      }
+
+      > .stats,
+      > .cannons {
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+
+        background-color: #000;
+        padding: 0.1em;
+        padding-left: 0.4em;
+        border-radius: 2px;
+
+        > span {
+          display: flex;
+          align-items: center;
+          gap: 0.2em;
+        }
+      }
+    }
+  }
+}

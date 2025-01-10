@@ -1,0 +1,37 @@
+.search_container {
+  @apply flex flex-col gap-4;
+
+  @media screen and (min-width: theme("screens.lg")) {
+    flex: 0 0 40%;
+  }
+
+  > .search_inputs {
+    > .search_input {
+      @apply grow;
+    }
+
+    > .toggle_filters {
+      @apply m-0 p-0;
+    }
+  }
+
+  > .search_inputs,
+  > .search_filters {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  > .search_filters {
+    @apply flex-col;
+
+    &.hide {
+      @apply hidden;
+    }
+  }
+
+  > .search_results {
+    &.no_result {
+      align-content: center;
+      text-align: center;
+    }
+  }
+}

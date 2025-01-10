@@ -1,0 +1,52 @@
+.modal {
+  &[open] {
+    @apply visible;
+  }
+
+  @apply invisible;
+
+  @apply fixed inset-0 z-[2000] size-full;
+  @apply bg-black bg-opacity-50;
+  @apply flex justify-center items-center;
+
+  > .wrapper {
+    @apply max-w-full max-h-full;
+    @apply p-6 m-[2%];
+    @apply bg-gray-50 rounded-[20px];
+    @apply flex flex-col gap-4;
+
+    @media screen and (max-width: theme("screens.md")) {
+      @apply m-0 p-4 rounded-none;
+    }
+
+    > .header {
+      @apply m-0 flex-[0_0_auto];
+      @apply flex justify-between items-center;
+
+      .title {
+        @apply w-full;
+
+        h2 {
+          @apply font-[Windlass];
+          @apply flex items-center gap-2 justify-between;
+        }
+
+        h3 {
+          @apply m-0 mt-2 text-[#666];
+        }
+      }
+    }
+
+    > .content {
+      @apply w-full flex-1 overflow-auto;
+    }
+
+    > .prompt {
+      @apply flex justify-center items-center gap-4;
+
+      .icon_button {
+        @apply text-4xl;
+      }
+    }
+  }
+}

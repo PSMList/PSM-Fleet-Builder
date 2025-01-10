@@ -1,0 +1,193 @@
+.item {
+  position: relative;
+  z-index: -1;
+  background-size: cover;
+  padding: 0.6em;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color);
+  background-image: var(--bg);
+  margin-top: 1em;
+
+  @apply text-shadow;
+
+  &,
+  > .rarity {
+    border-radius: 10px;
+  }
+
+  > .actions {
+    position: absolute;
+    right: 1em;
+    top: 0;
+    transform: translateY(-50%);
+    display: flex;
+    padding: 0.25em;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 2px solid var(--color);
+
+    > * {
+      margin: 0;
+    }
+  }
+
+  .points {
+    border: 2px solid #111;
+    border-radius: 2px;
+    background-color: #222;
+    display: inline-flex;
+    justify-content: center;
+    align-items: flex-end;
+  }
+
+  > .info {
+    padding: 0.6em;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    flex-grow: 1;
+
+    * {
+      color: white;
+      max-width: 100%;
+    }
+
+    *:not(i) {
+      font-family: Windlass, sans-serif;
+      font-weight: bold;
+    }
+
+    img {
+      display: inline-block;
+      user-select: none;
+      height: auto;
+    }
+
+    > .main {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      grid-template-areas:
+        "name name name"
+        "extension id faction";
+      position: relative;
+
+      > .points {
+        position: absolute;
+        font-size: 1.2em;
+        top: 0;
+        left: 0;
+        transform: translate(-75%, -100%);
+        width: 1.75em;
+        height: 1.75em;
+        line-height: 1.4;
+      }
+
+      > .name {
+        font-size: 1.1em;
+        grid-area: name;
+      }
+
+      > .id {
+        grid-area: id;
+      }
+
+      > .faction {
+        height: 1.5em;
+        grid-area: faction;
+        /* align alt text right */
+        display: inline-flex;
+        justify-content: flex-end;
+      }
+
+      > .extension {
+        height: 1.5em;
+        width: 1.5em;
+        margin-right: 0.25em;
+        grid-area: extension;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+
+    > .extra {
+      margin-top: 0.5em;
+      display: grid;
+      grid-template-areas:
+        "preview ."
+        "aptitude aptitude";
+      grid-template-rows: 1fr 1fr;
+      grid-template-columns: minmax(1.75em, 3em) minmax(11.75em, 1fr);
+      gap: 0.2em;
+
+      > .preview {
+        width: 100%;
+        border-radius: 5px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        grid-area: preview;
+        align-self: center;
+
+        img {
+          border-radius: 3px;
+        }
+      }
+
+      > .aptitude {
+        border: 1.5px solid black;
+        min-height: 4em;
+        padding: 0.2em;
+        margin-top: 0.4em;
+        font-size: 0.85em;
+        font-family: Roboto, sans-serif;
+        width: 100%;
+        font-weight: normal;
+        grid-area: aptitude;
+        text-align: center;
+        align-content: center;
+        // cut after 4 lines
+        overflow: hidden;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
+        -webkit-box-orient: vertical;
+      }
+    }
+  }
+
+  &.dark {
+    > .info {
+      background-color: rgba(0, 0, 0, 0.2);
+
+      > .extra {
+        .aptitude {
+          border-color: white;
+        }
+      }
+    }
+  }
+
+  > .rarity {
+    overflow: hidden;
+    width: 4em;
+    height: 4em;
+    pointer-events: none;
+
+    &,
+    & > .inner {
+      position: absolute;
+      bottom: -0.25px;
+      right: -0.15px;
+    }
+
+    > .inner {
+      transform: translate(30%, 0%) rotate(-45deg);
+      background-color: var(--color);
+      color: white;
+      font-size: 0.9em;
+      font-weight: bold;
+      width: 4em;
+      height: 1.5em;
+    }
+  }
+}

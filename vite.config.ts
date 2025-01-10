@@ -4,6 +4,14 @@ import { resolve } from 'node:path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: ['modern-compiler'],
+        silenceDeprecations: ['legacy-js-api'],
+      },
+    },
+  },
   server: {
     host: true,
   },

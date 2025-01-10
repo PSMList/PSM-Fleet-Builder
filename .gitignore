@@ -6,4 +6,10 @@
 !src/
 !src/**/
 !src/**/*
+!src2/
+!src2/**/
+!src2/**/*
+
+# exclude
 .vscode/settings.json
+.env.*

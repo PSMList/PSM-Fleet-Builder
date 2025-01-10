@@ -1,0 +1,73 @@
+[data-unsaved]::after {
+  content: "✱";
+  background-color: red;
+}
+
+.actions button[data-crew-room]::after {
+  content: attr(data-crew-room);
+}
+
+.actions button[data-equipments-room]::after {
+  content: attr(data-equipments-room);
+}
+
+.actions button[data-harbor-count]::after {
+  content: attr(data-harbor-count);
+}
+
+.ship.item {
+  > .cargo {
+    margin-top: 0.5em;
+    padding: 0.6em;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+    color: white;
+
+    list-style-type: none;
+    font-weight: bold;
+    flex-grow: 10000;
+
+    > li {
+      margin: 0;
+      padding: 0.25em;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+
+      > .points {
+        line-height: 1.4;
+        font-size: 1em;
+        min-width: 1.75em;
+        height: 1.75em;
+      }
+
+      > .faction {
+        user-select: none;
+        height: auto;
+        width: 2em;
+        margin-left: auto;
+      }
+    }
+  }
+}
+
+.more_settings {
+  > .icon_button {
+    font-size: 1.1em;
+    background-color: #e85242;
+    color: white;
+    padding: 0.5em 1em;
+    border-radius: 0.5em;
+    cursor: pointer;
+
+    &:hover,
+    &:focus,
+    &:focus-within {
+      background-color: #c23f32;
+
+      i {
+        color: white !important;
+      }
+    }
+  }
+}

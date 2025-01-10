@@ -27,5 +27,5 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": "error",
     "prettier/prettier": ["error", { endOfLine: "auto" }],
   },
-  ignorePatterns: ["node_modules"],
+  ignorePatterns: ["node_modules", "tailwind.config.ts", "postcss.config.js"],
 };

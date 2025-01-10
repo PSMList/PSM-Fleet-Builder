@@ -1,0 +1,110 @@
+.select_container {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+
+  > select {
+    display: none;
+  }
+
+  > .selected_text {
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: 5px;
+    padding: 5px 25px 5px 5px;
+    background-color: rgba(0, 0, 0, 0.02);
+    width: 100%;
+    font-size: 0.9em;
+    position: relative;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+
+    opacity: 0.6;
+
+    &:hover,
+    &:focus,
+    &:focus-within {
+      opacity: 1;
+      background-color: lightgray;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      right: 5px;
+      top: 40%;
+      border: 7px solid transparent;
+      border-color: #000 transparent transparent transparent;
+    }
+
+    &.active::after {
+      top: 12.5%;
+      border-color: transparent transparent #000 transparent;
+    }
+  }
+
+  > .selected_text:not(.active) + .select_options {
+    display: none;
+  }
+
+  > .select_options {
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+    max-height: 20em;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-top: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+    z-index: 1;
+
+    > .select_option {
+      list-style-type: none;
+      padding: 0.4em 0.6em;
+      margin: 0;
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-top: unset;
+      cursor: pointer;
+
+      &:hover,
+      &:focus,
+      &:focus-within {
+        background-color: lightgray;
+      }
+    }
+  }
+
+  > .selected_text,
+  > .select_options > .select_option {
+    > * {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    img {
+      width: 1.5em;
+
+      &:not([src]) {
+        height: 0;
+      }
+    }
+
+    img,
+    i {
+      pointer-events: none;
+    }
+
+    i {
+      font-size: 1.1em;
+      @apply text-gray-500;
+    }
+  }
+}

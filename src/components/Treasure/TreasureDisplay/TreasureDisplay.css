@@ -1,8 +1,0 @@
-#modal-root [id^="add_treasure"] .modal-container {
-  flex: 1;
-  align-self: stretch;
-}
-
-#modal-root [id^="add_treasure"] .modal-title h2 {
-  font-family: Windlass, Roboto, sans-serif;
-}

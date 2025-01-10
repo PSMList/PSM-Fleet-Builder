@@ -1,0 +1,41 @@
+.settings_container {
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+  padding: 0.2em;
+
+  > .settings_header {
+    width: 100%;
+    padding: 1em;
+    display: flex;
+    gap: 1em;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  > .settings_inputs {
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0.5em 1em;
+    align-items: center;
+    width: 100%;
+
+    @media only screen and (max-width: 42em) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  > .settings_rules {
+    @apply font-semibold;
+  }
+
+  > .more_settings {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1em;
+  }
+}

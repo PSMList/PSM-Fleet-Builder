@@ -1,0 +1,76 @@
+@use "./custom.scss";
+
+textarea,
+input[type="text"],
+input[type="number"] {
+  @apply w-full p-1.5 box-border;
+  @apply border border-solid border-gray-300 rounded-md bg-gray-100;
+}
+
+#donation_container > .whitebox {
+  @apply w-full m-4 mt-0;
+  @apply text-center;
+}
+
+.whitebox {
+  @apply m-0 max-w-full;
+}
+
+#code {
+  @apply absolute top-0 right-6 z-[1];
+}
+
+.actions {
+  @apply flex flex-wrap justify-end gap-2;
+}
+
+.fa-coins {
+  color: darkgoldenrod !important;
+}
+
+#content_container {
+  @apply flex flex-col;
+  min-height: min(99.5vh, 65rem);
+  line-height: 1.3;
+
+  h1 {
+    @apply mt-0;
+  }
+
+  h2 {
+    @apply m-0 text-[#333] font-semibold;
+  }
+
+  * {
+    @apply box-border;
+  }
+}
+
+#fleet_builder {
+  @apply flex flex-col grow p-4;
+}
+
+.main_container {
+  scrollbar-gutter: stable;
+  @apply relative grow h-max min-h-full overflow-auto;
+  @apply flex gap-4;
+}
+
+@media screen and (max-width: theme("screens.lg")) {
+  #content_container {
+    min-height: min(199.5vh, 80rem);
+    @apply relative mt-2 text-sm;
+  }
+
+  #fleet_builder {
+    @apply p-2;
+  }
+
+  .main_container {
+    @apply flex-col-reverse;
+
+    > * {
+      @apply basis-1/2 grow shrink-0;
+    }
+  }
+}

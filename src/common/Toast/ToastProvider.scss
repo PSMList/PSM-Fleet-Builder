@@ -1,0 +1,58 @@
+// source: https://github.com/uzoeddie/react-toast/blob/master/src/components/toast/Toast.css
+
+.toast-container {
+  position: fixed;
+  z-index: 1001;
+  max-width: 100%;
+  padding: 1.5em;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  &.top-right {
+    top: 0;
+    right: 0;
+    transition: transform 0.6s ease-in-out;
+    animation: to-right 0.7s;
+  }
+
+  &.bottom-right {
+    bottom: 0;
+    right: 0;
+    transition: transform 0.6s ease-in-out;
+    animation: to-right 0.7s;
+  }
+
+  &.top-left {
+    top: 0;
+    left: 0;
+    transition: transform 0.6s ease-in;
+    animation: to-left 0.7s;
+  }
+
+  &.bottom-left {
+    bottom: 0;
+    left: 0;
+    transition: transform 0.6s ease-in;
+    animation: to-left 0.7s;
+  }
+}
+
+@keyframes to-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes to-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

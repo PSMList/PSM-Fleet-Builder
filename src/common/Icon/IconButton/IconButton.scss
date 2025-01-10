@@ -1,0 +1,50 @@
+.icon_button {
+  @apply cursor-pointer relative;
+  @apply bg-none border-none text-gray-500 text-2xl;
+  @apply flex items-center justify-center gap-1;
+
+  &::after {
+    @apply size-5 absolute -top-3 -right-2;
+    @apply text-[0.75rem] font-bold text-white;
+    @apply rounded-full bg-primary;
+    @apply flex items-center justify-center;
+  }
+
+  &:first-of-type {
+    @apply ml-2;
+  }
+
+  &:last-of-type {
+    @apply mr-2;
+  }
+
+  &.primary {
+    @apply px-1.5 py-1 mx-0.5;
+    @apply text-white no-underline;
+    @apply bg-primary;
+    @apply rounded-md border-none;
+    transition:
+      color 0.3s,
+      background-color 0.3s;
+
+    > * {
+      @apply text-sm;
+    }
+
+    &:hover,
+    &:focus,
+    &:focus-within {
+      @apply bg-primary-dark;
+    }
+  }
+
+  &:not(.primary) {
+    &:hover,
+    &:focus,
+    &:focus-within {
+      i {
+        @apply text-primary;
+      }
+    }
+  }
+}

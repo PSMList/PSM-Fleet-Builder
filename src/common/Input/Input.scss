@@ -1,0 +1,10 @@
+form.validation_input {
+  &,
+  * {
+    @apply min-w-0;
+  }
+
+  textarea {
+    @apply overflow-auto;
+  }
+}
