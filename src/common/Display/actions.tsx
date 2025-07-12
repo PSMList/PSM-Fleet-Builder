@@ -3,6 +3,7 @@ import { IconButton } from "@/common/Icon/IconButton/IconButton";
 import { useCollapse } from "../Collapse/CollapseProvider";
 import { useItems } from "../Item/ItemsProvider";
 import { useModal } from "../Modal/hooks";
+import { isOwn } from "@/utils/config";
 
 export function Collapse() {
   const [collapsed, toggleCollapse] = useCollapse();
@@ -21,6 +22,8 @@ interface AddItemsProps {
 }
 
 export function AddItems(props: AddItemsProps) {
+  if (!isOwn) return;
+
   function scrollToDisplayBottom() {
     const search_container = querySelector(
       document,
@@ -57,6 +60,8 @@ interface ClearProps {
 }
 
 export function Clear(props: ClearProps) {
+  if (!isOwn) return;
+
   const { clear } = useItems();
 
   const modal = useModal();

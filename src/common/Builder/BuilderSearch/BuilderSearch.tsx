@@ -3,7 +3,7 @@ import "./BuilderSearch.scss";
 import { Component, createEffect, createSignal } from "solid-js";
 
 import { FilterProps, Search, SearchItem } from "@/common/Search/Search";
-import { onlyDisplay } from "@/utils/config";
+import { isOwn } from "@/utils/config";
 import { useDb } from "@/store/store";
 import { ItemsType, Item } from "@/common/Item/ItemCard";
 
@@ -15,7 +15,7 @@ export interface BuilderSearchProps<T extends Item> {
 }
 
 export function BuilderSearch<T extends Item>(props: BuilderSearchProps<T>) {
-  if (onlyDisplay) return;
+  if (!isOwn) return;
 
   const { db } = useDb();
 

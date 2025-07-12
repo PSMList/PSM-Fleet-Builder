@@ -9,7 +9,7 @@ import { fleetDataToString, parseFleetData } from "@/utils/parse";
 import { Harbor } from "@/features/Harbor/Harbor";
 import { ItemsProvider } from "@/common/Item/ItemsProvider";
 import { Settings } from "@/common/Settings/Settings";
-import { baseUrl, slugname } from "@/utils/config";
+import { baseUrl, isOwn, slugname } from "@/utils/config";
 
 export function CopyFleet() {
   const modal = useModal();
@@ -239,6 +239,8 @@ function saveFleet() {
 }
 
 export function SaveFleet() {
+  if (!isOwn) return;
+
   const { saved } = useFleet();
 
   return (
@@ -252,6 +254,8 @@ export function SaveFleet() {
 }
 
 export function ImportFleet() {
+  if (!isOwn) return;
+
   const toast = useToast();
   const { db } = useDb();
   const { setFleet } = useFleet();
@@ -349,6 +353,8 @@ export function ShowHarbor() {
 }
 
 export function ShowSettings() {
+  if (!isOwn) return;
+
   const modal = useModal();
   const { fleet, setFleet, saved } = useFleet();
 
