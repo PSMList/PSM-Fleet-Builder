@@ -22,7 +22,7 @@ export function BuilderDisplay<T extends Item>(props: BuilderDisplayProps<T>) {
   }
 
   return (
-    <CollapseProvider>
+    <CollapseProvider defaultCollapse={false}>
       <Display
         name={props.name}
         header={props.header}
