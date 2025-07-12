@@ -63,7 +63,7 @@ export function Settings(props: SettingsProps) {
         </For>
       </form>
       <div class="settings_rules">
-        Valid special characters: ' : " _ - and accents
+        Valid special characters: <span>- ' : " _ ? ! /</span> and accents
       </div>
       {props.children && <div class="more_settings">{props.children}</div>}
     </div>
