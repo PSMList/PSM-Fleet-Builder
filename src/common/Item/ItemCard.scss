@@ -116,7 +116,7 @@
       grid-template-areas:
         "preview ."
         "aptitude aptitude";
-      grid-template-rows: 1fr 1fr;
+      grid-template-rows: auto 1fr;
       grid-template-columns: minmax(1.75em, 3em) minmax(11.75em, 1fr);
       gap: 0.2em;
 
@@ -145,12 +145,12 @@
         text-align: center;
         align-content: center;
         // cut after 4 lines
-        overflow: hidden;
-        display: -webkit-box;
-        text-overflow: ellipsis;
-        -webkit-line-clamp: 4;
-        line-clamp: 4;
-        -webkit-box-orient: vertical;
+        // overflow: hidden;
+        // display: -webkit-box;
+        // text-overflow: ellipsis;
+        // -webkit-line-clamp: 4;
+        // line-clamp: 4;
+        // -webkit-box-orient: vertical;
       }
     }
   }
