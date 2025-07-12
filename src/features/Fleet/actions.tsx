@@ -327,7 +327,7 @@ export function ShowHarbor() {
     modal.show({
       id: "harbor",
       title: "Harbor",
-      subtitle: "Store items outside of your fleet",
+      subtitle: "Items stored outside of your fleet",
       onClose: true,
       content: () => (
         <ItemsProvider
