@@ -71,3 +71,24 @@
     }
   }
 }
+
+.description {
+  @apply mb-4;
+  @apply shadow-none;
+  @apply border-dashed border-2 border-gray-500;
+
+  &,
+  textarea {
+    @apply w-full;
+  }
+
+  textarea {
+    @apply border-none;
+    @apply resize-none max-h-40;
+    @apply font-[inherit];
+
+    &:focus-visible {
+      @apply outline-none;
+    }
+  }
+}

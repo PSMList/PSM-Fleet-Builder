@@ -17,7 +17,7 @@ import {
   ShowSettings,
 } from "@/features/Fleet/actions";
 import { useModal } from "@/common/Modal/hooks";
-import { baseImg } from "@/utils/config";
+import { baseImg, isOwn } from "@/utils/config";
 import { objectId } from "@/utils/other";
 import { capitalize, plural } from "@/utils/string";
 import { getShipCost } from "@/utils/points";
@@ -291,6 +291,20 @@ export function Fleet() {
         );
       }}
     >
+      <Show when={!isOwn && fleet.description}>
+        <div class="description whitebox">
+          <textarea
+            readonly
+            ref={(ref) => {
+              setTimeout(() => {
+                ref.style.height = ref.scrollHeight.toString() + "px";
+              });
+            }}
+          >
+            {fleet.description}
+          </textarea>
+        </div>
+      </Show>
       <_Fleet />
     </ItemsProvider>
   );
