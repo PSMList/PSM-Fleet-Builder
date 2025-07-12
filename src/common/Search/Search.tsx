@@ -1,6 +1,6 @@
 import "./Search.scss";
 
-import { For, JSX, createEffect, createSignal } from "solid-js";
+import { For, JSX, Show, createEffect, createSignal, onMount } from "solid-js";
 
 import { IconButton } from "@/common/Icon/IconButton/IconButton";
 import { Input } from "../Input/Input";
@@ -52,6 +52,7 @@ function _Search<
 >(props: SearchProps<T, U, V>) {
   const [hideFilters, setHideFilters] = createSignal(true);
   const [collapsed] = useCollapse();
+  const [searched, setSearched] = createSignal(false);
   const [searchedItems, setSearchedItems] = createStore<typeof props.items>([]);
 
   let inputElementRef!: HTMLInputElement;
@@ -64,6 +65,7 @@ function _Search<
         "Search query needs at least 2 characters.",
       );
       inputElementRef.reportValidity();
+
       return [];
     }
 
@@ -92,14 +94,19 @@ function _Search<
     let newItems = [...searchedItems];
 
     for (const pipe of pipeFilters) {
-      if (!newItems.length) {
-        continue;
-      }
-
       newItems = pipe(newItems);
+
+      if (!newItems.length) {
+        break;
+      }
     }
 
     setFilteredItems(() => newItems);
+    setSearched(() => true);
+  });
+
+  onMount(() => {
+    setSearched(() => false);
   });
 
   return (
@@ -136,7 +143,16 @@ function _Search<
         }}
       >
         <For
-          fallback={<li>Enter any text in the search bar to show items.</li>}
+          fallback={
+            <Show
+              when={searched()}
+              fallback={
+                <li>Enter any text in the search bar to show items.</li>
+              }
+            >
+              <li>No item found.</li>
+            </Show>
+          }
           each={filteredItems}
         >
           {(item) => item.item}
