@@ -10,7 +10,7 @@ export interface ItemsContextType<T extends Item> {
   clear: () => void;
 }
 
-export const ItemsContext = createContext<ItemsContextType<any>>();
+export const ItemsContext = createContext({} as ItemsContextType<any>);
 
 type ItemsProviderProps<T> = ParentProps & {
   items?: T[];

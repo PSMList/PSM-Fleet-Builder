@@ -112,6 +112,19 @@ const loadingFleet = new Promise<void>(async (resolve) => {
 
   await loadingDb;
 
+  for (const ship of db.ships.values()) {
+    const item = ship as FleetShip;
+
+    if (!item.crew) item.crew = [];
+    if (!item.equipment) item.equipment = [];
+
+    if (!item.room) {
+      item.room = function () {
+        return this.crew.length + this.equipment.length;
+      };
+    }
+  }
+
   const newFleet = parseFleetData(result ?? {}, db);
 
   createEffect(() => {

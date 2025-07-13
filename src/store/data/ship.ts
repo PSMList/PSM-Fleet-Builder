@@ -75,7 +75,6 @@ const dataPromise = fetch(`${apiUrl}/ship?custom=include`)
         faction,
         rarity,
         extension,
-        subType,
         numid: item.numid,
         name: item.name,
         fullname: `${extension.short}${item.numid} ${item.name}`,
@@ -94,6 +93,7 @@ const dataPromise = fetch(`${apiUrl}/ship?custom=include`)
           masts: item.masts,
           cargo: item.cargo,
           basemove: item.basemove,
+          subType,
         });
       }
     });

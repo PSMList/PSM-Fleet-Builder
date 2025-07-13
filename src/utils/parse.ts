@@ -54,9 +54,6 @@ export function parseFleetData(
         ...ship,
         crew: _crew,
         equipment: _equipment,
-        room() {
-          return this.crew.length + this.equipment.length;
-        },
       });
 
       continue;

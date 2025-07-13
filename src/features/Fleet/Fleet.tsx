@@ -50,7 +50,7 @@ function ShipItemBase({
 }) {
   return (
     <ShipCard item={item} actions={actions}>
-      <Show when={(item.room?.() ?? 0) > 0}>
+      <Show when={item.room?.()}>
         <ul class="cargo">
           <li class="expand">
             <span class="points">
@@ -281,12 +281,7 @@ export function Fleet() {
       onChange={(items) => {
         setFleet(
           produce((_fleet) => {
-            _fleet.data = items.map((item) => {
-              if (!item.crew) item.crew = [];
-              if (!item.equipment) item.equipment = [];
-
-              return item;
-            });
+            _fleet.data = items;
           }),
         );
       }}
