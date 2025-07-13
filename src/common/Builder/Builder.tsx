@@ -15,16 +15,16 @@ export type BuilderProps<T extends Item> = BuilderSearchProps<T> &
 
 export function Builder<T extends Item>(props: BuilderProps<T>) {
   return (
-    <div class="main_container" id={props.name}>
+    <div class="main_container" id={props.type}>
       <BuilderSearch
         searchItem={props.searchItem}
-        name={props.name}
+        type={props.type}
         filters={props.filters}
         placeholder={props.placeholder}
       />
       <BuilderDisplay
         displayItem={props.displayItem}
-        name={props.name}
+        type={props.type}
         actions={props.actions}
         header={props.header}
       />

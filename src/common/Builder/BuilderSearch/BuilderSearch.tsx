@@ -10,7 +10,7 @@ import { ItemsType, Item } from "@/common/Item/ItemCard";
 export interface BuilderSearchProps<T extends Item> {
   filters?: FilterProps<any>[];
   searchItem: Component<{ item: T }>;
-  name: ItemsType;
+  type: ItemsType;
   placeholder?: string;
 }
 
@@ -22,7 +22,7 @@ export function BuilderSearch<T extends Item>(props: BuilderSearchProps<T>) {
   const [items, setItems] = createSignal<SearchItem<any>[]>([]);
 
   createEffect(() => {
-    const subType = db[props.name];
+    const subType = db[props.type];
 
     if (!subType) return;
     const dbItems = Array.from(subType.values() as MapIterator<T>);
@@ -41,7 +41,7 @@ export function BuilderSearch<T extends Item>(props: BuilderSearchProps<T>) {
     <Search
       filters={props.filters}
       items={items()}
-      placeholder={props.placeholder || `Search ${props.name} by name or ID`}
+      placeholder={props.placeholder || `Search ${props.type} by name or ID`}
     />
   );
 }

@@ -11,7 +11,7 @@ export interface BuilderDisplayProps<T extends Item> {
   actions?: JSX.Element;
   header?: JSX.Element;
   displayItem: Component<{ item: T }>;
-  name: string;
+  type: string;
 }
 
 export function BuilderDisplay<T extends Item>(props: BuilderDisplayProps<T>) {
@@ -24,7 +24,7 @@ export function BuilderDisplay<T extends Item>(props: BuilderDisplayProps<T>) {
   return (
     <CollapseProvider defaultCollapse={false}>
       <Display
-        name={props.name}
+        name={props.type}
         header={props.header}
         actions={props.actions}
         items={_items()}

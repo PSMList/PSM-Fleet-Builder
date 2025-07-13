@@ -174,7 +174,7 @@ export function _Fleet() {
           filters={filters}
           displayItem={DisplaySubTypeItem}
           searchItem={SearchSubTypeItem}
-          name={linkedTypeName}
+          type={linkedTypeName}
         />
       );
     }
@@ -262,7 +262,7 @@ export function _Fleet() {
 
   return (
     <Builder
-      name="ships"
+      type="ships"
       displayItem={DisplayShipItem}
       searchItem={SearchShipItem}
       header={header}

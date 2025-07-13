@@ -48,7 +48,7 @@ export function Harbor() {
       filters={allFilters}
       displayItem={DisplaySubTypeItem}
       searchItem={SearchSubTypeItem}
-      name="items"
+      type="items"
     />
   );
 }
