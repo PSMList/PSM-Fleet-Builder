@@ -5,6 +5,7 @@ import { Select } from "../Select/Select";
 import { baseImg } from "@/utils/config";
 import { FilterProps } from "../Search/Search";
 import { Extension } from "@/store/data/extension";
+import { LazyImg } from "../LazyImg/LazyImg";
 
 export function useExtensionFilter(): FilterProps<{
   extension?: Extension;
@@ -26,8 +27,12 @@ export function useExtensionFilter(): FilterProps<{
       id: extension.id.toString(),
       display: (
         <span>
-          <img
-            src={extension.icon ? `${baseImg}/${extension.icon}` : undefined}
+          <LazyImg
+            src={`${baseImg}/${extension.icon}`}
+            alt=""
+            width="24px"
+            height="24px"
+            class="extension"
           />
           {extension.name}
         </span>

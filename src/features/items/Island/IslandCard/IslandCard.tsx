@@ -27,7 +27,6 @@ export function IslandCard(props: IslandCardProps) {
           alt=""
           width="80px"
           height="80px"
-          altSrc={`${baseImg}/logos/noimg.png`}
         />
       }
     >

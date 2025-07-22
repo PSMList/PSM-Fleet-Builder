@@ -1,3 +1,5 @@
+import { JSX } from 'solid-js/jsx-runtime';
+
 import { baseUrl } from './config';
 
 export function removeItemFromArray<T>(
@@ -19,12 +21,16 @@ export function objectId(object: object) {
   return id;
 }
 
-export function onError(target: HTMLImageElement, url?: string) {
-  if (url && target.src?.includes(url)) {
-    target.src = url;
-  } else {
-    target.removeAttribute('src');
-  }
+export function onImageError(
+  url?: string,
+): JSX.EventHandler<HTMLImageElement, ErrorEvent> {
+  return ({ currentTarget: target }) => {
+    if (url && !target.src?.includes(url)) {
+      target.src = url;
+    } else {
+      target.removeAttribute('src');
+    }
+  };
 }
 
 export function setParentBackground(element: HTMLDivElement, url?: string) {

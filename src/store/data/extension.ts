@@ -49,14 +49,10 @@ export const extensionDataPromise = fetch(
         sort: extension.searchsort,
         bgColor: extension.colorhex,
         bg: extension.custom
-          ? extension.imagebackground
-            ? `custom/expansion/background/${extension.imagebackground}`
-            : ''
+          ? `custom/expansion/background/${extension.imagebackground}`
           : `bg_card/m/bg_${extension.short.replace(/U$/, '')}.png`,
         icon: extension.custom
-          ? extension.exticon
-            ? `custom/expansion/icon/${extension.exticon}`
-            : 'logos/noimg.png'
+          ? `custom/expansion/icon/${extension.exticon}`
           : `logos/logo_${extension.short.replace(/U$/, '')}_o.png`,
       }),
     );

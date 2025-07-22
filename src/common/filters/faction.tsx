@@ -5,6 +5,7 @@ import { Select } from "../Select/Select";
 import { baseImg } from "@/utils/config";
 import { FilterProps } from "../Search/Search";
 import { Faction } from "@/store/data/faction";
+import { LazyImg } from "../LazyImg/LazyImg";
 
 export function useFactionFilter(): FilterProps<{ faction?: Faction }> {
   const { db } = useDb();
@@ -24,7 +25,13 @@ export function useFactionFilter(): FilterProps<{ faction?: Faction }> {
       id: faction.id.toString(),
       display: (
         <span>
-          <img src={faction.icon ? `${baseImg}/${faction.icon}` : undefined} />
+          <LazyImg
+            class="faction"
+            src={faction.icon ? `${baseImg}/${faction.icon}` : undefined}
+            alt=""
+            width="24px"
+            height="15px"
+          />
           {faction.name}
         </span>
       ),

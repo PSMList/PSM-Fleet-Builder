@@ -62,8 +62,6 @@ export function useCollectionFilter(): FilterProps<Item> {
         (collection) => collection.id === _selectedCollectionId,
       )?.items;
 
-      console.log(items);
-
       if (!filteredItems) return items;
 
       return items.filter((item) => filteredItems.includes(item.props.id));
