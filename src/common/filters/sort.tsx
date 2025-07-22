@@ -27,19 +27,21 @@ export function useSortFilter<
 >(sorts: U): FilterProps<T> {
   const [selectedSort, setSelectedSort] = createSignal("-1");
 
-  const sortOptions = [
-    {
-      id: "-1",
-      display: (
-        <span>
-          <Icon id="circle-xmark" />
-          Default order
-        </span>
-      ),
-      sort: () => 0,
-    },
-    ...sorts,
-  ];
+  function sortOptions() {
+    return [
+      {
+        id: "-1",
+        display: (
+          <span>
+            <Icon id="circle-xmark" />
+            Default order
+          </span>
+        ),
+        sort: () => 0,
+      },
+      ...sorts,
+    ];
+  }
 
   return {
     button: (
@@ -47,7 +49,7 @@ export function useSortFilter<
         defaultSelectText="Sort by"
         class="search_sort"
         onOptionSelect={setSelectedSort}
-        options={sortOptions}
+        options={sortOptions()}
       />
     ),
     pipe: (items) => {
@@ -55,7 +57,7 @@ export function useSortFilter<
 
       if (_selectedSort === "-1") return items;
 
-      const sortOption = sortOptions.find(
+      const sortOption = sortOptions().find(
         (sortOption) => sortOption.id === _selectedSort,
       );
 

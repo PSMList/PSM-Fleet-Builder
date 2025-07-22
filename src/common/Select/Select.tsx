@@ -94,13 +94,9 @@ export function Select(props: SelectProps) {
     setShowOption((previous) => !previous);
   }
 
-  function handleOptionClick(value: string) {
-    if (props.onOptionSelect && value) props.onOptionSelect(value);
-
+  function handleOptionClick(option: Option) {
     batch(() => {
-      const option = props.options.find((option) => option.id === value);
-
-      if (!option) return;
+      if (props.onOptionSelect && option.id) props.onOptionSelect(option.id);
 
       setSelectedOption(() => cloneOption(option));
       setShowOption(() => false);
@@ -128,16 +124,16 @@ export function Select(props: SelectProps) {
         </For>
       </select>
       <div
-        classList={{ selected_text: true, active: showList() }}
+        classList={{ selected_option: true, active: showList() }}
         onClick={handleListDisplay}
       >
         {selectedOption().display}
       </div>
       <ul class="select_options">
         <For each={props.options}>
-          {(li) => (
-            <li class="select_option" onClick={() => handleOptionClick(li.id)}>
-              {li.display}
+          {(option) => (
+            <li class="select_option" onClick={() => handleOptionClick(option)}>
+              {option.display}
             </li>
           )}
         </For>
