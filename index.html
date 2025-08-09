@@ -2,32 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="psmlist/public/img/favicon.ico" />
+    <link rel="icon" href="psmlist/img/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>PSMList.com | Fleet Builder</title>
-    <link rel="stylesheet" type="text/css" href="/psmlist/public/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="/psmlist/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="/psmlist/css/blog.css" />
     <link
-      rel="stylesheet"
-      type="text/css"
-      href="/psmlist/public/css/blog.css"
-    />
-    <link
-      href="/psmlist/public/fontawesome/css/fontawesome.min.css"
+      href="/psmlist/fontawesome/css/fontawesome.min.css"
       rel="stylesheet"
     />
-    <link
-      href="/psmlist/public/fontawesome/css/brands.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="/psmlist/public/fontawesome/css/solid.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="/psmlist/public/fontawesome/css/regular.min.css"
-      rel="stylesheet"
-    />
+    <link href="/psmlist/fontawesome/css/brands.min.css" rel="stylesheet" />
+    <link href="/psmlist/fontawesome/css/solid.min.css" rel="stylesheet" />
+    <link href="/psmlist/fontawesome/css/regular.min.css" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap"
       rel="stylesheet"
@@ -37,7 +24,7 @@
       window.fleetMaxpointsMax = 200;
       window.fleetNameMinlength = 5;
       window.fleetNameMaxlength = 60;
-      window.baseUrl = "/psmlist/public";
+      window.baseUrl = "/psmlist";
     </script>
     <script type="module" src="/src/main.tsx" defer></script>
     <script>
@@ -49,10 +36,10 @@
     <div id="main_container">
       <header>
         <div id="header_title">
-          <a href="/psmlist/public/">
+          <a href="/psmlist/">
             <img
               class="site_logo"
-              src="/psmlist/public/img/logo_small.png"
+              src="/psmlist/img/logo_small.png"
               alt="logo.png"
             />
             <div id="website_title_container">
@@ -85,10 +72,7 @@
           </div>
         </div>
 
-        <a
-          class="locale_choice_redirect"
-          href="/psmlist/public/change_language"
-        >
+        <a class="locale_choice_redirect" href="/psmlist/change_language">
           <i class="fa-solid fa-globe"></i>
         </a>
 
@@ -96,14 +80,14 @@
           <div class="user_hover">
             <p class="username_container">DodoDye</p>
             <a
-              href="/psmlist/public/expansion/list/self"
+              href="/psmlist/expansion/list/self"
               class="userShortcut"
               title="My Expansions"
             >
               <i class="fa-regular fa-cards-blank"></i>
             </a>
             <a
-              href="/psmlist/public/fleet/self/search"
+              href="/psmlist/fleet/self/search"
               class="userShortcut"
               title="My Fleets"
             >
@@ -111,30 +95,30 @@
             </a>
             <div class="avatar_container">
               <img
-                src="/psmlist/public/img/avatar/user/default_user.png"
+                src="/psmlist/img/avatar/user/default_user.png"
                 alt="user.png"
                 style="background: linear-gradient(0deg, FFFFFF, FFFFFF)"
               />
             </div>
             <div class="user_dropdown">
-              <a href="/psmlist/public/u/dododye">
+              <a href="/psmlist/u/dododye">
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
               </a>
-              <a href="/psmlist/public/self/edit">
+              <a href="/psmlist/self/edit">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
               </a>
-              <a href="/psmlist/public/fleet/self/search">
+              <a href="/psmlist/fleet/self/search">
                 <i class="fa-solid fa-anchor"></i>
                 <span>My Fleets</span>
               </a>
-              <a href="/psmlist/public/expansion/list/self">
+              <a href="/psmlist/expansion/list/self">
                 <i class="fa-regular fa-cards-blank"></i>
                 <span>My Expansions</span>
               </a>
               <div class="spacer_line"></div>
-              <a href="/psmlist/public/logout">
+              <a href="/psmlist/logout">
                 <i class="fa-solid fa-power-off"></i>
                 <span>Logout</span>
               </a>
@@ -166,45 +150,45 @@
                       <a class="title" href="">Search</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/ship/search"
+                          <a href="/psmlist/ship/search"
                             ><i class="fa-solid fa-sailboat"></i>Ships</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/crew/search"
+                          <a href="/psmlist/crew/search"
                             ><i class="fa-solid fa-users"></i>Crews</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/treasure/search"
+                          <a href="/psmlist/treasure/search"
                             ><i class="fa-solid fa-treasure-chest"></i
                             >Treasures</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/equipment/search"
+                          <a href="/psmlist/equipment/search"
                             ><i class="fa-solid fa-dolly-box"></i>Equipments</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/island/search"
+                          <a href="/psmlist/island/search"
                             ><i class="fa-solid fa-island-tree-palm"></i
                             >Islands</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/expansion/search"
+                          <a href="/psmlist/expansion/search"
                             ><i class="fa-solid fa-cards-blank"></i
                             >Expansions</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/keyword/search"
+                          <a href="/psmlist/keyword/search"
                             ><i class="fa-solid fa-list"></i>Keywords</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/technicalshapes"
+                          <a href="/psmlist/technicalshapes"
                             ><i class="fa-solid fa-scissors"></i>Ship Shapes</a
                           >
                         </li>
@@ -221,14 +205,14 @@
                       <a class="title" href="">Utilities</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/ship_calculator"
+                          <a href="/psmlist/ship_calculator"
                             ><i class="fa-solid fa-calculator"></i>Points
                             Calculator</a
                           >
                         </li>
                         <li>
                           <a
-                            href="/psmlist/public/reports/database-issue"
+                            href="/psmlist/reports/database-issue"
                             target="_blank"
                             ><i class="fa-solid fa-database"></i>Report a data
                             mistake/error</a
@@ -266,22 +250,20 @@
                       <a class="title" href="">Achievements</a>
                       <ul>
                         <li>
-                          <a
-                            href="/psmlist/public/achievements/user"
-                            target="_blank"
+                          <a href="/psmlist/achievements/user" target="_blank"
                             ><i class="fa-solid fa-award"></i>User Badges</a
                           >
                         </li>
                         <li>
                           <a
-                            href="/psmlist/public/admin/userachievement/add"
+                            href="/psmlist/admin/userachievement/add"
                             target="_blank"
                             ><i class="fa-solid fa-award"></i>New Badge</a
                           >
                         </li>
                         <li>
                           <a
-                            href="/psmlist/public/admin/userachievement/linker"
+                            href="/psmlist/admin/userachievement/linker"
                             target="_blank"
                             ><i class="fa-solid fa-award"></i>Linker</a
                           >
@@ -309,39 +291,38 @@
                       <a class="title" href="">Custom Cards</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/expansion/list/self"
+                          <a href="/psmlist/expansion/list/self"
                             ><i class="fa-solid fa-cards-blank"></i>My
                             Expansions</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/expansion/custom/add"
+                          <a href="/psmlist/expansion/custom/add"
                             ><i class="fa-solid fa-circle"></i>New Expansion</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/custom/ship/add"
+                          <a href="/psmlist/custom/ship/add"
                             ><i class="fa-solid fa-circle"></i>New Ship</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/custom/crew/add"
+                          <a href="/psmlist/custom/crew/add"
                             ><i class="fa-solid fa-circle"></i>New Crew</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/custom/treasure/add"
+                          <a href="/psmlist/custom/treasure/add"
                             ><i class="fa-solid fa-circle"></i>New Treasure</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/custom/equipment/add"
+                          <a href="/psmlist/custom/equipment/add"
                             ><i class="fa-solid fa-circle"></i>New Equipment</a
                           >
                         </li>
                         <li>
-                          <a
-                            href="/psmlist/public/blog/submitting_custom_faction"
+                          <a href="/psmlist/blog/submitting_custom_faction"
                             ><i class="fa-solid fa-circle"></i>Submit a new
                             Faction</a
                           >
@@ -384,19 +365,19 @@
                       <ul>
                         <li>
                           <a
-                            href="/psmlist/public/reports/database-issue?s="
+                            href="/psmlist/reports/database-issue?s="
                             target="_blank"
                             ><i class="fa-solid fa-cloud-exclamation"></i>Report
                             a database mistake</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/admin/portal"
+                          <a href="/psmlist/admin/portal"
                             ><i class="fa-solid fa-shield"></i>Admin portal</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/userhelp/images"
+                          <a href="/psmlist/userhelp/images"
                             ><i class="fa-solid fa-camera"></i>Help fixing
                             images</a
                           >
@@ -429,12 +410,12 @@
                       <a class="title" href="">Blog</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/blog"
+                          <a href="/psmlist/blog"
                             ><i class="fa-solid fa-newspaper"></i>Articles</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/blog/add"
+                          <a href="/psmlist/blog/add"
                             ><i class="fa-solid fa-newspaper"></i>New article</a
                           >
                         </li>
@@ -485,18 +466,18 @@
                       <a class="title" href="">Fleet</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/fleet/search"
+                          <a href="/psmlist/fleet/search"
                             ><i class="fa-solid fa-magnifying-glass"></i
                             >Search</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/fleet/self/search"
+                          <a href="/psmlist/fleet/self/search"
                             ><i class="fa-solid fa-anchor"></i>My Fleets</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/fleet/self/add"
+                          <a href="/psmlist/fleet/self/add"
                             ><i class="fa-solid fa-add"></i>Create my fleet</a
                           >
                         </li>
@@ -524,13 +505,13 @@
                       <a class="title" href="">Collection</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/collection/search"
+                          <a href="/psmlist/collection/search"
                             ><i class="fa-solid fa-magnifying-glass"></i
                             >Search</a
                           >
                         </li>
                         <li>
-                          <a href="/psmlist/public/collection/show/self/"
+                          <a href="/psmlist/collection/show/self/"
                             ><i class="fa-solid fa-shelves"></i>My collection</a
                           >
                         </li>
@@ -691,7 +672,7 @@
                       <a class="title" href="">Additional resources</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/download_menu"
+                          <a href="/psmlist/download_menu"
                             ><i class="fa-solid fa-circle"></i>Downloadable
                             files archive</a
                           >
@@ -756,7 +737,7 @@
                       <a class="title" href="">Contact us</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/public/contact-us"
+                          <a href="/psmlist/contact-us"
                             ><i class="fa-solid fa-circle"></i>Contact us</a
                           >
                         </li>

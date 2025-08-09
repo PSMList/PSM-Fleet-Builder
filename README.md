@@ -16,7 +16,7 @@ The most important one is the community keeping the fan base alive on social net
 
 ## Presentation
 
-The Fleet Builder project is a part of the [PSMList](https://www.psmlist.com/public/) website that was built to centralize projetcs aiming to improve Pirates CSG players' experience.
+The Fleet Builder project is a part of the [PSMList](https://www.psmlist.com/) website that was built to centralize projetcs aiming to improve Pirates CSG players' experience.
 
 The webssite started as an encyclopedia for this boardgame.
 It went online with a "Fleets" section that promised to bring features for building and sharing fleets.
@@ -94,7 +94,7 @@ It is far from complete, but it aims, in the long run, to give the ability to:
 ## Technical details
 
 The code base is developed with SolidJS, a UI building library like React with fine-grained (true) reactivity, using TypeScript. It is bundled with Vite.
-The assets (images, fonts, some css) are taken from the [PSMList website](https://www.psmlist.com/public/).
+The assets (images, fonts, some css) are taken from the [PSMList website](https://www.psmlist.com/).
 
 If you want to run it yourself locally, you will need to use the remote assets from the PSMList website.
 For that, you just have to add a &lt;base href="https://www.psmlist.com" />&gt; element in the &lt;head&gt; of the index.html file.
