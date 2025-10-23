@@ -17,34 +17,6 @@ export function CopyFleet() {
   const { fleet } = useFleet();
 
   function copyFleet() {
-    const fleetString = fleet.data.reduce(
-      (output, ship) =>
-        `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.name}\n` +
-        `${ship.crew.reduce(
-          (output, crew) =>
-            `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.name}\n`,
-          "",
-        )}` +
-        `${ship.equipment.reduce(
-          (output, equipment) =>
-            `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}\n`,
-          "",
-        )}\n`,
-      `[${fleet.name}](${location.href})\n\n${
-        fleet.description ? `${fleet.description}\n\n` : ""
-      }`,
-    );
-
-    const data = `${fleetString}${
-      fleet.harbor.length
-        ? fleet.harbor.reduce(
-            (output, item) =>
-              `${output}  ${item.name} #${item.extension.short}${item.numid}\n`,
-            "\nHarbor:\n",
-          )
-        : ""
-    }`;
-
     let textareaRef!: HTMLTextAreaElement;
 
     const copyText = async () => {
@@ -84,7 +56,30 @@ export function CopyFleet() {
             }, 150);
           }}
         >
-          {data}
+          {`[${fleet.name}](${location.href})\n\n`}
+          {fleet.description ? `${fleet.description}\n\n` : ""}
+          {fleet.data.reduce(
+            (output, ship) =>
+              `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.name}\n` +
+              `${ship.crew.reduce(
+                (output, crew) =>
+                  `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.name}\n`,
+                "",
+              )}` +
+              `${ship.equipment.reduce(
+                (output, equipment) =>
+                  `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}\n`,
+                "",
+              )}\n`,
+            "",
+          )}
+          {fleet.harbor.length
+            ? fleet.harbor.reduce(
+                (output, item) =>
+                  `${output}  ${item.name} #${item.extension.short}${item.numid}\n`,
+                "\nHarbor:\n",
+              )
+            : ""}
         </Input>
       ),
     });

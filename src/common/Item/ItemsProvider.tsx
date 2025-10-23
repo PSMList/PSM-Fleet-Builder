@@ -22,7 +22,7 @@ export function ItemsProvider<T extends Item>(props: ItemsProviderProps<T>) {
 
   createEffect(() => {
     // only update items if their reference changes (i.e. force update like API call)
-    if (props.items === items) return;
+    if (!props.items || props.items === items) return;
 
     setItems(props.items!);
   });

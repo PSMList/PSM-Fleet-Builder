@@ -20,7 +20,6 @@
   width: 17em;
   max-width: 100%;
   color: #fff;
-  pointer-events: none;
 
   &:hover,
   &:focus,
@@ -76,7 +75,6 @@
 
   > .close {
     grid-area: close;
-    pointer-events: all;
 
     > .icon_button {
       margin: 0;

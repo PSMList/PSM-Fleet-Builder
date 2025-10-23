@@ -38,7 +38,7 @@ export function ShipCard(props: ShipCardProps) {
               {props.item.masts}
             </span>
 
-            {props.item.cargo && (
+            {isFinite(props.item.cargo) && (
               <span class="cargo">
                 <img src={`${baseSvg}/cargo_nobg.svg`} />
                 {props.item.cargo}

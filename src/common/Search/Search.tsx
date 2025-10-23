@@ -16,7 +16,7 @@ import {
 import { createStore } from "solid-js/store";
 
 export interface SearchItem<T extends Obj> {
-  item: JSX.Element;
+  item: () => JSX.Element;
   props: Item & T;
 }
 
@@ -73,7 +73,12 @@ function _Search<
 
     const regex = new RegExp(query, "i");
 
-    return items.filter((item) => regex.test(item.props.fullname));
+    return (
+      items
+        .filter((item) => regex.test(item.props.fullname))
+        // show official items first
+        .sort((a, b) => a.props.custom - b.props.custom)
+    );
   };
 
   function searchInItems() {
@@ -155,7 +160,7 @@ function _Search<
           }
           each={filteredItems}
         >
-          {(item) => item.item}
+          {({ item }) => item()}
         </For>
       </ItemList>
     </div>

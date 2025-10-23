@@ -30,9 +30,9 @@ export function BuilderSearch<T extends Item>(props: BuilderSearchProps<T>) {
     setItems(() =>
       dbItems.map((item) => {
         return {
-          item: <props.searchItem item={item} />,
+          item: () => <props.searchItem item={item} />,
           props: item,
-        };
+        } as SearchItem<any>;
       }),
     );
   });

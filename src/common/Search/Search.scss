@@ -30,8 +30,12 @@
 
   > .search_results {
     &.no_result {
-      align-content: center;
-      text-align: center;
+      @apply text-center;
+      @apply content-center;
+
+      > * {
+        @apply col-[1/-1];
+      }
     }
   }
 }

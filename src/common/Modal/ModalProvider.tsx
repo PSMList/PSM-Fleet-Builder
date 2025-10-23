@@ -102,6 +102,7 @@ export function ModalProvider() {
         <For each={modals}>
           {(modal) => (
             <dialog
+              closedby="any"
               open={modal.visible}
               id={modal.id}
               class="modal"
