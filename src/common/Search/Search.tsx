@@ -77,7 +77,12 @@ function _Search<
       items
         .filter((item) => regex.test(item.props.fullname))
         // show official items first
-        .sort((a, b) => a.props.custom - b.props.custom)
+        .sort((a, b) => {
+          if (a.props.custom < b.props.custom) return -1;
+          if (a.props.type < b.props.type) return -1;
+          if (a.props.extension.id < b.props.extension.id) return -1;
+          return 1;
+        })
     );
   };
 
