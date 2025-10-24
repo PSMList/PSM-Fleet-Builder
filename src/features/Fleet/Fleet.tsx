@@ -64,7 +64,10 @@ function ShipItemBase({
               <span>{item.crew.length} crew</span>
             </Show>
             <Show when={item.equipment.length}>
-              <span>{plural("equipment", item.equipment.length)}</span>
+              <span>
+                {item.equipment.length}{" "}
+                {plural("equipment", item.equipment.length)}
+              </span>
             </Show>
           </li>
           <For each={item.crew}>
