@@ -21,14 +21,14 @@ interface IslandDataItem {
   island_terrain_id_2?: number;
 }
 
-export type Island = Item & {
+export type IslandItem = Item & {
   slugname: string;
 };
 
 export const islandDataPromise = fetch(`${apiUrl}/island?custom=include`)
   .then((res) => res.json() as Promise<IslandDataItem[]>)
   .then(async (data) => {
-    const islandData = new Map<number, Island>();
+    const islandData = new Map<number, IslandItem>();
     const extensionData = await extensionDataPromise;
 
     data.forEach((island) => {

@@ -3,12 +3,12 @@ import "./ShipCard.scss";
 import { For, JSX } from "solid-js";
 
 import { ItemCard } from "@/common/Item/ItemCard";
-import { Ship } from "@/store/data/ship";
+import { ShipItem } from "@/store/data/ship";
 import { baseImg, baseSvg, baseUrl } from "@/utils/config";
 import { LazyImg } from "@/common/LazyImg/LazyImg";
 
 interface ShipCardProps {
-  item: Ship;
+  item: ShipItem;
   actions?: JSX.Element;
   children?: JSX.Element;
 }

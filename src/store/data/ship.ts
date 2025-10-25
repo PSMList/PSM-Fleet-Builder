@@ -35,7 +35,7 @@ interface ShipDataItem {
   idimage30ship: number;
 }
 
-export type Fort = Item & {
+export type FortItem = Item & {
   rarity: Rarity;
   points: number;
   faction: Faction;
@@ -43,7 +43,7 @@ export type Fort = Item & {
   technicalshape: string;
 };
 
-export type Ship = Fort & {
+export type ShipItem = FortItem & {
   basemove: string;
   masts: number;
   cargo: number;
@@ -58,8 +58,8 @@ const dataPromise = fetch(`${apiUrl}/ship?custom=include`)
     const rarityData = await rarityDataPromise;
     const shipShapeData = await shipShapeDataPromise;
     const technicalshapeData = await technicalshapeDataPromise;
-    const shipData = new Map<number, Ship>();
-    const fortData = new Map<number, Fort>();
+    const shipData = new Map<number, ShipItem>();
+    const fortData = new Map<number, FortItem>();
 
     data.forEach((item) => {
       const faction = factionData.get(item.idfaction)!;

@@ -2,20 +2,20 @@ import { createEffect, createSignal, untrack } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 import { trackStore } from '@solid-primitives/deep';
 
-import { Ship } from '../data/ship';
+import { ShipItem } from '../data/ship';
 import { baseUrl, slugname } from '@/utils/config';
 import { fleetDataToString, parseFleetData } from '@/utils/parse';
 import { useToast } from '@/common/Toast/ToastProvider';
 import { getFleetPoints } from '@/utils/points';
 import { useDb } from '../store';
 import { Item } from '@/common/Item/ItemCard';
-import { Crew } from '../data/crew';
-import { Equipment } from '../data/equipment';
+import { CrewItem } from '../data/crew';
+import { EquipmentItem } from '../data/equipment';
 import { fetchWithTimeout } from '@/utils/fetch';
 
-export type FleetShip = Ship & {
-  crew: Crew[];
-  equipment: Equipment[];
+export type FleetShip = ShipItem & {
+  crew: CrewItem[];
+  equipment: EquipmentItem[];
   room?: () => number;
 };
 

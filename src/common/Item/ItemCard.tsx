@@ -15,9 +15,16 @@ export type ItemsType =
   | "treasures"
   | "equipments"
   | "islands"
+  | "events"
   | "items";
 
-export type ItemType = "ship" | "crew" | "treasure" | "equipment" | "island";
+export type ItemType =
+  | "ship"
+  | "crew"
+  | "treasure"
+  | "equipment"
+  | "island"
+  | "event";
 
 export interface Item {
   id: number;
@@ -40,6 +47,7 @@ export enum ItemValue {
   Treasure = 2,
   Equipment = 3,
   Island = 4,
+  Event = 5,
 }
 
 export type ExtendedCard<T extends Item> = Component<{

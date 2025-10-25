@@ -4,6 +4,7 @@ import { ShipCard } from "./Ship/ShipCard/ShipCard";
 import { TreasureCard } from "./Treasure/TreasureCard/TreasureCard";
 import { EquipmentCard } from "./Equipment/EquipmentCard/EquipmentCard";
 import { IslandCard } from "./Island/IslandCard/IslandCard";
+import { EventCard } from "./Event/EventCard/EventCard";
 
 export const ItemCards = {
   [ItemValue.Crew]: CrewCard,
@@ -11,4 +12,5 @@ export const ItemCards = {
   [ItemValue.Treasure]: TreasureCard,
   [ItemValue.Equipment]: EquipmentCard,
   [ItemValue.Island]: IslandCard,
+  [ItemValue.Event]: EventCard,
 } as Record<ItemValue, ExtendedCard<Item>>;

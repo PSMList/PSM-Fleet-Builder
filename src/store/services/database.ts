@@ -7,6 +7,7 @@ import { fortDataPromise, shipDataPromise } from '../data/ship';
 import { treasureDataPromise } from '../data/treasure';
 import { equipmentDataPromise } from '../data/equipment';
 import { islandDataPromise } from '../data/island';
+import { eventDataPromise } from '../data/event';
 import { Item } from '@/common/Item/ItemCard';
 
 export interface Database {
@@ -19,6 +20,7 @@ export interface Database {
   ships: Awaited<typeof shipDataPromise>;
   forts: Awaited<typeof fortDataPromise>;
   islands: Awaited<typeof islandDataPromise>;
+  events: Awaited<typeof eventDataPromise>;
   items: Map<number, Item>;
 }
 
@@ -33,6 +35,7 @@ const [database, setDatabase] = createStore<Database>({
   equipments: new Map(),
   islands: new Map(),
   items: new Map(),
+  events: new Map(),
 });
 
 const loadingPromise = new Promise<Database>((resolve) => {
@@ -41,20 +44,22 @@ const loadingPromise = new Promise<Database>((resolve) => {
       _database.extensions = await extensionDataPromise;
       _database.factions = await factionDataPromise;
       _database.rarities = await rarityDataPromise;
-      _database.treasures = await treasureDataPromise;
-      _database.equipments = await equipmentDataPromise;
       _database.crew = await crewDataPromise;
       _database.ships = await shipDataPromise;
       _database.forts = await fortDataPromise;
+      _database.treasures = await treasureDataPromise;
+      _database.equipments = await equipmentDataPromise;
       _database.islands = await islandDataPromise;
+      _database.events = await eventDataPromise;
 
       _database.items = new Map([
+        ..._database.crew,
         ..._database.ships,
         ..._database.forts,
-        ..._database.crew,
-        ..._database.equipments,
         ..._database.treasures,
+        ..._database.equipments,
         ...(_database.islands as Map<number, Item>),
+        ..._database.events,
       ]);
 
       resolve(_database);

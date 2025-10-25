@@ -21,7 +21,7 @@ interface TreasureDataItem {
   coinvalues: string;
 }
 
-export type Treasure = Item & {
+export type TreasureItem = Item & {
   rarity: Rarity;
   aptitude: string;
   points: number;
@@ -32,7 +32,7 @@ export const treasureDataPromise = fetch(`${apiUrl}/treasure?custom=include`)
   .then(async (data) => {
     const extensionData = await extensionDataPromise;
     const rarityData = await rarityDataPromise;
-    const treasureData = new Map<number, Treasure>();
+    const treasureData = new Map<number, TreasureItem>();
 
     data.forEach((item) => {
       const extension = extensionData.get(item.idextension)!;

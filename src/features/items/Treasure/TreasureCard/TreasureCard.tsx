@@ -2,13 +2,13 @@ import "./TreasureCard.scss";
 
 import { JSX } from "solid-js";
 
-import { Treasure } from "@/store/data/treasure";
+import { TreasureItem } from "@/store/data/treasure";
 import { ItemCard } from "@/common/Item/ItemCard";
 import { baseImg, baseUrl } from "@/utils/config";
 import { LazyImg } from "@/common/LazyImg/LazyImg";
 
 type TreasureCardProps = {
-  item: Treasure;
+  item: TreasureItem;
   actions?: JSX.Element;
   children?: JSX.Element;
 };

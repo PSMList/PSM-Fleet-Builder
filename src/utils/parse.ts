@@ -1,6 +1,6 @@
 import { Item } from '@/common/Item/ItemCard';
-import { Crew } from '@/store/data/crew';
-import { Equipment } from '@/store/data/equipment';
+import { CrewItem } from '@/store/data/crew';
+import { EquipmentItem } from '@/store/data/equipment';
 import {
   CollectionSavedDataType,
   CollectionDataType,
@@ -92,20 +92,20 @@ export function fleetDataToString(fleet: FleetDataType) {
           (crew) =>
             ({
               id: crew.id,
-            }) as Crew,
+            }) as CrewItem,
         ),
         equipment: ship.equipment.map(
           (equipment) =>
             ({
               id: equipment.id,
-            }) as Equipment,
+            }) as EquipmentItem,
         ),
       });
     }
 
-    for (const treasure of fleet.harbor) {
+    for (const item of fleet.harbor) {
       data.push({
-        id: treasure.id,
+        id: item.id,
       });
     }
 

@@ -2,13 +2,13 @@ import "./IslandCard.scss";
 
 import { JSX } from "solid-js";
 
-import { Island } from "@/store/data/island";
+import { IslandItem } from "@/store/data/island";
 import { ItemCard } from "@/common/Item/ItemCard";
 import { baseImg, baseUrl } from "@/utils/config";
 import { LazyImg } from "@/common/LazyImg/LazyImg";
 
 type IslandCardProps = {
-  item: Island;
+  item: IslandItem;
   actions?: JSX.Element;
   children?: JSX.Element;
 };

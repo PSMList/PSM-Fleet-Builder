@@ -1,9 +1,9 @@
-import { Ship } from "@/store/data/ship";
+import { ShipItem } from "@/store/data/ship";
 import { UseSort } from "../filters/sort";
 import { Icon } from "../Icon/Icon";
 import { baseSvg } from "@/utils/config";
 
-export function useShipSorts<T extends Ship>(): UseSort<T>[] {
+export function useShipSorts<T extends ShipItem>(): UseSort<T>[] {
   // cargo and masts
   return [
     {

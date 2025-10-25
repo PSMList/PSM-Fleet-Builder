@@ -29,7 +29,7 @@ import { useShipSorts } from "@/common/sorts/ship";
 import { useSortFilter } from "@/common/filters/sort";
 import { Builder } from "@/common/Builder/Builder";
 import { ShipCard } from "../items/Ship/ShipCard/ShipCard";
-import { Crew } from "@/store/data/crew";
+import { CrewItem } from "@/store/data/crew";
 import { CrewCard } from "../items/Crew/CrewCard/CrewCard";
 import { EquipmentCard } from "../items/Equipment/EquipmentCard/EquipmentCard";
 import { DisplayCard } from "@/common/Display/DisplayCard/DisplayCard";
@@ -164,11 +164,11 @@ export function _Fleet() {
       const Item = LinkedItem[type];
 
       function DisplaySubTypeItem({ item }: { item: Item }) {
-        return <DisplayCard item={item as Crew} component={Item} />;
+        return <DisplayCard item={item as CrewItem} component={Item} />;
       }
 
       function SearchSubTypeItem({ item }: { item: Item }) {
-        return <SearchCard item={item as Crew} component={Item} />;
+        return <SearchCard item={item as CrewItem} component={Item} />;
       }
 
       return (

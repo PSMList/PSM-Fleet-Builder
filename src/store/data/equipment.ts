@@ -26,7 +26,7 @@ interface EquipmentDataItem {
   lookingforbetterpic: boolean;
 }
 
-export type Equipment = Item & {
+export type EquipmentItem = Item & {
   rarity: Rarity;
   points: number;
 };
@@ -36,7 +36,7 @@ export const equipmentDataPromise = fetch(`${apiUrl}/equipment?custom=include`)
   .then(async (data) => {
     const extensionData = await extensionDataPromise;
     const rarityData = await rarityDataPromise;
-    const equipmentData = new Map<number, Equipment>();
+    const equipmentData = new Map<number, EquipmentItem>();
 
     data.forEach((item) => {
       const extension = extensionData.get(item.idextension)!;

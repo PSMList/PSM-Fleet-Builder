@@ -1,24 +1,24 @@
-import "./CrewCard.scss";
+import "./EventCard.scss";
 
 import { JSX } from "solid-js";
 
-import { CrewItem } from "@/store/data/crew";
+import { EventItem } from "@/store/data/event";
 import { ItemCard } from "@/common/Item/ItemCard";
 import { baseImg, baseUrl } from "@/utils/config";
 import { LazyImg } from "@/common/LazyImg/LazyImg";
 
-type CrewCardProps = {
-  item: CrewItem;
+type EventCardProps = {
+  item: EventItem;
   actions?: JSX.Element;
   children?: JSX.Element;
 };
 
-export function CrewCard(props: CrewCardProps) {
+export function EventCard(props: EventCardProps) {
   return (
     <ItemCard
-      type="crew"
+      type="event"
       actions={props.actions}
-      link={`${baseUrl}/crew/${props.item.extension.short}${props.item.numid}`}
+      link={`${baseUrl}/event/${props.item.extension.short}${props.item.numid}`}
       item={props.item}
       preview={
         <LazyImg
@@ -27,7 +27,6 @@ export function CrewCard(props: CrewCardProps) {
           alt=""
           width="80px"
           height="80px"
-          altSrc={`${baseImg}/logos/crew.png`}
         />
       }
     >

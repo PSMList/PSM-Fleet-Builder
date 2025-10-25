@@ -2,13 +2,13 @@ import "./EquipmentCard.scss";
 
 import { JSX } from "solid-js";
 
-import { Equipment } from "@/store/data/equipment";
+import { EquipmentItem } from "@/store/data/equipment";
 import { ItemCard } from "@/common/Item/ItemCard";
 import { baseImg, baseUrl } from "@/utils/config";
 import { LazyImg } from "@/common/LazyImg/LazyImg";
 
 type EquipmentCardProps = {
-  item: Equipment;
+  item: EquipmentItem;
   actions?: JSX.Element;
   children?: JSX.Element;
 };

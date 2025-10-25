@@ -5,7 +5,7 @@ import { JSX } from "solid-js";
 import { Item, ItemCard, ItemType } from "@/common/Item/ItemCard";
 import { baseImg, baseUrl } from "@/utils/config";
 import { LazyImg } from "@/common/LazyImg/LazyImg";
-import { Island } from "@/store/data/island";
+import { IslandItem } from "@/store/data/island";
 
 type CommonCardProps = {
   item: Item;
@@ -18,7 +18,7 @@ export function CommonCard(props: CommonCardProps) {
   const id =
     props.type !== "island"
       ? `${props.item.extension.short}${props.item.numid}`
-      : (props.item as Island).slugname;
+      : (props.item as IslandItem).slugname;
 
   const noImg = props.type === "crew" ? "crew" : "noimg";
 

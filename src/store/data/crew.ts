@@ -25,11 +25,10 @@ interface CrewDataItem {
   idimage30crew: string;
 }
 
-export type Crew = Item & {
+export type CrewItem = Item & {
   points: number;
   faction: Faction;
   rarity: Rarity;
-  img: string;
 };
 
 export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
@@ -38,7 +37,7 @@ export const crewDataPromise = fetch(`${apiUrl}/crew?custom=include`)
     const extensionData = await extensionDataPromise;
     const factionData = await factionDataPromise;
     const rarityData = await rarityDataPromise;
-    const crewData = new Map<number, Crew>();
+    const crewData = new Map<number, CrewItem>();
 
     data.forEach((item) => {
       const faction = factionData.get(item.idfaction)!;
