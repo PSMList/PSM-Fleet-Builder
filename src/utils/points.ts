@@ -1,3 +1,4 @@
+import { ItemValue } from '@/common/Item/ItemCard';
 import { FleetDataType } from '@/store/services/fleet';
 
 export function getShipCost(ship: Partial<FleetDataType['data'][0]>) {
@@ -20,6 +21,11 @@ export function getFleetPoints(fleet: Partial<FleetDataType>) {
   for (const ship of fleet.data ?? []) {
     current += ship.points;
     current += getShipCost(ship);
+  }
+
+  for (const item of fleet.harbor ?? []) {
+    if (item.type !== ItemValue.Event) continue;
+    current += item.points ?? 0;
   }
 
   return current;

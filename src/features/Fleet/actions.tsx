@@ -1,9 +1,10 @@
 import { produce } from "solid-js/store";
 
-import { useDb, useFleet } from "@/store/store";
+import { useDb } from "@/store/services/database";
+import { useFleet } from "@/store/services/fleet";
 import { IconButton } from "@/common/Icon/IconButton/IconButton";
 import { Input } from "@/common/Input/Input";
-import { useModal } from "@/common/Modal/hooks";
+import { useModal } from "@/common/Modal/ModalProvider";
 import { useToast } from "@/common/Toast/ToastProvider";
 import { fleetDataToString, parseFleetData } from "@/utils/parse";
 import { Harbor } from "@/features/Harbor/Harbor";
@@ -16,14 +17,44 @@ export function CopyFleet() {
   const toast = useToast();
   const { fleet } = useFleet();
 
+  function buildFleetText() {
+    const header = `[${fleet.name}](${location.href})\n\n${fleet.description ? `${fleet.description}\n\n` : ""}`;
+
+    const ships = fleet.data.reduce(
+      (output, ship) =>
+        `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.name}\n` +
+        ship.crew.reduce(
+          (out, crew) =>
+            `${out}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.name}\n`,
+          "",
+        ) +
+        ship.equipment.reduce(
+          (out, equipment) =>
+            `${out}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}\n`,
+          "",
+        ) +
+        "\n",
+      "",
+    );
+
+    const harbor = fleet.harbor.length
+      ? fleet.harbor.reduce(
+          (out, item) => `${out}  ${item.name} #${item.extension.short}${item.numid}\n`,
+          "\nHarbor:\n",
+        )
+      : "";
+
+    return header + ships + harbor;
+  }
+
   function copyFleet() {
+    const data = buildFleetText();
     let textareaRef!: HTMLTextAreaElement;
 
     const copyText = async () => {
       if (!navigator.clipboard) {
         textareaRef.focus();
         textareaRef.select();
-
         return;
       }
 
@@ -51,35 +82,11 @@ export function CopyFleet() {
           ref={(ref) => {
             setTimeout(() => {
               textareaRef = ref;
-
               copyText();
             }, 150);
           }}
         >
-          {`[${fleet.name}](${location.href})\n\n`}
-          {fleet.description ? `${fleet.description}\n\n` : ""}
-          {fleet.data.reduce(
-            (output, ship) =>
-              `${output}(${ship.points}p) ${ship.name} #${ship.extension.short}${ship.numid} - ${ship.faction.name}\n` +
-              `${ship.crew.reduce(
-                (output, crew) =>
-                  `${output}  (${crew.points}p) ${crew.name} #${crew.extension.short}${crew.numid} - ${crew.faction.name}\n`,
-                "",
-              )}` +
-              `${ship.equipment.reduce(
-                (output, equipment) =>
-                  `${output}  (${equipment.points}p) ${equipment.name} #${equipment.extension.short}${equipment.numid}\n`,
-                "",
-              )}\n`,
-            "",
-          )}
-          {fleet.harbor.length
-            ? fleet.harbor.reduce(
-                (output, item) =>
-                  `${output}  ${item.name} #${item.extension.short}${item.numid}\n`,
-                "\nHarbor:\n",
-              )
-            : ""}
+          {data}
         </Input>
       ),
     });
