@@ -1,0 +1,10 @@
+[data-unsaved]::after {
+  content: "✱";
+  background-color: red;
+}
+
+#builder {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
