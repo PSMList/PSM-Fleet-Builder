@@ -1,68 +1,72 @@
+// Global styles live in the shared "builder" chunk: store.tsx is imported by
+// both entries, so importing index.scss here emits it into builder.css.
+import "@/index.scss";
+
 import {
   createContext,
   createEffect,
-  createResource,
   ParentComponent,
   useContext,
 } from "solid-js";
-import { DatabaseService } from "./services/database";
-import { useModal } from "@/common/Modal/hooks";
-import { FleetService } from "./services/fleet";
-import { CollectionService } from "./services/collection";
+import { createStore } from "solid-js/store";
 
-const rootState = {
-  databaseService: DatabaseService,
-  fleetService: FleetService,
-  collectionService: CollectionService,
+import { useModal } from "@/common/Modal/ModalProvider";
+
+type StorePromise = Promise<any>;
+
+type StoreContextType = {
+  addPlugin: (promise: StorePromise) => void;
 };
 
-const StoreContext = createContext(rootState);
+const StoreContext = createContext<StoreContextType>();
 
-export function useDb() {
-  return useContext(StoreContext).databaseService;
-}
-export function useFleet() {
-  return useContext(StoreContext).fleetService;
-}
-export function useCollections() {
-  return useContext(StoreContext).collectionService;
+export function useStore() {
+  const context = useContext(StoreContext);
+
+  if (!context) {
+    throw new Error("useStore must be used within a StoreProvider");
+  }
+
+  return context;
 }
 
 export const StoreProvider: ParentComponent = (props) => {
-  const [data] = createResource(() =>
-    Promise.all(
-      Object.values(rootState).map((service) => service.loadingPromise),
-    ),
-  );
+  const [promises, setPromises] = createStore<StorePromise[]>([]);
 
   const modal = useModal();
 
-  createEffect(() => {
-    switch (data.state) {
-      case "refreshing":
-      case "pending":
-        modal.show({
-          id: "start-setup",
-          title: "Loading data...",
-        });
-        break;
-      case "ready":
-        modal.hide("start-setup");
-        break;
-      case "errored":
-      case "unresolved":
-        modal.show({
-          id: "start-setup",
-          content: () =>
-            "Please check your Internet connection and refresh, or contact administators...",
-          title: "Failed to load data from PSMList.",
-        });
-        break;
+  createEffect(async () => {
+    modal.show({
+      id: "start-setup",
+      title: "Loading data...",
+    });
+
+    try {
+      const timeout = new Promise((resolve) => {
+        setTimeout(resolve, 1000);
+      });
+      await Promise.all(promises);
+      await timeout;
+
+      modal.hide("start-setup");
+    } catch {
+      modal.show({
+        id: "start-setup",
+        content: () =>
+          "Please check your Internet connection and refresh, or contact administators...",
+        title: "Failed to load data from PSMList.",
+      });
     }
   });
 
+  const storeContext: StoreContextType = {
+    addPlugin: (promise) => {
+      setPromises((prev) => [...prev, promise]);
+    },
+  };
+
   return (
-    <StoreContext.Provider value={rootState}>
+    <StoreContext.Provider value={storeContext}>
       {props.children}
     </StoreContext.Provider>
   );

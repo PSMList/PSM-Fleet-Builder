@@ -1,4 +1,4 @@
-import { apiUrl } from './api';
+import { apiUrl } from '../../utils/config';
 
 interface FactionDataItem {
   id: number;

@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Item, ItemValue } from '@/common/Item/ItemCard';
-import { apiUrl } from './api';
+import { apiUrl } from '../../utils/config';
 import { extensionDataPromise } from './extension';
 import { Faction, factionDataPromise } from './faction';
-import { rarityDataPromise, Rarity } from './rarity';
-import { technicalshapeDataPromise } from './technicalshape';
+import { Rarity, rarityDataPromise } from './rarity';
 import { shipShapeDataPromise, ShipType } from './shiptype';
+import { technicalshapeDataPromise } from './technicalshape';
 
 interface ShipDataItem {
   id: number;

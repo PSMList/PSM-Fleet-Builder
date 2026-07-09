@@ -2,8 +2,8 @@ import { Item } from '@/common/Item/ItemCard';
 import { CrewItem } from '@/store/data/crew';
 import { EquipmentItem } from '@/store/data/equipment';
 import {
-  CollectionSavedDataType,
   CollectionDataType,
+  CollectionSavedDataType,
 } from '@/store/services/collection';
 import { Database } from '@/store/services/database';
 import {
@@ -122,9 +122,9 @@ export function fleetDataToString(fleet: FleetDataType) {
 }
 
 export function parseCollectionData(
-  savedData: CollectionSavedDataType,
+  savedData: CollectionSavedDataType[],
   db: Database,
-): CollectionDataType {
+): CollectionDataType[] {
   const dbItems = db.items;
 
   const collectionsData = [];
@@ -132,7 +132,7 @@ export function parseCollectionData(
   for (const collection of savedData) {
     const items = [];
 
-    for (const { id: itemId } of collection.data) {
+    for (const { id: itemId } of collection.items) {
       const item = dbItems.get(itemId);
 
       if (!item) continue;
@@ -144,6 +144,7 @@ export function parseCollectionData(
       name: collection.name,
       ispublic: collection.ispublic,
       description: collection.description,
+      slugname: collection.slugname,
       items,
     });
   }

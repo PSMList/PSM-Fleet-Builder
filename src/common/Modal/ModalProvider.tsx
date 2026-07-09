@@ -41,6 +41,10 @@ export const ModalContext = createContext<{
   },
 });
 
+export function useModal() {
+  return useContext(ModalContext);
+}
+
 export function ModalProvider() {
   const [modals, setModals] = createStore<VisibleModal[]>([]);
 
