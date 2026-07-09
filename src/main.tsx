@@ -1,19 +1,18 @@
-import "./index.scss";
+import { lazy } from "solid-js";
 
-import { render } from "solid-js/web";
+import { renderBuilder } from "@/entries/render";
 
-import { App } from "@/App";
-import { ToastProvider } from "./common/Toast/ToastProvider";
-import { ModalProvider } from "@/common/Modal/ModalProvider";
-import { StoreProvider } from "@/store/store";
-
-render(
-  () => (
-    <StoreProvider>
-      <App />
-      <ModalProvider />
-      <ToastProvider position="top-right" autoDeleteTime={8000} />
-    </StoreProvider>
-  ),
-  document.getElementById("fleet_builder")!,
+// Dev-only entry (referenced by index.html). Production builds use the
+// dedicated fleet/collection entries; here the builder is picked at runtime
+// from the path so both can be exercised through the Vite dev server.
+const Builder = lazy(() =>
+  location.pathname.includes("collection")
+    ? import("@/features/Collection/Collection").then((m) => ({
+        default: m.CollectionBuilder,
+      }))
+    : import("@/features/Fleet/Fleet").then((m) => ({
+        default: m.FleetBuilder,
+      })),
 );
+
+renderBuilder(Builder);
