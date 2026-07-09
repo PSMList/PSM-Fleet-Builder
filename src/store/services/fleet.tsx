@@ -1,0 +1,225 @@
+import {
+  Accessor,
+  createContext,
+  createEffect,
+  createSignal,
+  ParentComponent,
+  Setter,
+  untrack,
+  useContext,
+} from "solid-js";
+import { createStore, produce } from "solid-js/store";
+import { trackStore } from "@solid-primitives/deep";
+
+import { ShipItem } from "../data/ship";
+import { baseUrl, slugname } from "@/utils/config";
+import { fleetDataToString, parseFleetData } from "@/utils/parse";
+import { useToast } from "@/common/Toast/ToastProvider";
+import { getFleetPoints } from "@/utils/points";
+import { useDb } from "@/store/services/database";
+import { Item } from "@/common/Item/ItemCard";
+import { CrewItem } from "../data/crew";
+import { EquipmentItem } from "../data/equipment";
+import { fetchWithTimeout } from "@/utils/fetch";
+import { useStore } from "../store";
+
+export type FleetShip = ShipItem & {
+  crew: CrewItem[];
+  equipment: EquipmentItem[];
+  room?: () => number;
+};
+
+export interface FleetDataType {
+  name: string;
+  points: {
+    current: number;
+    max: number;
+  };
+  ispublic: boolean;
+  data: FleetShip[];
+  harbor: Item[];
+  description: string;
+}
+
+export interface FleetSavedDataType {
+  name: string;
+  maxpoints: number;
+  data: {
+    id: number;
+    crew?: { id: number }[];
+    equipment?: { id: number }[];
+  }[];
+  ispublic: boolean;
+  description: string;
+}
+
+type FleetContextType = {
+  fleet: FleetDataType;
+  setFleet: Setter<FleetDataType>;
+  saved: Accessor<boolean>;
+  save: () => ReturnType<typeof fetchWithTimeout>;
+  loadingPromise: Promise<void>;
+};
+
+const FleetContext = createContext<FleetContextType>();
+
+export const useFleet = () => {
+  const context = useContext(FleetContext);
+
+  if (!context) {
+    throw new Error("useFleet must be used within a FleetProvider");
+  }
+
+  return context;
+};
+
+export const FleetProvider: ParentComponent = (props) => {
+  const [fleet, setFleet] = createStore<FleetDataType>({
+    name: "My fleet",
+    points: {
+      current: 0,
+      max: 40,
+    },
+    ispublic: false,
+    data: [],
+    harbor: [],
+    description: "",
+  });
+
+  const [saved, setSaved] = createSignal(true);
+
+  const { db, loadingPromise: loadingDb } = useDb();
+
+  const fleetDataRequest = fetch(`${baseUrl}/fleet/get/${slugname}`);
+
+  async function getFleetData() {
+    let response;
+
+    try {
+      response = await fleetDataRequest;
+    } catch {
+      return "Network error.";
+    }
+
+    if (!response.ok) {
+      switch (response.status) {
+        case 403:
+          return "Unauthorized or unauthenticated.";
+        case 408:
+          return "Network error.";
+        case 500:
+          return "Server error. Please try again later or contact support.";
+      }
+    }
+
+    let data: FleetSavedDataType;
+
+    try {
+      data = await response.json();
+    } catch {
+      return "Invalid fleet data.";
+    }
+
+    return data;
+  }
+
+  const loadingFleet = new Promise<void>(async (resolve) => {
+    const toast = useToast();
+
+    const result = await getFleetData();
+
+    if (typeof result === "string") {
+      toast.show({
+        id: result.toLowerCase().split(" ").slice(0, 4).join("-"),
+        type: "error",
+        title: "Loading fleet data",
+        description: result,
+      });
+
+      return resolve();
+    }
+
+    await loadingDb;
+
+    for (const ship of db.ships.values()) {
+      const item = ship as FleetShip;
+
+      if (!item.crew) item.crew = [];
+      if (!item.equipment) item.equipment = [];
+
+      if (!item.room) {
+        item.room = function () {
+          return this.crew.length + this.equipment.length;
+        };
+      }
+    }
+
+    const newFleet = parseFleetData(result ?? {}, db);
+
+    createEffect(() => {
+      // track changes of deeply nested objects
+      trackStore(fleet);
+
+      untrack(() => {
+        setFleet(
+          produce((_fleet) => {
+            _fleet.points.current = getFleetPoints(_fleet);
+          }),
+        );
+      });
+
+      setSaved(() => false);
+    });
+
+    setFleet(() => newFleet);
+    setSaved(() => true);
+
+    toast.show({
+      id: "success-load-fleet",
+      type: "success",
+      title: "Fleet data loaded",
+      description: `${newFleet.name}`,
+    });
+
+    resolve();
+  });
+
+  async function save() {
+    const fleetStr = fleetDataToString(fleet);
+
+    const res = await fetchWithTimeout(
+      `${baseUrl}/fleet/self/set/${slugname}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: fleetStr,
+      },
+    );
+
+    if (res.ok) {
+      setSaved(() => true);
+    }
+
+    return res;
+  }
+
+  const { addPlugin } = useStore();
+
+  addPlugin(loadingFleet);
+
+  return (
+    <FleetContext.Provider
+      value={{
+        fleet,
+        setFleet,
+        saved,
+        save,
+        loadingPromise: loadingFleet,
+      }}
+    >
+      {props.children}
+    </FleetContext.Provider>
+  );
+};

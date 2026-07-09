@@ -1,7 +1,7 @@
 import { JSX, splitProps } from "solid-js";
 
 import { baseImg } from "@/utils/config";
-import { onImageError } from "@/utils/other";
+import { onImageError } from "@/utils/dom";
 
 interface LazyImgProps extends JSX.ImgHTMLAttributes<HTMLImageElement> {
   altSrc?: string;

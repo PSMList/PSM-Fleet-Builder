@@ -1,6 +1,6 @@
 import { createEffect, createSignal } from "solid-js";
 
-import { useCollections } from "@/store/store";
+import { useCollections } from "@/store/services/collection";
 import { FilterProps } from "../Search/Search";
 import { Item } from "../Item/ItemCard";
 import { Option, Select } from "../Select/Select";

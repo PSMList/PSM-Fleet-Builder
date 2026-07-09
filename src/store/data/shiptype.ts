@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { apiUrl } from './api';
+import { apiUrl } from '../../utils/config';
 
 interface ShipShapeDataItem {
   id: number;

@@ -27,7 +27,9 @@ interface ToastContextType {
 }
 
 export const ToastContext = createContext<ToastContextType>({
-  show: () => {},
+  show: () => {
+    // no-op
+  },
 });
 
 export function useToast() {

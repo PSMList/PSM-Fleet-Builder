@@ -23,6 +23,7 @@ export function Builder<T extends Item>(props: BuilderProps<T>) {
         placeholder={props.placeholder}
       />
       <BuilderDisplay
+        addItems={props.addItems}
         displayItem={props.displayItem}
         type={props.type}
         actions={props.actions}

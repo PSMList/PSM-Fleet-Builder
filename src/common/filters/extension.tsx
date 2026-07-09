@@ -1,11 +1,11 @@
 import { createSignal } from "solid-js";
 
-import { useDb } from "@/store/store";
-import { Select } from "../Select/Select";
-import { baseImg } from "@/utils/config";
-import { FilterProps } from "../Search/Search";
 import { Extension } from "@/store/data/extension";
+import { useDb } from "@/store/services/database";
+import { baseImg } from "@/utils/config";
 import { LazyImg } from "../LazyImg/LazyImg";
+import { FilterProps } from "../Search/Search";
+import { Select } from "../Select/Select";
 
 export function useExtensionFilter(): FilterProps<{
   extension?: Extension;
@@ -28,11 +28,11 @@ export function useExtensionFilter(): FilterProps<{
       display: (
         <span>
           <LazyImg
+            class="extension"
             src={`${baseImg}/${extension.icon}`}
             alt=""
             width="24px"
             height="24px"
-            class="extension"
           />
           {extension.name}
         </span>

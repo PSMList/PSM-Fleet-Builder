@@ -46,7 +46,7 @@ input[type="number"] {
   }
 }
 
-#fleet_builder {
+#builder {
   @apply flex flex-col grow p-4;
 }
 
@@ -62,7 +62,7 @@ input[type="number"] {
     @apply relative mt-2 text-sm;
   }
 
-  #fleet_builder {
+  #builder {
     @apply p-2;
   }
 

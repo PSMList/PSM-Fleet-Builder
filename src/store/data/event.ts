@@ -1,5 +1,5 @@
 import { Item, ItemValue } from '@/common/Item/ItemCard';
-import { apiUrl } from './api';
+import { apiUrl } from '../../utils/config';
 import { extensionDataPromise } from './extension';
 import { Rarity, rarityDataPromise } from './rarity';
 

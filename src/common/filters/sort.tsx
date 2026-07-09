@@ -21,7 +21,7 @@ export type ExtractSorts<T> = T extends (infer U)[]
   ? ExtractSortTypes<U>
   : never;
 
-export function useSortFilter<
+export function useSortAsFilter<
   T extends ExtractSorts<U>,
   U extends UseSort<any>[] = any[],
 >(sorts: U): FilterProps<T> {

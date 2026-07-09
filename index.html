@@ -466,20 +466,19 @@
                       <a class="title" href="">Fleet</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/fleet/search"
-                            ><i class="fa-solid fa-magnifying-glass"></i
-                            >Search</a
-                          >
+                          <a href="/psmlist/fleet/search">
+                            <i class="fa-solid fa-magnifying-glass"></i> Search
+                          </a>
                         </li>
                         <li>
-                          <a href="/psmlist/fleet/self/search"
-                            ><i class="fa-solid fa-anchor"></i>My Fleets</a
-                          >
+                          <a href="/psmlist/fleet/self/search">
+                            <i class="fa-solid fa-anchor"></i> My fleets
+                          </a>
                         </li>
                         <li>
-                          <a href="/psmlist/fleet/self/add"
-                            ><i class="fa-solid fa-add"></i>Create my fleet</a
-                          >
+                          <a href="/psmlist/fleet/self/add">
+                            <i class="fa-solid fa-add"></i> Create new fleet
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -505,15 +504,20 @@
                       <a class="title" href="">Collection</a>
                       <ul>
                         <li>
-                          <a href="/psmlist/collection/search"
-                            ><i class="fa-solid fa-magnifying-glass"></i
-                            >Search</a
-                          >
+                          <a href="/psmlist/collection/search">
+                            <i class="fa-solid fa-magnifying-glass"></i> Search
+                          </a>
                         </li>
                         <li>
-                          <a href="/psmlist/collection/show/self/"
-                            ><i class="fa-solid fa-shelves"></i>My collection</a
-                          >
+                          <a href="/psmlist/collection/self/search">
+                            <i class="fa-solid fa-shelves"></i> My collections
+                          </a>
+                        </li>
+                        <li>
+                          <a href="/psmlist/collection/self/add">
+                            <i class="fa-solid fa-shelves"></i>
+                            Create a collection
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -762,7 +766,14 @@
             <i class="fab fa-github"></i>
           </a>
           <h1>Fleet Builder</h1>
-          <div id="fleet_builder"></div>
+          <script>
+            document.querySelector("h1").innerHTML = location.pathname.includes(
+              "collection",
+            )
+              ? "Collection Builder"
+              : "Fleet Builder";
+          </script>
+          <div id="builder"></div>
           <div id="donation_container">
             <div class="whitebox">
               If you like PSMList, please consider donating. This means a lot to
