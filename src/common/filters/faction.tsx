@@ -1,6 +1,6 @@
 import { createSignal } from "solid-js";
 
-import { useDb } from "@/store/store";
+import { useDb } from "@/store/services/database";
 import { Select } from "../Select/Select";
 import { baseImg } from "@/utils/config";
 import { FilterProps } from "../Search/Search";

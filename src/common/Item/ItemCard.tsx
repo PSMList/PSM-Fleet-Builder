@@ -9,22 +9,27 @@ import { Faction } from "@/store/data/faction";
 import { isDarkColor } from "@/utils/string";
 import { Rarity } from "@/store/data/rarity";
 
-export type ItemsType =
-  | "ships"
-  | "crew"
-  | "treasures"
-  | "equipments"
-  | "islands"
-  | "events"
-  | "items";
+export const ITEMS_TYPES = [
+  "ships",
+  "crew",
+  "treasures",
+  "equipments",
+  "islands",
+  "events",
+] as const;
 
-export type ItemType =
-  | "ship"
-  | "crew"
-  | "treasure"
-  | "equipment"
-  | "island"
-  | "event";
+export type ItemsType = "items" | (typeof ITEMS_TYPES)[number];
+
+export const ITEM_TYPES = [
+  "ship",
+  "crew",
+  "treasure",
+  "equipment",
+  "island",
+  "event",
+] as const;
+
+export type ItemType = (typeof ITEM_TYPES)[number];
 
 export interface Item {
   id: number;
@@ -49,6 +54,15 @@ export enum ItemValue {
   Island = 4,
   Event = 5,
 }
+
+export const ItemsTypesMap = {
+  crew: ItemValue.Crew,
+  ships: ItemValue.Ship,
+  treasures: ItemValue.Treasure,
+  equipments: ItemValue.Equipment,
+  islands: ItemValue.Island,
+  events: ItemValue.Event,
+} as const;
 
 export type ExtendedCard<T extends Item> = Component<{
   item: T;

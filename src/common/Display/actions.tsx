@@ -1,9 +1,10 @@
-import { querySelector } from "@/utils/other";
+import { querySelector } from "@/utils/dom";
 import { IconButton } from "@/common/Icon/IconButton/IconButton";
 import { useCollapse } from "../Collapse/CollapseProvider";
 import { useItems } from "../Item/ItemsProvider";
-import { useModal } from "../Modal/hooks";
+import { useModal } from "../Modal/ModalProvider";
 import { isOwn } from "@/utils/config";
+import { ItemsType } from "../Item/ItemCard";
 
 export function Collapse() {
   const [collapsed, toggleCollapse] = useCollapse();
@@ -18,7 +19,7 @@ export function Collapse() {
 }
 
 interface AddItemsProps {
-  name: string;
+  type: ItemsType;
 }
 
 export function AddItems(props: AddItemsProps) {
@@ -27,7 +28,7 @@ export function AddItems(props: AddItemsProps) {
   function scrollToDisplayBottom() {
     const search_container = querySelector(
       document,
-      `#${props.name} > .search_container`,
+      `#${props.type} > .search_container`,
     );
 
     if (!search_container) return;
@@ -44,13 +45,8 @@ export function AddItems(props: AddItemsProps) {
   }
 
   return (
-    <IconButton
-      id="search-plus"
-      onClick={scrollToDisplayBottom}
-      class="scroll_to_search"
-      primary
-    >
-      Add {props.name}
+    <IconButton id="search-plus" onClick={scrollToDisplayBottom} primary>
+      Add {props.type}
     </IconButton>
   );
 }

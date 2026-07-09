@@ -8,13 +8,13 @@ export function useItemTypeFilter(): FilterProps<{ type: ItemValue }> {
   const [selectedItemTypeId, setSelectedItemTypeId] = createSignal("-1");
 
   function itemTypeOptions() {
-    const factions = Object.entries(ItemValue).filter(
+    const types = Object.entries(ItemValue).filter(
       ([, value]) => typeof value === "string",
     );
 
-    factions.unshift(["-1", "All types"]);
+    types.unshift(["-1", "All types"]);
 
-    return factions.map(([id, label]) => ({
+    return types.map(([id, label]) => ({
       id,
       display: label,
     }));

@@ -8,10 +8,12 @@ import { CollapseProvider } from "@/common/Collapse/CollapseProvider";
 import { Item } from "@/common/Item/ItemCard";
 
 export interface BuilderDisplayProps<T extends Item> {
+  addItems: JSX.Element;
   actions?: JSX.Element;
   header?: JSX.Element;
   displayItem: Component<{ item: T }>;
   type: string;
+  collapsed?: boolean;
 }
 
 export function BuilderDisplay<T extends Item>(props: BuilderDisplayProps<T>) {
@@ -22,8 +24,9 @@ export function BuilderDisplay<T extends Item>(props: BuilderDisplayProps<T>) {
   }
 
   return (
-    <CollapseProvider defaultCollapse={false}>
+    <CollapseProvider defaultCollapse={props.collapsed ?? false}>
       <Display
+        addItems={props.addItems}
         name={props.type}
         header={props.header}
         actions={props.actions}

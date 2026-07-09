@@ -9,7 +9,8 @@
   background-image: var(--bg);
   margin-top: 1em;
 
-  @apply text-shadow;
+  text-shadow: rgb(0, 0, 0) 0px 0px 4px, rgb(0, 0, 0) 0px 0px 2px, rgb(0, 0, 0) 1px 1px 0px;
+  letter-spacing: 0.4px;
 
   &,
   > .rarity {

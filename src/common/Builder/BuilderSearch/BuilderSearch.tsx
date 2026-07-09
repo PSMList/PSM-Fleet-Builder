@@ -4,7 +4,7 @@ import { Component, createEffect, createSignal } from "solid-js";
 
 import { FilterProps, Search, SearchItem } from "@/common/Search/Search";
 import { isOwn } from "@/utils/config";
-import { useDb } from "@/store/store";
+import { useDb } from "@/store/services/database";
 import { ItemsType, Item } from "@/common/Item/ItemCard";
 
 export interface BuilderSearchProps<T extends Item> {
