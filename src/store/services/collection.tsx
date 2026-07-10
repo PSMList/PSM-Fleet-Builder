@@ -9,7 +9,7 @@ import { createStore, SetStoreFunction } from "solid-js/store";
 
 import { Item } from "@/common/Item/ItemCard";
 import { useDb } from "@/store/services/database";
-import { baseUrl, slugname } from "@/utils/config";
+import { baseUrl } from "@/utils/config";
 import { parseCollectionData } from "@/utils/parse";
 import { useStore } from "../store";
 
@@ -35,8 +35,7 @@ export type CollectionSavedDataType = {
 
 type CollectionContextType = {
   collections: CollectionDataType[];
-  collection: CollectionDataType;
-  setCollection: SetStoreFunction<CollectionDataType>;
+  setCollections: SetStoreFunction<CollectionDataType[]>;
 };
 
 const CollectionContext = createContext<CollectionContextType>();
@@ -47,21 +46,10 @@ export function useCollections() {
 
 export const CollectionProvider: ParentComponent = (props) => {
   const [collections, setCollections] = createStore<CollectionDataType[]>([]);
-  const [collection, setCollection] = createStore<CollectionDataType>({
-    name: "",
-    ispublic: false,
-    description: "",
-    slugname: "",
-    items: [],
-  });
 
   const { db, loadingPromise: loadingDb } = useDb();
 
-  const isCollectionBuilder = location.pathname.includes("collection");
-
-  const collectionDataRequest = fetch(
-    `${baseUrl}/collection/get${isCollectionBuilder ? `/${slugname}` : ""}`,
-  );
+  const collectionDataRequest = fetch(`${baseUrl}/collection/get`);
 
   async function getCollectionData() {
     let response;
@@ -112,18 +100,6 @@ export const CollectionProvider: ParentComponent = (props) => {
 
     setCollections(() => newCollections);
 
-    if (isCollectionBuilder) {
-      const selectedCollection = newCollections.find(
-        (c) => c.slugname === slugname,
-      );
-
-      if (selectedCollection) {
-        setCollection(() => selectedCollection);
-
-        document.body.querySelector("h1")!.innerText = selectedCollection.name;
-      }
-    }
-
     resolve();
   });
 
@@ -132,9 +108,7 @@ export const CollectionProvider: ParentComponent = (props) => {
   addPlugin(loadingPromise);
 
   return (
-    <CollectionContext.Provider
-      value={{ collections, collection, setCollection }}
-    >
+    <CollectionContext.Provider value={{ collections, setCollections }}>
       {props.children}
     </CollectionContext.Provider>
   );
